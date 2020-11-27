@@ -25,6 +25,34 @@ class UserSeeder extends Seeder
             $user->password = bcrypt('123456');
             $user->role = \App\User::ROLE_WAREHOUSE;
             $user->save();
+
+            $user = new \App\User();
+            $user->name = 'User Test';
+            $user->email = 'test2@mail.com';
+            $user->password = bcrypt('123456');
+            $user->role = \App\User::ROLE_WAREHOUSE;
+            $user->save();
+
+            $user = new \App\User();
+            $user->name = 'User Test';
+            $user->email = 'test3@mail.com';
+            $user->password = bcrypt('123456');
+            $user->role = \App\User::ROLE_WAREHOUSE;
+            $user->save();
+
+            $user = new \App\User();
+            $user->name = 'User Test';
+            $user->email = 'test4@mail.com';
+            $user->password = bcrypt('123456');
+            $user->role = \App\User::ROLE_WAREHOUSE;
+            $user->save();
+
+            $user = new \App\User();
+            $user->name = 'User Test';
+            $user->email = 'test5@mail.com';
+            $user->password = bcrypt('123456');
+            $user->role = \App\User::ROLE_WAREHOUSE;
+            $user->save();
         }
     }
 }

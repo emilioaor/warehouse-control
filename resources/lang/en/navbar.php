@@ -3,6 +3,10 @@
 return [
     'addNew' => 'Add new',
     'list' => 'List',
-    'users' => 'Users'
+    'users' => 'Users',
+    'customers' => 'Customers',
+    'couriers' => 'Couriers',
+    'boxes' => 'Boxes',
+    'orders' => 'Orders'
 
 ];

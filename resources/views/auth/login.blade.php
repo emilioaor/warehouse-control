@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-md-8 col-xl-6">
             <div class="card py-2">
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">

@@ -5,10 +5,12 @@ namespace App;
 use App\Contract\IuuidGenerator;
 use App\Contract\UuidGeneratorTrait;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable implements IuuidGenerator
 {
@@ -64,5 +66,55 @@ class User extends Authenticatable implements IuuidGenerator
     public function approvedOrders(): HasMany
     {
         return $this->hasMany(Order::class, 'approved_by');
+    }
+
+    /**
+     * Is admin?
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === self::ROLE_ADMIN;
+    }
+
+    /**
+     * Is warehouse?
+     */
+    public function isWarehouse(): bool
+    {
+        return $this->role === self::ROLE_WAREHOUSE;
+    }
+
+    /**
+     * Role in string
+     */
+    public function role(): string
+    {
+        return __(sprintf('role.%s', $this->role));
+    }
+
+    /**
+     * Exclude me from select
+     */
+    public function scopeNotMe(Builder $query): Builder
+    {
+        return $query->where('id', '<>', Auth::user()->id);
+    }
+
+    /**
+     * Search by any field
+     */
+    public function scopeSearch(Builder $query, ?string $search): Builder
+    {
+        $fields = ['name', 'email'];
+
+        if (! empty($search)) {
+            $query->where(function ($q) use ($fields, $search) {
+                foreach ($fields as $field) {
+                    $q->orWhere($field, 'LIKE', "%{$search}%");
+                }
+            });
+        }
+
+        return $query;
     }
 }

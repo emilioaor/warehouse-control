@@ -1,19 +1,35 @@
 <ul class="navbar-nav mr-auto">
     @auth
-        <li class="nav-item dropdown">
-            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                {{ __('navbar.users') }}
-            </a>
+        @if(Auth::user()->isAdmin())
+            @include('layouts.dropdown-menu', [
+                'title' => __('navbar.users'),
+                'add' => route('logout'),
+                'list' => route('user.index')
+            ])
+        @endif
 
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="{{ route('logout') }}">
-                    <i class="glyphicon glyphicon-users"></i>
-                    {{ __('navbar.addNew') }}
-                </a>
-                <a class="dropdown-item" href="{{ route('logout') }}">
-                    {{ __('navbar.list') }}
-                </a>
-            </div>
-        </li>
+        @include('layouts.dropdown-menu', [
+            'title' => __('navbar.couriers'),
+            'add' => route('logout'),
+            'list' => route('logout')
+        ])
+
+        @include('layouts.dropdown-menu', [
+            'title' => __('navbar.customers'),
+            'add' => route('logout'),
+            'list' => route('logout')
+        ])
+
+        @include('layouts.dropdown-menu', [
+            'title' => __('navbar.boxes'),
+            'add' => route('logout'),
+            'list' => route('logout')
+        ])
+
+        @include('layouts.dropdown-menu', [
+            'title' => __('navbar.orders'),
+            'add' => route('logout'),
+            'list' => route('logout')
+        ])
     @endauth
 </ul>
