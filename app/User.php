@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Contract\IuuidGenerator;
+use App\Contract\SearchTrait;
 use App\Contract\UuidGeneratorTrait;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
@@ -16,7 +17,8 @@ class User extends Authenticatable implements IuuidGenerator
 {
     use Notifiable;
     use SoftDeletes;
-    Use UuidGeneratorTrait;
+    use UuidGeneratorTrait;
+    use SearchTrait;
 
     /** User roles */
     const ROLE_ADMIN = 'admin';
@@ -51,6 +53,8 @@ class User extends Authenticatable implements IuuidGenerator
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected $search_fields = ['name', 'email'];
 
     /**
      * Created orders
@@ -98,23 +102,5 @@ class User extends Authenticatable implements IuuidGenerator
     public function scopeNotMe(Builder $query): Builder
     {
         return $query->where('id', '<>', Auth::user()->id);
-    }
-
-    /**
-     * Search by any field
-     */
-    public function scopeSearch(Builder $query, ?string $search): Builder
-    {
-        $fields = ['name', 'email'];
-
-        if (! empty($search)) {
-            $query->where(function ($q) use ($fields, $search) {
-                foreach ($fields as $field) {
-                    $q->orWhere($field, 'LIKE', "%{$search}%");
-                }
-            });
-        }
-
-        return $query;
     }
 }

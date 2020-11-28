@@ -11,7 +11,7 @@
         @include('layouts.dropdown-menu', [
             'title' => __('navbar.couriers'),
             'add' => route('logout'),
-            'list' => route('logout')
+            'list' => route('courier.index')
         ])
 
         @include('layouts.dropdown-menu', [
