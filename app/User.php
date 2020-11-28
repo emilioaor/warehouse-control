@@ -97,6 +97,17 @@ class User extends Authenticatable implements IuuidGenerator
     }
 
     /**
+     * Roles available
+     */
+    public static function rolesAvailable(): array
+    {
+        return [
+            self::ROLE_ADMIN => __(sprintf('role.%s', self::ROLE_ADMIN)),
+            self::ROLE_WAREHOUSE => __(sprintf('role.%s', self::ROLE_WAREHOUSE)),
+        ];
+    }
+
+    /**
      * Exclude me from select
      */
     public function scopeNotMe(Builder $query): Builder

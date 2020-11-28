@@ -3,7 +3,7 @@
         @if(Auth::user()->isAdmin())
             @include('layouts.dropdown-menu', [
                 'title' => __('navbar.users'),
-                'add' => route('logout'),
+                'add' => route('user.create'),
                 'list' => route('user.index')
             ])
         @endif

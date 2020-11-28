@@ -12,13 +12,13 @@
                     minlength="3">
             <span class="input-group-btn">
                 <button class="btn btn-primary">
-                    B
+                    <i class="fa fa-search"></i>
                 </button>
             </span>
         </div>
 
         <div class="d-none d-sm-block col-sm-4 col-md-6">
-            <p class="text-right"><strong>{{ __('table.total') }}:</strong> {{ $total }}</p>
+            <p class="text-right"><strong>{{ __('validation.attributes.total') }}:</strong> {{ $total }}</p>
         </div>
 
     </div>
@@ -31,7 +31,7 @@
                 <a href="{{ $route }}" class="text-danger">
                     X
                 </a>
-                <strong>{{ __('table.filter_by') }}:</strong>
+                <strong>{{ __('validation.attributes.filter_by') }}:</strong>
                 {{ Request::get('search') }}
             </p>
         </div>

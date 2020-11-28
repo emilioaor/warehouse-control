@@ -20,6 +20,10 @@ class AdminMiddleware
         if (! Auth::user()->isAdmin()) {
             AlertService::alertFail(__('alert.notPermissionAccess'));
 
+            if ($request->wantsJson()) {
+                return response()->json(['message' => __('alert.notPermissionAccess')], 403);
+            }
+
             return redirect()->route('home');
         }
 

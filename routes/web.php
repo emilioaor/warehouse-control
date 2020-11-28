@@ -19,6 +19,8 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('warehouse/translation', 'Controller@translations');
+
 Route::group(['middleware' => 'auth', 'prefix' => 'warehouse'], function () {
     Route::get('/home', 'HomeController@index')->name('home');
 
@@ -27,6 +29,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'warehouse'], function () {
     Route::resource('box', 'BoxController');
 });
 
-Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
+Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'], function () {
     Route::resource('user', 'UserController');
+    Route::get('user/exists/{email}', 'UserController@userExists');
 });

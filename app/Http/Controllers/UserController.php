@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Service\AlertService;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -27,7 +28,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('user.form');
     }
 
     /**
@@ -38,7 +39,13 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = new User($request->all());
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+        AlertService::alertSuccess(__('alert.processSuccessfully'));
+
+        return response()->json(['success' => true, 'redirect' => route('user.index')]);
     }
 
     /**
@@ -60,7 +67,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::query()->uuid($id)->firstOrFail();
+
+        return view('user.form', compact('user'));
     }
 
     /**
@@ -72,7 +81,18 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::query()->uuid($id)->firstOrFail();
+        $user->fill($request->all());
+
+        if (! empty($request->password)) {
+            $user->password = bcrypt($request->password);
+        }
+
+        $user->save();
+
+        AlertService::alertSuccess(__('alert.processSuccessfully'));
+
+        return response()->json(['success' => true, 'redirect' => route('user.edit', $id)]);
     }
 
     /**
@@ -84,5 +104,18 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Check if user exists
+     *
+     * @param  string $email
+     * @return \Illuminate\Http\Response
+     */
+    public function userExists($email)
+    {
+        $user = User::query()->where('email', $email)->first();
+
+        return response()->json(['success' => true, 'data' => $user]);
     }
 }
