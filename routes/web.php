@@ -22,8 +22,11 @@ Auth::routes();
 Route::group(['middleware' => 'auth', 'prefix' => 'warehouse'], function () {
     Route::get('/home', 'HomeController@index')->name('home');
 
-    Route::resource('user', 'UserController'); // TODO only admin
     Route::resource('courier', 'CourierController');
     Route::resource('customer', 'CustomerController');
     Route::resource('box', 'BoxController');
+});
+
+Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
+    Route::resource('user', 'UserController');
 });
