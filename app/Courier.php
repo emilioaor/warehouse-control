@@ -21,7 +21,7 @@ class Courier extends Model implements IuuidGenerator
         'name'
     ];
 
-    protected $search_fields = ['name'];
+    protected $search_fields = ['uuid', 'name'];
 
     /**
      * Customers that configured this courier to default option

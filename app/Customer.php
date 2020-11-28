@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Contract\IuuidGenerator;
+use App\Contract\SearchTrait;
 use App\Contract\UuidGeneratorTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,6 +13,7 @@ class Customer extends Model implements IuuidGenerator
 {
     use SoftDeletes;
     Use UuidGeneratorTrait;
+    use SearchTrait;
 
     protected $table = 'customers';
 
@@ -21,6 +23,8 @@ class Customer extends Model implements IuuidGenerator
         'email',
         'default_courier_id'
     ];
+
+    protected $search_fields = ['uuid', 'description', 'phone', 'email'];
 
     /**
      * Default courier

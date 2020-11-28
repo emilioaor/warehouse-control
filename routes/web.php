@@ -24,4 +24,5 @@ Route::group(['middleware' => 'auth', 'prefix' => 'warehouse'], function () {
 
     Route::resource('user', 'UserController'); // TODO only admin
     Route::resource('courier', 'CourierController');
+    Route::resource('customer', 'CustomerController');
 });
