@@ -151,6 +151,7 @@ return [
         'name' => 'Name',
         'email' => 'Email',
         'phone' => 'Phone',
+        'courierDefault' => 'Courier default',
         'role' => 'Role',
         'created_at' => 'Created at',
         'total' => 'Total',

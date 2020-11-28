@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Courier;
 use App\Customer;
+use App\Service\AlertService;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -26,7 +28,9 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        //
+        $couriers = Courier::query()->orderBy('name')->pluck('name', 'id');
+
+        return view('customer.form', compact('couriers'));
     }
 
     /**
@@ -37,7 +41,12 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $customer = new Customer($request->all());
+        $customer->save();
+
+        AlertService::alertSuccess(__('alert.processSuccessfully'));
+
+        return response()->json(['success' => true, 'redirect' => route('customer.index')]);
     }
 
     /**
@@ -59,7 +68,10 @@ class CustomerController extends Controller
      */
     public function edit($id)
     {
-        //
+        $customer = Customer::query()->uuid($id)->firstOrFail();
+        $couriers = Courier::query()->orderBy('name')->pluck('name', 'id');
+
+        return view('customer.form', compact('customer', 'couriers'));
     }
 
     /**
@@ -71,7 +83,13 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $customer = Customer::query()->uuid($id)->firstOrFail();
+        $customer->fill($request->all());
+        $customer->save();
+
+        AlertService::alertSuccess(__('alert.processSuccessfully'));
+
+        return response()->json(['success' => true, 'redirect' => route('customer.edit', $id)]);
     }
 
     /**

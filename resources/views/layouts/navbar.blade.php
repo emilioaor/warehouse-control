@@ -16,7 +16,7 @@
 
         @include('layouts.dropdown-menu', [
             'title' => __('navbar.customers'),
-            'add' => route('logout'),
+            'add' => route('customer.create'),
             'list' => route('customer.index')
         ])
 
