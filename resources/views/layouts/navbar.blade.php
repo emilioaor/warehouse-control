@@ -10,7 +10,7 @@
 
         @include('layouts.dropdown-menu', [
             'title' => __('navbar.couriers'),
-            'add' => route('logout'),
+            'add' => route('courier.create'),
             'list' => route('courier.index')
         ])
 

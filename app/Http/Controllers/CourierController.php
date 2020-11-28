@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Courier;
+use App\Service\AlertService;
 use Illuminate\Http\Request;
 
 class CourierController extends Controller
@@ -27,7 +28,7 @@ class CourierController extends Controller
      */
     public function create()
     {
-        //
+        return view('courier.form');
     }
 
     /**
@@ -38,7 +39,12 @@ class CourierController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $courier = new Courier($request->all());
+        $courier->save();
+
+        AlertService::alertSuccess(__('alert.processSuccessfully'));
+
+        return response()->json(['success' => true, 'redirect' => route('courier.index')]);
     }
 
     /**
@@ -60,7 +66,9 @@ class CourierController extends Controller
      */
     public function edit($id)
     {
-        //
+        $courier = Courier::query()->uuid($id)->firstOrFail();
+
+        return view('courier.form', compact('courier'));
     }
 
     /**
@@ -72,7 +80,13 @@ class CourierController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $courier = Courier::query()->uuid($id)->firstOrFail();
+        $courier->fill($request->all());
+        $courier->save();
+
+        AlertService::alertSuccess(__('alert.processSuccessfully'));
+
+        return response()->json(['success' => true, 'redirect' => route('courier.edit', $id)]);
     }
 
     /**
