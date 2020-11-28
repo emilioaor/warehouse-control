@@ -25,7 +25,11 @@
                             <tbody>
                                 @foreach($couriers as $courier)
                                     <tr>
-                                        <td>{{ $courier->uuid }}</td>
+                                        <td>
+                                            <a href="{{ route('courier.edit', [$courier->uuid]) }}">
+                                                {{ $courier->uuid }}
+                                            </a>
+                                        </td>
                                         <td>{{ $courier->name }}</td>
                                         <td>{{ $courier->created_at->format('d-m-Y') }}</td>
                                         <td>

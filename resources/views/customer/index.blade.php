@@ -27,7 +27,11 @@
                             <tbody>
                                 @foreach($customers as $customer)
                                     <tr>
-                                        <td>{{ $customer->uuid }}</td>
+                                        <td>
+                                            <a href="{{ route('customer.edit', [$customer->uuid]) }}">
+                                                {{ $customer->uuid }}
+                                            </a>
+                                        </td>
                                         <td>{{ $customer->description }}</td>
                                         <td>{{ $customer->email }}</td>
                                         <td>{{ $customer->phone }}</td>

@@ -27,7 +27,11 @@
                             <tbody>
                                 @foreach($boxes as $box)
                                     <tr>
-                                        <td>{{ $box->uuid }}</td>
+                                        <td>
+                                            <a href="{{ route('box.edit', [$box->uuid]) }}">
+                                                {{ $box->uuid }}
+                                            </a>
+                                        </td>
                                         <td>{{ $box->description }}</td>
                                         <td>{{ $box->size }}</td>
                                         <td>{{ $box->weight }}</td>
