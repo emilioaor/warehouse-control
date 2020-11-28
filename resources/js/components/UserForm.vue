@@ -129,10 +129,12 @@
                             </div>
 
                             <div>
-                                <button class="btn btn-primary">
+                                <button class="btn btn-primary" v-if="!loading">
                                     <i class="fa fa-save"></i>
                                      {{ t('form.save') }}
                                 </button>
+
+                                <img src="/img/loading.gif" v-if="loading">
                             </div>
                         </form>
 
@@ -175,7 +177,8 @@
                     password_confirmation: null
                 },
 
-                emailExists: false
+                emailExists: false,
+                loading: false
             }
         },
 
@@ -194,12 +197,15 @@
                     if (res.data.success) {
                         location.href = res.data.redirect;
                     }
-                }).catch(err => {
 
+                }).catch(err => {
+                    this.loading = false;
                 })
             },
 
             checkIfUserExists() {
+                this.loading = true;
+
                 ApiService.get('/admin/user/exists/' + this.form.email).then(res => {
                     this.emailExists =
                         (this.editData && res.data.data && this.editData.uuid !== res.data.data.uuid) ||
@@ -207,9 +213,11 @@
 
                     if (! this.emailExists) {
                         this.sendForm();
+                    } else {
+                        this.loading = false;
                     }
                 }).catch(err => {
-
+                    this.loading = false;
                 })
             }
         },
