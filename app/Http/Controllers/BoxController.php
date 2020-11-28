@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Box;
+use App\Service\AlertService;
 use Illuminate\Http\Request;
 
 class BoxController extends Controller
@@ -27,7 +28,7 @@ class BoxController extends Controller
      */
     public function create()
     {
-        //
+        return view('box.form');
     }
 
     /**
@@ -38,7 +39,12 @@ class BoxController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $box = new Box($request->all());
+        $box->save();
+
+        AlertService::alertSuccess(__('alert.processSuccessfully'));
+
+        return response()->json(['success' => true, 'redirect' => route('box.index')]);
     }
 
     /**
@@ -60,7 +66,9 @@ class BoxController extends Controller
      */
     public function edit($id)
     {
-        //
+        $box = Box::query()->uuid($id)->firstOrFail();
+
+        return view('box.form', compact('box'));
     }
 
     /**
@@ -72,7 +80,13 @@ class BoxController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $box = Box::query()->uuid($id)->firstOrFail();
+        $box->fill($request->all());
+        $box->save();
+
+        AlertService::alertSuccess(__('alert.processSuccessfully'));
+
+        return response()->json(['success' => true, 'redirect' => route('box.edit', $id)]);
     }
 
     /**
