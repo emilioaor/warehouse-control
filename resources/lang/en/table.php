@@ -8,6 +8,9 @@ return [
     'role' => 'Role',
     'created_at' => 'Created at',
     'total' => 'Total',
-    'filter_by' => 'Filter by'
+    'filter_by' => 'Filter by',
+    'description' => 'Description',
+    'size' => 'Size',
+    'weight' => 'Weight',
 
 ];

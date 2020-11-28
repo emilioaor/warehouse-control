@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Contract\IuuidGenerator;
+use App\Contract\SearchTrait;
 use App\Contract\UuidGeneratorTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -12,6 +13,7 @@ class Box extends Model implements IuuidGenerator
 {
     use SoftDeletes;
     Use UuidGeneratorTrait;
+    use SearchTrait;
 
     protected $table = 'boxes';
 
@@ -20,6 +22,8 @@ class Box extends Model implements IuuidGenerator
         'size',
         'weight'
     ];
+
+    protected $search_fields = ['uuid', 'description', 'size', 'weight'];
 
     /**
      * Order details that assigned this default box. The

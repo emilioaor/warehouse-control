@@ -23,7 +23,7 @@
         @include('layouts.dropdown-menu', [
             'title' => __('navbar.boxes'),
             'add' => route('logout'),
-            'list' => route('logout')
+            'list' => route('box.index')
         ])
 
         @include('layouts.dropdown-menu', [
