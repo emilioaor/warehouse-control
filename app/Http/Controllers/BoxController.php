@@ -18,6 +18,10 @@ class BoxController extends Controller
     {
         $boxes = Box::query()->search($request->search)->paginate();
 
+        if ($request->wantsJson()) {
+            return response()->json(['success' => true, 'data' => $boxes]);
+        }
+
         return view('box.index', compact('boxes'));
     }
 

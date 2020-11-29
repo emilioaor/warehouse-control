@@ -27,6 +27,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'warehouse'], function () {
     Route::resource('courier', 'CourierController');
     Route::resource('customer', 'CustomerController');
     Route::resource('box', 'BoxController');
+    Route::resource('order', 'OrderController');
 });
 
 Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'], function () {

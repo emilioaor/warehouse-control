@@ -7,6 +7,7 @@ use App\Contract\SearchTrait;
 use App\Contract\UuidGeneratorTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Customer extends Model implements IuuidGenerator
@@ -24,6 +25,8 @@ class Customer extends Model implements IuuidGenerator
         'default_courier_id'
     ];
 
+    protected $with = ['defaultCourier'];
+
     protected $search_fields = ['uuid', 'description', 'phone', 'email'];
 
     /**
@@ -32,5 +35,13 @@ class Customer extends Model implements IuuidGenerator
     public function defaultCourier(): BelongsTo
     {
         return $this->belongsTo(Courier::class, 'default_courier_id')->withTrashed();
+    }
+
+    /**
+     * Assigned orders
+     */
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class, 'customer_id');
     }
 }

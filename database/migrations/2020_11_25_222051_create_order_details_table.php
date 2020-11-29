@@ -23,6 +23,7 @@ class CreateOrderDetailsTable extends Migration
             $table->string('description');
             $table->string('size');
             $table->float('weight');
+            $table->integer('qty');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -20,7 +20,8 @@ class OrderDetail extends Model implements IuuidGenerator
         'box_id',
         'description',
         'size',
-        'weight'
+        'weight',
+        'qty'
     ];
 
     /**

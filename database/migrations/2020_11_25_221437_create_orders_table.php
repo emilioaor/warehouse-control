@@ -25,7 +25,7 @@ class CreateOrdersTable extends Migration
             $table->foreign('created_by')->references('id')->on('users');
             $table->integer('approved_by')->unsigned()->nullable();
             $table->foreign('approved_by')->references('id')->on('users');
-            $table->string('sign');
+            $table->string('sign')->nullable();
             $table->enum('status', ['sent', 'pending_send']);
             $table->timestamps();
             $table->softDeletes();

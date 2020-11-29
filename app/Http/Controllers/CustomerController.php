@@ -12,11 +12,16 @@ class CustomerController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
         $customers = Customer::query()->search($request->search)->paginate();
+
+        if ($request->wantsJson()) {
+            return response()->json(['success' => true, 'data' => $customers]);
+        }
 
         return view('customer.index', compact('customers'));
     }

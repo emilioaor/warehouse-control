@@ -161,6 +161,12 @@ return [
         'weight' => 'Weight',
         'password' => 'Password',
         'passwordConfirmation' => 'Password confirmation',
+        'customer' => 'Customer',
+        'courier' => 'Courier',
+        'date' => 'Date',
+        'status' => 'Status',
+        'box' => 'Box',
+        'qty' => 'Qty'
     ],
 
 ];

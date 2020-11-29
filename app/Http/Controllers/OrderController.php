@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Courier;
+use App\Order;
+use App\OrderDetail;
 use App\Service\AlertService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
-class CourierController extends Controller
+class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,13 +18,12 @@ class CourierController extends Controller
      */
     public function index(Request $request)
     {
-        $couriers = Courier::query()->search($request->search)->paginate();
+        $orders = Order::query()
+            ->search($request->search)
+            ->with(['customer', 'courier'])
+            ->paginate();
 
-        if ($request->wantsJson()) {
-            return response()->json(['success' => true, 'data' => $couriers]);
-        }
-
-        return view('courier.index', compact('couriers'));
+        return view('order.index', compact('orders'));
     }
 
     /**
@@ -32,7 +33,7 @@ class CourierController extends Controller
      */
     public function create()
     {
-        return view('courier.form');
+        return view('order.form');
     }
 
     /**
@@ -43,12 +44,22 @@ class CourierController extends Controller
      */
     public function store(Request $request)
     {
-        $courier = new Courier($request->all());
-        $courier->save();
+        DB::beginTransaction();
+
+        $order = new Order($request->all());
+        $order->save();
+
+        foreach ($request->order_details as $detail) {
+            $detail = new OrderDetail($detail);
+            $detail->order_id = $order->id;
+            $detail->save();
+        }
+
+        DB::commit();
 
         AlertService::alertSuccess(__('alert.processSuccessfully'));
 
-        return response()->json(['success' => true, 'redirect' => route('courier.index')]);
+        return response()->json(['success' => true, 'redirect' => route('order.index')]);
     }
 
     /**
@@ -70,9 +81,7 @@ class CourierController extends Controller
      */
     public function edit($id)
     {
-        $courier = Courier::query()->uuid($id)->firstOrFail();
-
-        return view('courier.form', compact('courier'));
+        //
     }
 
     /**
@@ -84,13 +93,7 @@ class CourierController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $courier = Courier::query()->uuid($id)->firstOrFail();
-        $courier->fill($request->all());
-        $courier->save();
-
-        AlertService::alertSuccess(__('alert.processSuccessfully'));
-
-        return response()->json(['success' => true, 'redirect' => route('courier.edit', $id)]);
+        //
     }
 
     /**

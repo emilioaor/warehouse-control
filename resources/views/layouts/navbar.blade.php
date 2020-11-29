@@ -28,8 +28,8 @@
 
         @include('layouts.dropdown-menu', [
             'title' => __('navbar.orders'),
-            'add' => route('logout'),
-            'list' => route('logout')
+            'add' => route('order.create'),
+            'list' => route('order.index')
         ])
     @endauth
 </ul>
