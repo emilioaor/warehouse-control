@@ -166,7 +166,10 @@ return [
         'date' => 'Date',
         'status' => 'Status',
         'box' => 'Box',
-        'qty' => 'Qty'
+        'qty' => 'Qty',
+        'currentPassword' => 'Current password',
+        'newPassword' => 'New password',
+        'newPasswordConfirmation' => 'New password confirmation'
     ],
 
 ];

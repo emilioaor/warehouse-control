@@ -28,6 +28,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'warehouse'], function () {
     Route::resource('customer', 'CustomerController');
     Route::resource('box', 'BoxController');
     Route::resource('order', 'OrderController');
+
+    Route::get('user/config', 'UserController@config')->name('user.config');
+    Route::put('user/config', 'UserController@updateConfig')->name('user.updateConfig');
 });
 
 Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'], function () {

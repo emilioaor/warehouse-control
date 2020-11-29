@@ -7,6 +7,9 @@ return [
     'customers' => 'Customers',
     'couriers' => 'Couriers',
     'boxes' => 'Boxes',
-    'orders' => 'Orders'
+    'orders' => 'Orders',
+    'config' => 'Configuration',
+    'security' => 'Security',
+    'logout' => 'Logout'
 
 ];

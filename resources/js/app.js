@@ -24,6 +24,7 @@ Vue.component('search-input', require('./components/SearchInput.vue').default);
 
 // Forms
 Vue.component('user-form', require('./components/UserForm.vue').default);
+Vue.component('user-config-form', require('./components/UserConfigForm.vue').default);
 Vue.component('courier-form', require('./components/CourierForm.vue').default);
 Vue.component('customer-form', require('./components/CustomerForm.vue').default);
 Vue.component('box-form', require('./components/BoxForm.vue').default);

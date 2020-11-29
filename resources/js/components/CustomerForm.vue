@@ -133,7 +133,7 @@
 
         mounted() {
             if (this.editData) {
-                this.form = {...this.editData}
+                this.form = {...this.editData};
                 this.courier = {
                     ...this.editData.default_courier,
                     searchDescription: this.editData.default_courier.name + ' / ' + this.editData.default_courier.uuid
