@@ -97,7 +97,7 @@
                                             data-vv-rules="required"
                                             v-model="form.default_courier_id"
                                     >
-                                    <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('default_courier_id', 'required')">
+                                    <span class="invalid-feedback d-block" role="alert" v-if="errors.firstByRule('default_courier_id', 'required')">
                                         <strong>{{ t('validation.required', {attribute: 'courierDefault'}) }}</strong>
                                     </span>
                                 </div>

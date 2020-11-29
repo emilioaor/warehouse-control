@@ -32,7 +32,8 @@ class Order extends Model implements IuuidGenerator
         'created_by',
         'approved_by',
         'sign',
-        'status'
+        'status',
+        'invoice_number'
     ];
 
     protected $casts = [

@@ -169,7 +169,8 @@ return [
         'qty' => 'Qty',
         'currentPassword' => 'Current password',
         'newPassword' => 'New password',
-        'newPasswordConfirmation' => 'New password confirmation'
+        'newPasswordConfirmation' => 'New password confirmation',
+        'invoiceNumber' => 'Invoice number'
     ],
 
 ];

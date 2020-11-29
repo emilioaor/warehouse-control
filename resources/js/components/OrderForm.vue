@@ -42,7 +42,7 @@
                                             v-model="form.customer_id"
                                     >
 
-                                    <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('customer_id', 'required')">
+                                    <span class="invalid-feedback d-block" role="alert" v-if="errors.firstByRule('customer_id', 'required')">
                                         <strong>{{ t('validation.required', {attribute: 'customer'}) }}</strong>
                                     </span>
                                 </div>
@@ -67,21 +67,40 @@
                                             v-model="form.courier_id"
                                     >
 
-                                    <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('courier_id', 'required')">
+                                    <span class="invalid-feedback d-block" role="alert" v-if="errors.firstByRule('courier_id', 'required')">
                                         <strong>{{ t('validation.required', {attribute: 'courier'}) }}</strong>
                                     </span>
                                 </div>
 
+                                <div class="col-sm-6 col-md-4 form-group">
+                                    <label for="invoice_number"> {{ t('validation.attributes.invoiceNumber') }}</label>
+
+                                    <input
+                                            type="text"
+                                            class="form-control"
+                                            name="invoice_number"
+                                            id="invoice_number"
+                                            :class="{'is-invalid': errors.has('invoice_number')}"
+                                            v-validate
+                                            data-vv-rules="required"
+                                            v-model="form.invoice_number"
+                                    >
+
+                                    <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('invoice_number', 'required')">
+                                        <strong>{{ t('validation.required', {attribute: 'invoiceNumber'}) }}</strong>
+                                    </span>
+                                </div>
+
                                 <div class="col-12">
-                                    <table class="table table-responsive">
+                                    <table class="table table-responsive mt-4">
                                         <thead>
                                             <tr>
-                                                <th class="text-center">{{ t('validation.attributes.box') }}</th>
-                                                <th class="text-center">{{ t('validation.attributes.description') }}</th>
-                                                <th class="text-center">{{ t('validation.attributes.size') }}</th>
-                                                <th class="text-center">{{ t('validation.attributes.weight') }}</th>
-                                                <th class="text-center">{{ t('validation.attributes.qty') }}</th>
-                                                <th width="5%"></th>
+                                                <td class="text-center">{{ t('validation.attributes.box') }}</td>
+                                                <td class="text-center">{{ t('validation.attributes.description') }}</td>
+                                                <td class="text-center">{{ t('validation.attributes.size') }}</td>
+                                                <td class="text-center">{{ t('validation.attributes.weight') }}</td>
+                                                <td class="text-center">{{ t('validation.attributes.qty') }}</td>
+                                                <td width="5%"></td>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -225,6 +244,7 @@
                 form: {
                     customer_id: null,
                     courier_id: null,
+                    invoice_number: null,
                     order_details: []
                 },
                 loading: false,
