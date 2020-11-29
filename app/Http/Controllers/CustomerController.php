@@ -73,10 +73,9 @@ class CustomerController extends Controller
      */
     public function edit($id)
     {
-        $customer = Customer::query()->uuid($id)->firstOrFail();
-        $couriers = Courier::query()->orderBy('name')->pluck('name', 'id');
+        $customer = Customer::query()->uuid($id)->with(['defaultCourier'])->firstOrFail();
 
-        return view('customer.form', compact('customer', 'couriers'));
+        return view('customer.form', compact('customer'));
     }
 
     /**

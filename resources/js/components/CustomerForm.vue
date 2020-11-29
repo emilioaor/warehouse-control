@@ -82,22 +82,21 @@
 
                                 <div class="col-sm-6 col-md-4 form-group">
                                     <label for="email"> {{ t('validation.attributes.courierDefault') }}</label>
-                                    <select
+                                    <search-input
+                                            route="/warehouse/courier"
+                                            :description-fields="['name', 'uuid']"
+                                            @selectResult="changeCourier($event)"
+                                            :input-class="errors.has('default_courier_id') ? 'is-invalid' : ''"
+                                            :value="courier ? courier.searchDescription : ''"
+                                    ></search-input>
+                                    <input
+                                            type="hidden"
                                             name="default_courier_id"
                                             id="default_courier_id"
-                                            class="form-control"
-                                            :class="{'is-invalid': errors.has('default_courier_id')}"
                                             v-validate
                                             data-vv-rules="required"
                                             v-model="form.default_courier_id"
                                     >
-                                        <option
-                                                v-for="(courier, id) in couriers"
-                                                :key="id"
-                                                :value="id">
-                                            {{ courier }}
-                                        </option>
-                                    </select>
                                     <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('default_courier_id', 'required')">
                                         <strong>{{ t('validation.required', {attribute: 'courierDefault'}) }}</strong>
                                     </span>
@@ -129,17 +128,16 @@
             editData: {
                 type: Object,
                 required: false
-            },
-
-            couriers: {
-                type: Object,
-                required: true
             }
         },
 
         mounted() {
             if (this.editData) {
                 this.form = {...this.editData}
+                this.courier = {
+                    ...this.editData.default_courier,
+                    searchDescription: this.editData.default_courier.name + ' / ' + this.editData.default_courier.uuid
+                }
             }
         },
 
@@ -151,7 +149,8 @@
                     email: null,
                     default_courier_id: null
                 },
-                loading: false
+                loading: false,
+                courier: null
             }
         },
 
@@ -174,7 +173,12 @@
                 }).catch(err => {
                     this.loading = false;
                 })
-            }
+            },
+
+            changeCourier(result) {
+                this.courier = result;
+                this.form.default_courier_id= result.id;
+            },
         }
     }
 </script>
