@@ -6,6 +6,7 @@ use App\Contract\IuuidGenerator;
 use App\Contract\SearchTrait;
 use App\Contract\UuidGeneratorTrait;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -95,5 +96,16 @@ class Order extends Model implements IuuidGenerator
     public function status()
     {
         return __(sprintf('status.%s', $this->status));
+    }
+
+    /**
+     * Orders today
+     */
+    public function scopeToday(Builder $query): Builder
+    {
+        $start = Carbon::now()->setTime(00, 00, 00);
+        $end = Carbon::now()->setTime(23, 59, 59);
+
+        return $query->whereBetween('date', [$start, $end]);
     }
 }
