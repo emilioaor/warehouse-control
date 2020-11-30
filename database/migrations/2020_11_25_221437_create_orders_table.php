@@ -27,6 +27,7 @@ class CreateOrdersTable extends Migration
             $table->foreign('approved_by')->references('id')->on('users');
             $table->string('invoice_number');
             $table->string('sign')->nullable();
+            $table->string('photo')->nullable();
             $table->enum('status', ['sent', 'pending_send']);
             $table->timestamps();
             $table->softDeletes();

@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class Order extends Model implements IuuidGenerator
 {
@@ -31,9 +32,8 @@ class Order extends Model implements IuuidGenerator
         'date',
         'created_by',
         'approved_by',
-        'sign',
         'status',
-        'invoice_number'
+        'invoice_number',
     ];
 
     protected $casts = [
@@ -100,6 +100,20 @@ class Order extends Model implements IuuidGenerator
     }
 
     /**
+     * Status HTML
+     */
+    public function statusHtml()
+    {
+        $status = $this->status;
+        $statusText = $this->status();
+        $class = $status === self::STATUS_PENDING_SEND ? 'bg-info text-white' : 'bg-success text-white';
+
+        return "<div class=\"{$class} d-inline-block p-1 rounded\" style='width: 80px; text-align: center'>
+                    <strong>{$statusText}</strong>
+                </div>";
+    }
+
+    /**
      * Orders today
      */
     public function scopeToday(Builder $query): Builder
@@ -108,5 +122,27 @@ class Order extends Model implements IuuidGenerator
         $end = Carbon::now()->setTime(23, 59, 59);
 
         return $query->whereBetween('date', [$start, $end]);
+    }
+
+    /**
+     * Attach document to order
+     */
+    public function attachDocument(string $base64, string $filename): string
+    {
+        $explode = explode(',', $base64);
+        $filename = sprintf('%s-%s', $filename, ((string) time()));
+
+        if (strpos($explode[0], 'image/png') > 0) {
+            $format = 'png';
+        } elseif (strpos($explode[0], 'image/jpg') > 0 || strpos($explode[0], 'image/jpeg') > 0) {
+            $format = 'jpg';
+        } else {
+            return false;
+        }
+
+        $path = sprintf('orders/%s/%s.%s', $this->uuid, $filename, $format);
+        Storage::disk('public')->put($path, base64_decode($explode[1]));
+
+        return $path;
     }
 }

@@ -6,7 +6,7 @@
                     :name="'search' + modalId"
                     :id="'search' + modalId"
                     class="form-control search"
-                    :class="inputClass"
+                    :class="inputClass + (! readOnly ? ' pointer' : '')"
                     readonly
                     :value="value"
                     @click="openModal()"
@@ -14,7 +14,7 @@
             <span class="input-group-btn">
                 <button
                         class="btn btn-danger"
-                        v-if="nullable && value"
+                        v-if="nullable && value && ! readOnly"
                         @click="clearResult()"
                 >
                     X
@@ -28,6 +28,7 @@
                         :data-target="'#' + modalId"
                         @click="filter()"
                         :disabled="disabled"
+                        v-if="! readOnly"
                 >
                     <i class="fa fa-search"></i>
                 </button>
@@ -76,7 +77,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" :id="'close' + modalId" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" :id="'close' + modalId" class="btn btn-secondary" data-dismiss="modal">{{ t('form.close') }}</button>
                     </div>
                 </div>
             </div>
@@ -112,6 +113,11 @@
               required: true
           },
           disabled: {
+              type: Boolean,
+              required: false,
+              default: false
+          },
+          readOnly: {
               type: Boolean,
               required: false,
               default: false
@@ -164,14 +170,16 @@
             },
 
             openModal() {
-                document.querySelector('#open' + this.modalId).click()
+                const button = document.querySelector('#open' + this.modalId);
+
+                return button && button.click();
             }
         }
     }
 </script>
 
 <style scoped="scoped">
-    .search {
+    .search.pointer {
         cursor: pointer;
     }
 </style>

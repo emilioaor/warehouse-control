@@ -170,7 +170,9 @@ return [
         'currentPassword' => 'Current password',
         'newPassword' => 'New password',
         'newPasswordConfirmation' => 'New password confirmation',
-        'invoiceNumber' => 'Invoice number'
+        'invoiceNumber' => 'Invoice number',
+        'photo' => 'Photo',
+        'sign' => 'Sign'
     ],
 
 ];

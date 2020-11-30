@@ -32,6 +32,7 @@
                                         @selectResult="changeCustomer($event)"
                                         :input-class="errors.has('customer_id') ? 'is-invalid' : ''"
                                         :value="customer ? customer.searchDescription : ''"
+                                        :read-only="!! editData"
                                     ></search-input>
                                     <input
                                             type="hidden"
@@ -57,6 +58,7 @@
                                             :input-class="errors.has('courier_id') ? 'is-invalid' : ''"
                                             :value="courier ? courier.searchDescription : ''"
                                             :disabled="! customer"
+                                            :read-only="!! editData"
                                     ></search-input>
                                     <input
                                             type="hidden"
@@ -72,7 +74,7 @@
                                     </span>
                                 </div>
 
-                                <div class="col-sm-6 col-md-4 form-group">
+                                <div class="col-sm-6 form-group" :class="!!editData ? 'col-md-2' : 'col-md-4'">
                                     <label for="invoice_number"> {{ t('validation.attributes.invoiceNumber') }}</label>
 
                                     <input
@@ -84,11 +86,24 @@
                                             v-validate
                                             data-vv-rules="required"
                                             v-model="form.invoice_number"
+                                            :disabled="!! editData"
                                     >
 
                                     <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('invoice_number', 'required')">
                                         <strong>{{ t('validation.required', {attribute: 'invoiceNumber'}) }}</strong>
                                     </span>
+                                </div>
+
+                                <div class="col-sm-6 col-md-2 form-group" v-if="!! editData">
+                                    <label> {{ t('validation.attributes.status') }}</label>
+                                    <div>
+                                        <span
+                                            class="d-inline-block p-1 rounded status"
+                                            :class="form.status === 'pending_send' ? 'bg-info text-white' : 'bg-success text-white'"
+                                        >
+                                            {{ t('status.' + form.status) }}
+                                        </span>
+                                    </div>
                                 </div>
 
                                 <div class="col-12">
@@ -100,7 +115,7 @@
                                                 <td class="text-center">{{ t('validation.attributes.size') }}</td>
                                                 <td class="text-center">{{ t('validation.attributes.weight') }}</td>
                                                 <td class="text-center">{{ t('validation.attributes.qty') }}</td>
-                                                <td width="5%"></td>
+                                                <td width="5%" v-if="! editData"></td>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -112,6 +127,7 @@
                                                             @selectResult="changeBoxDetail($event, i)"
                                                             :nullable="true"
                                                             :value="detail.searchDescription ? detail.searchDescription : ''"
+                                                            :read-only="!! editData"
                                                     ></search-input>
                                                 </td>
                                                 <td>
@@ -124,7 +140,7 @@
                                                             v-validate
                                                             data-vv-rules="required"
                                                             v-model="detail.description"
-                                                            :disabled="detail.box_id"
+                                                            :disabled="detail.box_id || editData"
                                                     >
                                                     <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('description' + i, 'required')">
                                                         <strong>{{ t('validation.required', {attribute: 'description'}) }}</strong>
@@ -140,7 +156,7 @@
                                                             v-validate
                                                             data-vv-rules="required"
                                                             v-model="detail.size"
-                                                            :disabled="detail.box_id"
+                                                            :disabled="detail.box_id || editData"
                                                     >
 
                                                     <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('size' + i, 'required')">
@@ -157,7 +173,7 @@
                                                             v-validate
                                                             data-vv-rules="required"
                                                             v-model="detail.weight"
-                                                            :disabled="detail.box_id"
+                                                            :disabled="detail.box_id || editData"
                                                     >
 
                                                     <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('weight' + i, 'required')">
@@ -174,6 +190,7 @@
                                                             v-validate
                                                             data-vv-rules="required|numeric"
                                                             v-model="detail.qty"
+                                                            :disabled="!! editData"
                                                     >
 
                                                     <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('qty' + i, 'required')">
@@ -184,7 +201,7 @@
                                                         <strong>{{ t('validation.numeric', {attribute: 'qty'}) }}</strong>
                                                     </span>
                                                 </td>
-                                                <td>
+                                                <td v-if="! editData">
                                                     <button type="button" class="btn btn-danger" @click="removeDetail(i)">
                                                             <i class="fa fa-trash"></i>
                                                     </button>
@@ -192,7 +209,12 @@
                                             </tr>
                                             <tr>
                                                 <td colspan="6">
-                                                    <button type="button" class="btn btn-success" @click="addDetail()">
+                                                    <button
+                                                            type="button"
+                                                            class="btn btn-success"
+                                                            @click="addDetail()"
+                                                            v-if="! editData"
+                                                    >
                                                         <i class="fa fa-box"></i>
                                                         {{ t('form.add') }} {{ t('navbar.boxes') }}
                                                     </button>
@@ -201,13 +223,98 @@
                                         </tbody>
                                     </table>
                                 </div>
+
+                                <div class="col-sm-6 col-md-4 form-group" v-if="!! editData">
+                                    <label for="photo"> {{ t('validation.attributes.photo') }}</label>
+
+                                    <input
+                                            type="file"
+                                            id="photo"
+                                            class="d-none"
+                                            accept="image/jpeg|image/png"
+                                            @change="changeImage($event)"
+                                    >
+
+                                    <div
+                                            class="photo"
+                                            :class="{'is-invalid': errors.has('photo')}"
+                                            @click="openImageExplorer()"
+                                    >
+                                        <img
+                                                :src="form.status === 'sent' ? '/storage/' + form.photo : form.photo"
+                                                alt="photo"
+                                                v-if="form.photo"
+                                        >
+
+                                        <i class="fa fa-camera" v-else></i>
+                                    </div>
+
+                                    <input type="hidden" name="photo" v-validate data-vv-rules="required" v-model="form.photo">
+
+                                    <span class="invalid-feedback d-block" role="alert" v-if="errors.firstByRule('photo', 'required')">
+                                        <strong>{{ t('validation.required', {attribute: 'photo'}) }}</strong>
+                                    </span>
+                                </div>
+
+                                <div class="col-sm-6 col-md-4 form-group" v-if="!! editData">
+                                    <label for="sign"> {{ t('validation.attributes.sign') }}</label>
+
+                                    <div
+                                            class="sign"
+                                            @click="openSignature()"
+                                            :class="{'is-invalid': errors.has('sign')}"
+                                    >
+
+                                        <img
+                                                :src="form.status === 'sent' ? '/storage/' + form.sign : form.sign"
+                                                alt="sign"
+                                                v-if="form.sign"
+                                        >
+
+                                        <i class="fa fa-edit" v-else></i>
+                                    </div>
+
+                                    <span class="invalid-feedback d-block" role="alert" v-if="errors.firstByRule('sign', 'required')">
+                                        <strong>{{ t('validation.required', {attribute: 'sign'}) }}</strong>
+                                    </span>
+
+                                    <input type="hidden" name="sign" id="sign" v-validate data-vv-rules="required" v-model="form.sign">
+                                    <signature
+                                            ref="signature"
+                                            @save="changeSign($event)"
+                                    ></signature>
+                                </div>
                             </div>
 
                             <div>
-                                <button class="btn btn-primary" v-if="!loading">
+                                <button
+                                        class="btn btn-primary"
+                                        v-if="!loading && ! editData"
+                                >
                                     <i class="fa fa-save"></i>
                                      {{ t('form.save') }}
                                 </button>
+
+                                <button-confirmation
+                                    :label="t('form.markAsReceived')"
+                                    btn-class="btn btn-primary"
+                                    icon-class="fa fa-check"
+                                    v-if="!loading && editData && editData.status === 'pending_send'"
+                                    :confirmation="t('form.areYouSure')"
+                                    :buttons="[
+                                        {
+                                            label: t('form.yes'),
+                                            btnClass: 'btn btn-success',
+                                            code: 'yes'
+                                        },
+                                        {
+                                            label: t('form.no'),
+                                            btnClass: 'btn btn-danger',
+                                            code: 'no'
+                                        }
+                                    ]"
+                                    @confirmed="markAsReceived($event)"
+                                ></button-confirmation>
 
                                 <img src="/img/loading.gif" v-if="loading">
                             </div>
@@ -233,7 +340,25 @@
 
         mounted() {
             if (this.editData) {
-                this.form = {...this.editData}
+                this.form = {
+                    ...this.editData,
+                    order_details: this.editData.order_details.map(detail => {
+                        return {
+                            ...detail,
+                            searchDescription: detail.box_id ?
+                                detail.description + ' / ' + detail.size + ' / ' + detail.weight :
+                                ''
+                        }
+                    })
+                };
+                this.customer = {
+                    ...this.editData.customer,
+                    searchDescription: this.editData.customer.description + ' / ' + this.editData.customer.uuid
+                };
+                this.courier = {
+                    ...this.editData.courier,
+                    searchDescription: this.editData.courier.name + ' / ' + this.editData.courier.uuid
+                };
             } else {
                 this.addDetail()
             }
@@ -271,6 +396,9 @@
 
                 }).catch(err => {
                     this.loading = false;
+                    if (err.status === 400) {
+                        location.reload();
+                    }
                 })
             },
 
@@ -322,7 +450,82 @@
                     this.form.order_details[i].weight = null;
                     this.form.order_details[i].searchDescription = null;
                 }
+            },
+
+            markAsReceived(code) {
+                if (code === 'yes') {
+                    this.validateForm();
+                }
+            },
+
+            openImageExplorer() {
+                if (this.form.status === 'sent') {
+                    window.open('/storage/' + this.form.photo);
+                } else {
+                    document.querySelector('#photo').click();
+                }
+            },
+
+            openSignature() {
+              if (this.form.status === 'sent') {
+                  window.open('/storage/' + this.form.sign);
+              } else {
+                  this.$refs.signature.open();
+              }
+            },
+
+            changeImage(e) {
+                const file = $('#photo')[0].files[0];
+
+                if (!file || (file.type !== 'image/png' && file.type !== 'image/jpeg')) {
+                    return false;
+                }
+
+                const reader = new FileReader();
+
+                reader.addEventListener('load', () => {
+                    if (reader.result) {
+                        this.form.photo = reader.result;
+                        this.errors.remove('photo');
+                    }
+                });
+
+                reader.readAsDataURL(file);
+            },
+
+            changeSign(event) {
+                this.form.sign = event.base64;
+                this.errors.remove('sign');
             }
         }
     }
 </script>
+
+<style scoped lang="scss">
+    .sign,
+    .photo {
+        background-color: #ccc;
+        color: #ffffff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 40px;
+        height: 200px;
+        cursor: pointer;
+
+        &.is-invalid {
+            border: solid 2px #e3342f;
+            opacity: .5;
+        }
+
+        img {
+            max-height: 200px;
+            max-width: 100%;
+        }
+    }
+
+    .status {
+        width: 80px;
+        text-align: center;
+    }
+</style>

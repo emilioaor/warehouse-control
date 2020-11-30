@@ -6,5 +6,6 @@ return [
     'badRequest' => 'Bad request',
     'badConnection' => 'Bad connection',
     'notPermissionAccess' => 'You have not permission to access',
-    'invalidCurrentPassword' => 'Invalid current password'
+    'invalidCurrentPassword' => 'Invalid current password',
+    'invalidImageFormat' => 'Invalid format, jpg or png is required'
 ];

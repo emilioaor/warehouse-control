@@ -21,6 +21,7 @@ class OrderController extends Controller
         $orders = Order::query()
             ->search($request->search)
             ->with(['customer', 'courier'])
+            ->orderBy('date', 'DESC')
             ->paginate();
 
         return view('order.index', compact('orders'));
@@ -81,7 +82,9 @@ class OrderController extends Controller
      */
     public function edit($id)
     {
-        //
+        $order = Order::query()->uuid($id)->with(['customer', 'courier', 'orderDetails'])->firstOrFail();
+
+        return view('order.form', compact('order'));
     }
 
     /**
@@ -93,7 +96,21 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $order = Order::query()->uuid($id)->firstOrFail();
+        $order->status = Order::STATUS_SENT;
+        $order->photo = $order->attachDocument($request->photo, 'photo');
+        $order->sign = $order->photo ? $order->attachDocument($request->sign, 'sign') : false;
+
+        if (! $order->sign || ! $order->photo) {
+            AlertService::alertFail(__('alert.invalidImageFormat'));
+
+            return response()->json(['success' => false], 400);
+        }
+
+        $order->save();
+        AlertService::alertSuccess(__('alert.processSuccessfully'));
+
+        return response(['success' => true, 'redirect' => route('order.edit', [$id])]);
     }
 
     /**

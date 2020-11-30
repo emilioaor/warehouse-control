@@ -29,6 +29,8 @@ Vue.component('courier-form', require('./components/CourierForm.vue').default);
 Vue.component('customer-form', require('./components/CustomerForm.vue').default);
 Vue.component('box-form', require('./components/BoxForm.vue').default);
 Vue.component('order-form', require('./components/OrderForm.vue').default);
+Vue.component('button-confirmation', require('./components/ButtonConfirmation.vue').default);
+Vue.component('signature', require('./components/Signature.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
