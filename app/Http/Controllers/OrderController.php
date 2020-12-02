@@ -121,6 +121,11 @@ class OrderController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $order = Order::query()->uuid($id)->firstOrFail();
+        $order->delete();
+
+        AlertService::alertSuccess(__('alert.processSuccessfully'));
+
+        return response()->json(['success' => true, 'redirect' => route('order.index')]);
     }
 }
