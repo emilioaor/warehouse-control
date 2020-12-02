@@ -8,6 +8,15 @@ use Illuminate\Http\Request;
 
 class CourierController extends Controller
 {
+
+    /**
+     * construct
+     */
+    public function __construct()
+    {
+        $this->middleware('admin')->only(['destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      *

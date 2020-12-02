@@ -10,6 +10,15 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
+
+    /**
+     * construct
+     */
+    public function __construct()
+    {
+        $this->middleware('admin')->only(['destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      *
