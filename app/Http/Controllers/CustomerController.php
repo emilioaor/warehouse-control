@@ -104,6 +104,11 @@ class CustomerController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $customer = Customer::query()->uuid($id)->firstOrFail();
+        $customer->delete();
+
+        AlertService::alertSuccess(__('alert.processSuccessfully'));
+
+        return response()->json(['success' => true, 'redirect' => route('customer.index')]);
     }
 }
