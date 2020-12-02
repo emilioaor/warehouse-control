@@ -101,6 +101,11 @@ class CourierController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $courier = Courier::query()->uuid($id)->firstOrFail();
+        $courier->delete();
+
+        AlertService::alertSuccess(__('alert.processSuccessfully'));
+
+        return response()->json(['success' => true, 'redirect' => route('courier.index')]);
     }
 }
