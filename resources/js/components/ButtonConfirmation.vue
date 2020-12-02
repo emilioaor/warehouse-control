@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="confirmation-container">
         <button
                 type="button"
                 :class="btnClass"
@@ -79,6 +79,9 @@
 </script>
 
 <style scoped>
+    .confirmation-container {
+        display: inline-block;
+    }
     .modal-content {
         background-color: transparent;
         border: none;

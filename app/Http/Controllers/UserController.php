@@ -105,7 +105,12 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::query()->uuid($id)->firstOrFail();
+        $user->delete();
+
+        AlertService::alertSuccess(__('alert.processSuccessfully'));
+
+        return response()->json(['success' => true, 'redirect' => route('user.index')]);
     }
 
     /**

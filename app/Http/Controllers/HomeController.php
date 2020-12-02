@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -33,5 +34,13 @@ class HomeController extends Controller
         ;
 
         return view('home', compact('orders', 'customers', 'boxes'));
+    }
+
+    /**
+     * User auth
+     */
+    public function authUser()
+    {
+        return response(['success' => true, 'user' => Auth::user()]);
     }
 }

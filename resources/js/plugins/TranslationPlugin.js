@@ -10,12 +10,7 @@ const TranslationPlugin = {
 
             methods: {
                 t(value, params = []) {
-                    if (this.laravelTranslations.length === 0) {
-                        this.translations.push(0);
-                        axios.get('/warehouse/translation').then(res => {
-                            this.translations = res.data;
-                        });
-                    }
+                    this.getTranslations();
 
                     const deep = value.split('.');
                     let response = {...this.laravelTranslations};
@@ -54,6 +49,21 @@ const TranslationPlugin = {
                     }
 
                     return '';
+                },
+
+                getTranslations() {
+                    if (typeof window.TranslationPlugin === 'undefined') {
+                        window.TranslationPlugin = {
+                            translations: []
+                        };
+
+                        axios.get('/warehouse/translation').then(res => {
+                            window.TranslationPlugin.translations = res.data;
+                            this.translations = res.data;
+                        });
+                    } else {
+                        this.translations = window.TranslationPlugin.translations;
+                    }
                 }
             },
 

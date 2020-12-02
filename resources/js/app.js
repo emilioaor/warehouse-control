@@ -41,9 +41,11 @@ Vue.component('signature', require('./components/Signature.vue').default);
 
 
 import TranslationPlugin from './plugins/TranslationPlugin'
+import AuthPlugin from './plugins/AuthPlugin'
 import VeeValidate from 'vee-validate';
 
 Vue.use(TranslationPlugin);
+Vue.use(AuthPlugin);
 Vue.use(VeeValidate);
 
 const app = new Vue({

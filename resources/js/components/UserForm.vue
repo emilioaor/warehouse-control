@@ -134,6 +134,27 @@
                                      {{ t('form.save') }}
                                 </button>
 
+                                <button-confirmation
+                                        :label="t('form.delete')"
+                                        btn-class="btn btn-danger"
+                                        icon-class="fa fa-trash"
+                                        v-if="!loading && editData && this.authUser() && this.authUser().role === 'admin'"
+                                        :confirmation="t('form.areYouSure')"
+                                        :buttons="[
+                                        {
+                                            label: t('form.yes'),
+                                            btnClass: 'btn btn-success',
+                                            code: 'yes'
+                                        },
+                                        {
+                                            label: t('form.no'),
+                                            btnClass: 'btn btn-danger',
+                                            code: 'no'
+                                        }
+                                    ]"
+                                        @confirmed="handleDelete($event)"
+                                ></button-confirmation>
+
                                 <img src="/img/loading.gif" v-if="loading">
                             </div>
                         </form>
@@ -201,6 +222,22 @@
                 }).catch(err => {
                     this.loading = false;
                 })
+            },
+
+            handleDelete(code) {
+                if (code === 'yes') {
+                    this.loading = true;
+
+                    ApiService.delete('/admin/user/' + this.editData.uuid).then(res => {
+
+                        if (res.data.success) {
+                            location.href = res.data.redirect;
+                        }
+                    }).catch(err => {
+                        this.loading = false;
+                    })
+                }
+
             },
 
             checkIfUserExists() {

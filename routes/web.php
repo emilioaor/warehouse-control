@@ -23,6 +23,7 @@ Route::get('warehouse/translation', 'Controller@translations');
 
 Route::group(['middleware' => 'auth', 'prefix' => 'warehouse'], function () {
     Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/user/auth', 'HomeController@authUser')->name('authUser');
 
     Route::resource('courier', 'CourierController');
     Route::resource('customer', 'CustomerController');
