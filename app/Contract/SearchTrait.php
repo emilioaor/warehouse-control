@@ -11,6 +11,14 @@ trait SearchTrait {
      */
     public function scopeSearch(Builder $query, ?string $search): Builder
     {
+        return $this->_search($query, $search);
+    }
+
+    /**
+     * Search by any field
+     */
+    protected function _search(Builder $query, ?string $search): Builder
+    {
         $fields = $this->search_fields;
 
         if (! $fields) {

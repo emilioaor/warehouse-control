@@ -40,7 +40,7 @@ class Order extends Model implements IuuidGenerator
         'date' => 'datetime'
     ];
 
-    protected $search_fields = ['date'];
+    protected $search_fields = ['orders.uuid', 'customers.description', 'couriers.name'];
 
     public function __construct(array $attributes = [])
     {
@@ -122,6 +122,20 @@ class Order extends Model implements IuuidGenerator
         $end = Carbon::now()->setTime(23, 59, 59);
 
         return $query->whereBetween('date', [$start, $end]);
+    }
+
+    /**
+     * Scope search
+     */
+    public function scopeSearch(Builder $query, ?string $search): Builder
+    {
+        $query
+            ->select(['orders.*'])
+            ->join('customers', 'customers.id', '=', 'orders.customer_id')
+            ->join('couriers', 'couriers.id', '=', 'orders.courier_id')
+        ;
+
+        return $this->_search($query, $search);
     }
 
     /**
