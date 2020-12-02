@@ -101,6 +101,11 @@ class BoxController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $box = Box::query()->uuid($id)->firstOrFail();
+        $box->delete();
+
+        AlertService::alertSuccess(__('alert.processSuccessfully'));
+
+        return response()->json(['success' => true, 'redirect' => route('box.index')]);
     }
 }
