@@ -16,7 +16,7 @@
                         <table class="table table-responsive mt-3">
                             <thead>
                                 <tr>
-                                    <th>{{ __('validation.attributes.id') }}</th>
+                                    <th @if(!$couriers->total()) width="1%" @endif>{{ __('validation.attributes.id') }}</th>
                                     <th>{{ __('validation.attributes.name') }}</th>
                                     <th>{{ __('validation.attributes.created_at') }}</th>
                                     <th width="5%"></th>

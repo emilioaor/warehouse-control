@@ -16,11 +16,11 @@
                         <table class="table table-responsive mt-3">
                             <thead>
                                 <tr>
-                                    <th width="20%">{{ __('validation.attributes.id') }}</th>
-                                    <th width="20%">{{ __('validation.attributes.customer') }}</th>
-                                    <th width="20%">{{ __('validation.attributes.courier') }}</th>
-                                    <th width="20%">{{ __('validation.attributes.created_at') }}</th>
-                                    <th width="15%">{{ __('validation.attributes.status') }}</th>
+                                    <th @if(!$orders->total()) width="1%" @endif>{{ __('validation.attributes.id') }}</th>
+                                    <th>{{ __('validation.attributes.customer') }}</th>
+                                    <th>{{ __('validation.attributes.courier') }}</th>
+                                    <th>{{ __('validation.attributes.created_at') }}</th>
+                                    <th>{{ __('validation.attributes.status') }}</th>
                                     <th width="5%"></th>
                                 </tr>
                             </thead>

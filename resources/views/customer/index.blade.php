@@ -16,7 +16,7 @@
                         <table class="table table-responsive mt-3">
                             <thead>
                                 <tr>
-                                    <th>{{ __('validation.attributes.id') }}</th>
+                                    <th @if(!$customers->total()) width="1%" @endif>{{ __('validation.attributes.id') }}</th>
                                     <th>{{ __('validation.attributes.name') }}</th>
                                     <th>{{ __('validation.attributes.email') }}</th>
                                     <th>{{ __('validation.attributes.phone') }}</th>
