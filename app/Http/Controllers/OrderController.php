@@ -137,4 +137,27 @@ class OrderController extends Controller
 
         return response()->json(['success' => true, 'redirect' => route('order.index')]);
     }
+
+    /**
+     * Report
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function report()
+    {
+        return view('order.report');
+    }
+
+    /**
+     * Report order
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function reportProcess(Request $request)
+    {
+        $orders = Order::query()->report($request->all())->get();
+
+        return response()->json(['success' => true, 'data' => $orders]);
+    }
 }

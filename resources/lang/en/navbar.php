@@ -3,6 +3,7 @@
 return [
     'addNew' => 'Add new',
     'list' => 'List',
+    'report' => 'Report',
     'users' => 'Users',
     'customers' => 'Customers',
     'couriers' => 'Couriers',

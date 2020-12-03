@@ -21,6 +21,7 @@ window.Vue = require('vue');
 
 // Complements
 Vue.component('search-input', require('./components/SearchInput.vue').default);
+Vue.component('date-picker', require('vuejs-datepicker'));
 
 // Forms
 Vue.component('user-form', require('./components/UserForm.vue').default);
@@ -29,6 +30,7 @@ Vue.component('courier-form', require('./components/CourierForm.vue').default);
 Vue.component('customer-form', require('./components/CustomerForm.vue').default);
 Vue.component('box-form', require('./components/BoxForm.vue').default);
 Vue.component('order-form', require('./components/OrderForm.vue').default);
+Vue.component('order-report', require('./components/OrderReport.vue').default);
 Vue.component('button-confirmation', require('./components/ButtonConfirmation.vue').default);
 Vue.component('signature', require('./components/Signature.vue').default);
 

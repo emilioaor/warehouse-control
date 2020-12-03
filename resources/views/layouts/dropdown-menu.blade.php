@@ -4,12 +4,10 @@
     </a>
 
     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-        <a class="dropdown-item" href="{{ $add }}">
-            <i class="glyphicon glyphicon-users"></i>
-            {{ __('navbar.addNew') }}
-        </a>
-        <a class="dropdown-item" href="{{ $list }}">
-            {{ __('navbar.list') }}
-        </a>
+        @foreach($links as $link)
+            <a class="dropdown-item" href="{{ $link['route'] }}">
+                {{ $link['label'] }}
+            </a>
+        @endforeach
     </div>
 </li>

@@ -86,7 +86,7 @@
                                             v-validate
                                             data-vv-rules="required"
                                             v-model="form.invoice_number"
-                                            :disabled="!! editData"
+                                            :readonly="!! editData"
                                     >
 
                                     <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('invoice_number', 'required')">
@@ -110,11 +110,11 @@
                                     <table class="table table-responsive mt-4">
                                         <thead>
                                             <tr>
-                                                <td class="text-center">{{ t('validation.attributes.box') }}</td>
-                                                <td class="text-center">{{ t('validation.attributes.description') }}</td>
-                                                <td class="text-center">{{ t('validation.attributes.size') }}</td>
-                                                <td class="text-center">{{ t('validation.attributes.weight') }}</td>
-                                                <td class="text-center">{{ t('validation.attributes.qty') }}</td>
+                                                <td>{{ t('validation.attributes.box') }}</td>
+                                                <td>{{ t('validation.attributes.description') }}</td>
+                                                <td>{{ t('validation.attributes.size') }}</td>
+                                                <td>{{ t('validation.attributes.weight') }}</td>
+                                                <td>{{ t('validation.attributes.qty') }}</td>
                                                 <td width="5%" v-if="! editData"></td>
                                             </tr>
                                         </thead>
@@ -140,7 +140,7 @@
                                                             v-validate
                                                             data-vv-rules="required"
                                                             v-model="detail.description"
-                                                            :disabled="detail.box_id || editData"
+                                                            :readonly="detail.box_id || editData"
                                                     >
                                                     <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('description' + i, 'required')">
                                                         <strong>{{ t('validation.required', {attribute: 'description'}) }}</strong>
@@ -156,7 +156,7 @@
                                                             v-validate
                                                             data-vv-rules="required"
                                                             v-model="detail.size"
-                                                            :disabled="detail.box_id || editData"
+                                                            :readonly="detail.box_id || editData"
                                                     >
 
                                                     <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('size' + i, 'required')">
@@ -173,7 +173,7 @@
                                                             v-validate
                                                             data-vv-rules="required"
                                                             v-model="detail.weight"
-                                                            :disabled="detail.box_id || editData"
+                                                            :readonly="detail.box_id || editData"
                                                     >
 
                                                     <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('weight' + i, 'required')">
@@ -190,7 +190,7 @@
                                                             v-validate
                                                             data-vv-rules="required|numeric"
                                                             v-model="detail.qty"
-                                                            :disabled="!! editData"
+                                                            :readonly="!! editData"
                                                     >
 
                                                     <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('qty' + i, 'required')">
@@ -224,7 +224,7 @@
                                     </table>
                                 </div>
 
-                                <div class="col-sm-6 col-md-4 form-group" v-if="!! editData">
+                                <div class="col-sm-6 col-md-3 form-group" v-if="!! editData">
                                     <label for="photo"> {{ t('validation.attributes.photo') }}</label>
 
                                     <input
@@ -256,7 +256,7 @@
                                     </span>
                                 </div>
 
-                                <div class="col-sm-6 col-md-4 form-group" v-if="!! editData">
+                                <div class="col-sm-6 col-md-3 form-group" v-if="!! editData">
                                     <label for="sign"> {{ t('validation.attributes.sign') }}</label>
 
                                     <div
@@ -479,7 +479,9 @@
                     this.form.order_details[i].size = result.size;
                     this.form.order_details[i].weight = result.weight;
                     this.form.order_details[i].searchDescription = result.searchDescription;
-                    this.$validator.reset();
+                    this.errors.remove('description' + i);
+                    this.errors.remove('size' + i);
+                    this.errors.remove('weight' + i);
                 } else {
                     this.form.order_details[i].box_id = null;
                     this.form.order_details[i].description = null;
@@ -547,7 +549,7 @@
         justify-content: center;
         align-items: center;
         font-size: 40px;
-        height: 200px;
+        height: 160px;
         cursor: pointer;
 
         &.is-invalid {
@@ -556,7 +558,7 @@
         }
 
         img {
-            max-height: 200px;
+            max-height: 160px;
             max-width: 100%;
         }
     }
@@ -564,5 +566,9 @@
     .status {
         width: 80px;
         text-align: center;
+    }
+
+    .form-control[readonly] {
+        background-color: #ffffff;
     }
 </style>

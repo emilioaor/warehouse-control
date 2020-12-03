@@ -28,6 +28,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'warehouse'], function () {
     Route::resource('courier', 'CourierController');
     Route::resource('customer', 'CustomerController');
     Route::resource('box', 'BoxController');
+    Route::get('order/report', 'OrderController@report')->name('order.report');
+    Route::post('order/report', 'OrderController@reportProcess');
     Route::resource('order', 'OrderController');
 
     Route::get('user/config', 'UserController@config')->name('user.config');

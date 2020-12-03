@@ -100,6 +100,17 @@ class Order extends Model implements IuuidGenerator
     }
 
     /**
+     * Roles available
+     */
+    public static function statusAvailable(): array
+    {
+        return [
+            self::STATUS_PENDING_SEND => __(sprintf('status.%s', self::STATUS_PENDING_SEND)),
+            self::STATUS_SENT => __(sprintf('status.%s', self::STATUS_SENT)),
+        ];
+    }
+
+    /**
      * Status HTML
      */
     public function statusHtml()
@@ -136,6 +147,38 @@ class Order extends Model implements IuuidGenerator
         ;
 
         return $this->_search($query, $search);
+    }
+
+    /**
+     * Scope report
+     */
+    public function scopeReport(Builder $query, array $params): Builder
+    {
+        $start = (new Carbon($params['start']))->setTime(0, 0, 0);
+        $end = (new Carbon($params['end']))->setTime(23, 59, 59);
+        $status = $params['status'];
+        $customerId = $params['customer_id'];
+        $courierId = $params['courier_id'];
+
+        $query
+            ->whereBetween('date', [$start, $end])
+            ->with(['customer', 'courier'])
+            ->orderBy('date')
+        ;
+
+        if ($status !== 0) {
+            $query->where('status', $status);
+        }
+
+        if ($customerId) {
+            $query->where('customer_id', $customerId);
+        }
+
+        if ($courierId) {
+            $query->where('courier_id', $courierId);
+        }
+
+        return $query;
     }
 
     /**

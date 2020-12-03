@@ -10,6 +10,8 @@ return [
     'yes' => 'Yes',
     'no' => 'No',
     'clear' => 'Clear',
-    'close' => 'Close'
+    'close' => 'Close',
+    'all' => 'All',
+    'report' => 'Report'
 
 ];

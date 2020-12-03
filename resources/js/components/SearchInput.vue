@@ -182,4 +182,8 @@
     .search.pointer {
         cursor: pointer;
     }
+
+    .search[readonly] {
+        background-color: #ffffff;
+    }
 </style>

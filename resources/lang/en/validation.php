@@ -172,7 +172,9 @@ return [
         'newPasswordConfirmation' => 'New password confirmation',
         'invoiceNumber' => 'Invoice number',
         'photo' => 'Photo',
-        'sign' => 'Sign'
+        'sign' => 'Sign',
+        'startDate' => 'Start date',
+        'endDate' => 'End date'
     ],
 
 ];
