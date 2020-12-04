@@ -1,0 +1,44 @@
+.whs-labels {
+  max-width: 1000px !important;
+  min-width: 1000px !important;
+
+  &__card {
+    border: solid 1px #cccccc;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+  }
+
+  &__customer {
+    font-size: 25px;
+    font-weight: 800;
+  }
+
+  &__courier {
+    font-size: 22px;
+  }
+
+  &__tag {
+    font-size: 60px;
+    text-align: center;
+    font-weight: 800;
+    line-height: 60px;
+  }
+}
+
+@media print {
+  .whs-labels {
+    .card {
+      border: none;
+    }
+    .card-header {
+      display: none;
+    }
+    .card-footer {
+      display: none;
+    }
+
+    &__card {
+      border: none;
+    }
+  }
+}

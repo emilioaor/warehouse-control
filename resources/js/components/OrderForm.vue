@@ -316,6 +316,16 @@
                                     @confirmed="markAsReceived($event)"
                                 ></button-confirmation>
 
+                                <a
+                                    v-if="!loading && editData"
+                                    :href="'/warehouse/order/' + editData.uuid + '/labels'"
+                                    target="_blank"
+                                    class="btn btn-info text-white"
+                                >
+                                    <i class="fa fa-tag"></i>
+                                    {{ t('form.generateLabels') }}
+                                </a>
+
                                 <button-confirmation
                                         :label="t('form.delete')"
                                         btn-class="btn btn-danger"

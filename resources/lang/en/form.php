@@ -12,6 +12,9 @@ return [
     'clear' => 'Clear',
     'close' => 'Close',
     'all' => 'All',
-    'report' => 'Report'
+    'report' => 'Report',
+    'generateLabels' => 'Generate labels',
+    'labels' => 'labels',
+    'print' => 'Print'
 
 ];

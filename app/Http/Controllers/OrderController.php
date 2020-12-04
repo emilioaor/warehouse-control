@@ -160,4 +160,21 @@ class OrderController extends Controller
 
         return response()->json(['success' => true, 'data' => $orders]);
     }
+
+    /**
+     * Labels
+     *
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
+    public function labels($id)
+    {
+        $order = Order::query()
+            ->uuid($id)
+            ->with(['orderDetails', 'customer', 'courier'])
+            ->firstOrFail()
+        ;
+
+        return view('order.labels', compact('order'));
+    }
 }
