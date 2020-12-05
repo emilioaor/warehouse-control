@@ -14,14 +14,20 @@ class CourierSeeder extends Seeder
         if (config('app.env') === 'local') {
             $courier = new \App\Courier();
             $courier->name = 'DHL';
+            $courier->phone = '04244043234';
+            $courier->address = 'City, DHL strep #2020';
             $courier->save();
 
             $courier = new \App\Courier();
             $courier->name = 'Zoom';
+            $courier->phone = '04244043234';
+            $courier->address = 'City, Zoom strep #3030';
             $courier->save();
 
             $courier = new \App\Courier();
             $courier->name = 'MRW';
+            $courier->phone = '04244043234';
+            $courier->address = 'City, MRW strep #4040';
             $courier->save();
         }
     }

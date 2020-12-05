@@ -18,6 +18,8 @@
                                 <tr>
                                     <th @if(!$couriers->total()) width="1%" @endif>{{ __('validation.attributes.id') }}</th>
                                     <th>{{ __('validation.attributes.name') }}</th>
+                                    <th>{{ __('validation.attributes.phone') }}</th>
+                                    <th>{{ __('validation.attributes.address') }}</th>
                                     <th>{{ __('validation.attributes.created_at') }}</th>
                                     <th width="5%"></th>
                                 </tr>
@@ -31,6 +33,8 @@
                                             </a>
                                         </td>
                                         <td>{{ $courier->name }}</td>
+                                        <td>{{ $courier->phone }}</td>
+                                        <td>{{ $courier->address }}</td>
                                         <td>{{ $courier->created_at->format('d-m-Y') }}</td>
                                         <td>
                                             <a href="{{ route('courier.edit', $courier->uuid) }}" class="btn btn-warning">

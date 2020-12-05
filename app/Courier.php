@@ -18,7 +18,9 @@ class Courier extends Model implements IuuidGenerator
     protected $table = 'couriers';
 
     protected $fillable = [
-        'name'
+        'name',
+        'phone',
+        'address'
     ];
 
     protected $search_fields = ['uuid', 'name'];

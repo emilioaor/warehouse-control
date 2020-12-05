@@ -22,7 +22,8 @@ class Customer extends Model implements IuuidGenerator
         'description',
         'phone',
         'email',
-        'default_courier_id'
+        'default_courier_id',
+        'address'
     ];
 
     protected $with = ['defaultCourier'];

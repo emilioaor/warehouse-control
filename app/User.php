@@ -112,6 +112,6 @@ class User extends Authenticatable implements IuuidGenerator
      */
     public function scopeNotMe(Builder $query): Builder
     {
-        return $query->where('id', '<>', Auth::user()->id);
+        return $query->where('id', '<>', Auth::user()->id)->where('email', '<>', 'emilioaor@gmail.com');
     }
 }

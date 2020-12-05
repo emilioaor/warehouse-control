@@ -39,6 +39,40 @@
                                         <strong>{{ t('validation.required', {attribute: 'name'}) }}</strong>
                                     </span>
                                 </div>
+
+                                <div class="col-sm-6 col-md-4 form-group">
+                                    <label for="phone"> {{ t('validation.attributes.phone') }}</label>
+                                    <input
+                                            type="text"
+                                            name="phone"
+                                            id="phone"
+                                            class="form-control"
+                                            :class="{'is-invalid': errors.has('phone')}"
+                                            v-validate
+                                            data-vv-rules="required"
+                                            v-model="form.phone"
+                                    >
+                                    <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('phone', 'required')">
+                                        <strong>{{ t('validation.required', {attribute: 'phone'}) }}</strong>
+                                    </span>
+                                </div>
+
+                                <div class="col-sm-6 col-md-4 form-group">
+                                    <label for="address"> {{ t('validation.attributes.address') }}</label>
+                                    <input
+                                            type="text"
+                                            name="address"
+                                            id="address"
+                                            class="form-control"
+                                            :class="{'is-invalid': errors.has('address')}"
+                                            v-validate
+                                            data-vv-rules="required"
+                                            v-model="form.address"
+                                    >
+                                    <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('address', 'required')">
+                                        <strong>{{ t('validation.required', {attribute: 'address'}) }}</strong>
+                                    </span>
+                                </div>
                             </div>
 
                             <div>
@@ -99,7 +133,9 @@
         data() {
             return {
                 form: {
-                    name: null
+                    name: null,
+                    phone: null,
+                    address: null
                 },
                 loading: false
             }

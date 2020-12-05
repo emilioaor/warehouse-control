@@ -174,7 +174,8 @@ return [
         'photo' => 'Photo',
         'sign' => 'Sign',
         'startDate' => 'Start date',
-        'endDate' => 'End date'
+        'endDate' => 'End date',
+        'address' => 'Address'
     ],
 
 ];

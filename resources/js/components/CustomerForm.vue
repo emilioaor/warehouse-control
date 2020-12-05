@@ -81,7 +81,7 @@
                                 </div>
 
                                 <div class="col-sm-6 col-md-4 form-group">
-                                    <label for="email"> {{ t('validation.attributes.courierDefault') }}</label>
+                                    <label for="default_courier_id"> {{ t('validation.attributes.courierDefault') }}</label>
                                     <search-input
                                             route="/warehouse/courier"
                                             :description-fields="['name', 'uuid']"
@@ -99,6 +99,23 @@
                                     >
                                     <span class="invalid-feedback d-block" role="alert" v-if="errors.firstByRule('default_courier_id', 'required')">
                                         <strong>{{ t('validation.required', {attribute: 'courierDefault'}) }}</strong>
+                                    </span>
+                                </div>
+
+                                <div class="col-sm-6 col-md-4 form-group">
+                                    <label for="address"> {{ t('validation.attributes.address') }}</label>
+                                    <input
+                                            type="text"
+                                            name="address"
+                                            id="address"
+                                            class="form-control"
+                                            :class="{'is-invalid': errors.has('address')}"
+                                            v-validate
+                                            data-vv-rules="required"
+                                            v-model="form.address"
+                                    >
+                                    <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('address', 'required')">
+                                        <strong>{{ t('validation.required', {attribute: 'address'}) }}</strong>
                                     </span>
                                 </div>
                             </div>
@@ -168,7 +185,8 @@
                     description: null,
                     phone: null,
                     email: null,
-                    default_courier_id: null
+                    default_courier_id: null,
+                    address: null
                 },
                 loading: false,
                 courier: null

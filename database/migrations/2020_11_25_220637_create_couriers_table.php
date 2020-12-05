@@ -17,6 +17,8 @@ class CreateCouriersTable extends Migration
             $table->id();
             $table->string('uuid', 15)->unique();
             $table->string('name');
+            $table->string('phone');
+            $table->text('address');
             $table->timestamps();
             $table->softDeletes();
         });
