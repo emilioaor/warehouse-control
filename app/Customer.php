@@ -5,6 +5,7 @@ namespace App;
 use App\Contract\IuuidGenerator;
 use App\Contract\SearchTrait;
 use App\Contract\UuidGeneratorTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -28,7 +29,13 @@ class Customer extends Model implements IuuidGenerator
 
     protected $with = ['defaultCourier'];
 
-    protected $search_fields = ['uuid', 'description', 'phone', 'email'];
+    protected $search_fields = [
+        'customers.uuid',
+        'customers.description',
+        'customers.phone',
+        'customers.email',
+        'couriers.name'
+    ];
 
     /**
      * Default courier
@@ -44,5 +51,15 @@ class Customer extends Model implements IuuidGenerator
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class, 'customer_id');
+    }
+
+    /**
+     * Scope search
+     */
+    public function scopeSearch(Builder $query, ?string $search): Builder
+    {
+        $query->select(['customers.*'])->join('couriers', 'couriers.id', '=', 'customers.default_courier_id');
+
+        return $this->_search($query, $search);
     }
 }

@@ -26,7 +26,7 @@ class CustomerController extends Controller
      */
     public function index(Request $request)
     {
-        $customers = Customer::query()->search($request->search)->paginate();
+        $customers = Customer::query()->search($request->search)->with(['defaultCourier'])->paginate();
 
         if ($request->wantsJson()) {
             return response()->json(['success' => true, 'data' => $customers]);

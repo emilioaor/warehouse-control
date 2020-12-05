@@ -19,6 +19,7 @@
                                     <th @if(!$customers->total()) width="1%" @endif>{{ __('validation.attributes.id') }}</th>
                                     <th>{{ __('validation.attributes.name') }}</th>
                                     <th>{{ __('validation.attributes.email') }}</th>
+                                    <th>{{ __('validation.attributes.courier') }}</th>
                                     <th>{{ __('validation.attributes.phone') }}</th>
                                     <th>{{ __('validation.attributes.created_at') }}</th>
                                     <th width="5%"></th>
@@ -34,6 +35,7 @@
                                         </td>
                                         <td>{{ $customer->description }}</td>
                                         <td>{{ $customer->email }}</td>
+                                        <td>{{ $customer->defaultCourier->name }}</td>
                                         <td>{{ $customer->phone }}</td>
                                         <td>{{ $customer->created_at->format('d-m-Y') }}</td>
                                         <td>
