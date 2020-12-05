@@ -66,13 +66,9 @@
                                             class="form-control"
                                             :class="{'is-invalid': errors.has('weight')}"
                                             v-validate
-                                            data-vv-rules="required|regex:^[0-9]+(\.[0-9]+)?$"
+                                            data-vv-rules="regex:^[0-9]+(\.[0-9]+)?$"
                                             v-model="form.weight"
                                     >
-                                    <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('weight', 'required')">
-                                        <strong>{{ t('validation.required', {attribute: 'weight'}) }}</strong>
-                                    </span>
-
                                     <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('weight', 'regex')">
                                         <strong>{{ t('validation.numeric', {attribute: 'weight'}) }}</strong>
                                     </span>

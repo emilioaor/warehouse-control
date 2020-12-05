@@ -173,7 +173,7 @@
                                                             v-validate
                                                             data-vv-rules="required"
                                                             v-model="detail.weight"
-                                                            :readonly="detail.box_id || editData"
+                                                            :readonly="editData"
                                                     >
 
                                                     <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('weight' + i, 'required')">

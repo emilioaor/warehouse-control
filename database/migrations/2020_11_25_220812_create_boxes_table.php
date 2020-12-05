@@ -18,7 +18,7 @@ class CreateBoxesTable extends Migration
             $table->string('uuid', 15)->unique();
             $table->string('description');
             $table->string('size');
-            $table->float('weight');
+            $table->float('weight')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
