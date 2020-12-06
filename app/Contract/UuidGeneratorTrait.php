@@ -20,6 +20,6 @@ trait UuidGeneratorTrait {
 
     public function scopeUuid(Builder $query, string $uuid): Builder
     {
-        return $query->where('uuid', $uuid);
+        return $query->where(sprintf('%s.uuid', $this->getTable()), $uuid);
     }
 }

@@ -13,16 +13,16 @@
                     <div class="card-body">
 
                         <div class="row">
-                            @foreach($order->orderDetails as $i => $detail)
+                            @for($x = 0; $x < $order->boxes_sum; $x++)
                                 <div class="col-6">
                                     <div class="whs-labels__card">
                                         <div class="whs-labels__customer">{{ $order->customer->description }}</div>
                                         <div class="whs-labels__courier">{{ $order->courier->name }}</div>
 
-                                        <div class="whs-labels__tag">{{ ($i + 1) }} / {{ count($order->orderDetails) }}</div>
+                                        <div class="whs-labels__tag">{{ ($x + 1) }} / {{ $order->boxes_sum }}</div>
                                     </div>
                                 </div>
-                            @endforeach
+                            @endfor
                         </div>
                     </div>
 

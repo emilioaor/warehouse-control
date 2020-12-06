@@ -182,6 +182,18 @@ class Order extends Model implements IuuidGenerator
     }
 
     /**
+     * Scope boxes sum
+     */
+    public function scopeWithBoxesSum(Builder $query): Builder
+    {
+        return $query
+            ->selectRaw('orders.*, SUM(order_details.qty) as boxes_sum')
+            ->join('order_details', 'order_details.order_id', '=', 'orders.id')
+            ->groupBy('orders.id')
+        ;
+    }
+
+    /**
      * Attach document to order
      */
     public function attachDocument(string $base64, string $filename): string

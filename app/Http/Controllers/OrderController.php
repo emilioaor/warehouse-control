@@ -171,7 +171,8 @@ class OrderController extends Controller
     {
         $order = Order::query()
             ->uuid($id)
-            ->with(['orderDetails', 'customer', 'courier'])
+            ->withBoxesSum()
+            ->with(['customer', 'courier'])
             ->firstOrFail()
         ;
 

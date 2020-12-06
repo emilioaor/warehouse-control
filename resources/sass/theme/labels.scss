@@ -26,6 +26,9 @@
 }
 
 @media print {
+  @page {
+    margin: 0;
+  }
   .whs-labels {
     .card {
       border: none;
