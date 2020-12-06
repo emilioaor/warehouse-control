@@ -249,7 +249,8 @@
                                         <i class="fa fa-camera" v-else></i>
                                     </div>
 
-                                    <input type="hidden" name="photo" v-validate data-vv-rules="required" v-model="form.photo">
+                                    <input v-if="form.sign" type="hidden" name="photo" v-model="form.photo" v-validate data-vv-rules="required">
+                                    <input v-else type="hidden" name="photo" v-model="form.photo">
 
                                     <span class="invalid-feedback d-block" role="alert" v-if="errors.firstByRule('photo', 'required')">
                                         <strong>{{ t('validation.required', {attribute: 'photo'}) }}</strong>
@@ -278,7 +279,8 @@
                                         <strong>{{ t('validation.required', {attribute: 'sign'}) }}</strong>
                                     </span>
 
-                                    <input type="hidden" name="sign" id="sign" v-validate data-vv-rules="required" v-model="form.sign">
+                                    <input v-if="form.photo" type="hidden" name="sign" v-model="form.sign" v-validate data-vv-rules="required">
+                                    <input v-else type="hidden" name="sign" v-model="form.sign">
                                     <signature
                                             ref="signature"
                                             @save="changeSign($event)"
@@ -509,7 +511,9 @@
 
             openImageExplorer() {
                 if (this.form.status === 'sent') {
-                    window.open('/storage/' + this.form.photo);
+                    if (this.form.photo) {
+                        window.open('/storage/' + this.form.photo);
+                    }
                 } else {
                     document.querySelector('#photo').click();
                 }
@@ -517,7 +521,9 @@
 
             openSignature() {
               if (this.form.status === 'sent') {
-                  window.open('/storage/' + this.form.sign);
+                  if (this.form.sign) {
+                      window.open('/storage/' + this.form.sign);
+                  }
               } else {
                   this.$refs.signature.open();
               }

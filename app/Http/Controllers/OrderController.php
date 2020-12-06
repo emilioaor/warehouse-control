@@ -107,13 +107,17 @@ class OrderController extends Controller
     {
         $order = Order::query()->uuid($id)->firstOrFail();
         $order->status = Order::STATUS_SENT;
-        $order->photo = $order->attachDocument($request->photo, 'photo');
-        $order->sign = $order->photo ? $order->attachDocument($request->sign, 'sign') : false;
 
-        if (! $order->sign || ! $order->photo) {
-            AlertService::alertFail(__('alert.invalidImageFormat'));
+        if ($request->photo && $request->sign) {
 
-            return response()->json(['success' => false], 400);
+            $order->photo = $order->attachDocument($request->photo, 'photo');
+            $order->sign = $order->photo ? $order->attachDocument($request->sign, 'sign') : false;
+
+            if (! $order->sign || ! $order->photo) {
+                AlertService::alertFail(__('alert.invalidImageFormat'));
+
+                return response()->json(['success' => false], 400);
+            }
         }
 
         $order->save();
