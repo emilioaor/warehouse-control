@@ -30,7 +30,7 @@ trait SearchTrait {
                 $s = strtolower($search);
 
                 foreach ($fields as $field) {
-                    $q->orWhereRaw(sprintf('lower(%s::text) LIKE \'%%%s%%\'', $field, $s));
+                    $q->orWhereRaw(sprintf('lower(%s) LIKE \'%%%s%%\'', $field, $s));
                 }
             });
         }
