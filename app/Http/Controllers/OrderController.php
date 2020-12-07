@@ -69,7 +69,7 @@ class OrderController extends Controller
 
         AlertService::alertSuccess(__('alert.processSuccessfully'));
 
-        return response()->json(['success' => true, 'redirect' => route('order.index')]);
+        return response()->json(['success' => true, 'redirect' => route('order.labels', [$order->uuid])]);
     }
 
     /**
