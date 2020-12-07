@@ -8,6 +8,7 @@
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
+                        <input type="hidden" id="UTC" name="UTC">
 
                         <div class="form-group row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
@@ -68,4 +69,16 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+    <script>
+        window.onload = function () {
+            function getUTC() {
+                document.querySelector('#UTC').value = parseInt((new Date()).getTimezoneOffset().toString()) * -1;
+            }
+
+            getUTC();
+        }
+    </script>
 @endsection

@@ -4,6 +4,7 @@ namespace App;
 
 use App\Contract\IuuidGenerator;
 use App\Contract\SearchTrait;
+use App\Contract\TimeZoneLocalTrait;
 use App\Contract\UuidGeneratorTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -16,6 +17,7 @@ class Customer extends Model implements IuuidGenerator
     use SoftDeletes;
     Use UuidGeneratorTrait;
     use SearchTrait;
+    use TimeZoneLocalTrait;
 
     protected $table = 'customers';
 

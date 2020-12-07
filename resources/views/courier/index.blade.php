@@ -35,7 +35,7 @@
                                         <td>{{ $courier->name }}</td>
                                         <td>{{ $courier->phone }}</td>
                                         <td>{{ $courier->address }}</td>
-                                        <td>{{ $courier->created_at->format('d-m-Y') }}</td>
+                                        <td>{{ $courier->created_at_local->format('d-m-Y') }}</td>
                                         <td>
                                             <a href="{{ route('courier.edit', $courier->uuid) }}" class="btn btn-warning">
                                                 <i class="fa fa-edit"></i>

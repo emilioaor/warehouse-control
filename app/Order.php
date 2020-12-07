@@ -4,6 +4,7 @@ namespace App;
 
 use App\Contract\IuuidGenerator;
 use App\Contract\SearchTrait;
+use App\Contract\TimeZoneLocalTrait;
 use App\Contract\UuidGeneratorTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -19,6 +20,7 @@ class Order extends Model implements IuuidGenerator
     use SoftDeletes;
     Use UuidGeneratorTrait;
     use SearchTrait;
+    use TimeZoneLocalTrait;
 
     /** Status */
     const STATUS_PENDING_SEND = 'pending_send';
@@ -44,7 +46,6 @@ class Order extends Model implements IuuidGenerator
 
     public function __construct(array $attributes = [])
     {
-        $this->generateUuid();
         $this->status = self::STATUS_PENDING_SEND;
         $this->date = Carbon::now();
         $this->created_by = Auth::user()->id;
@@ -154,8 +155,8 @@ class Order extends Model implements IuuidGenerator
      */
     public function scopeReport(Builder $query, array $params): Builder
     {
-        $start = (new Carbon($params['start']))->setTime(0, 0, 0);
-        $end = (new Carbon($params['end']))->setTime(23, 59, 59);
+        $start = new Carbon($params['start']);
+        $end = new Carbon($params['end']);
         $status = $params['status'];
         $customerId = $params['customer_id'];
         $courierId = $params['courier_id'];
@@ -213,5 +214,13 @@ class Order extends Model implements IuuidGenerator
         Storage::disk('public')->put($path, base64_decode($explode[1]));
 
         return $path;
+    }
+
+    /**
+     * Date local accessor
+     */
+    public function getDateLocalAttribute()
+    {
+        return $this->dateToLocalDate($this->date);
     }
 }

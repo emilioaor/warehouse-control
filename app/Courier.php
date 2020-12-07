@@ -4,6 +4,7 @@ namespace App;
 
 use App\Contract\IuuidGenerator;
 use App\Contract\SearchTrait;
+use App\Contract\TimeZoneLocalTrait;
 use App\Contract\UuidGeneratorTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -14,6 +15,7 @@ class Courier extends Model implements IuuidGenerator
     use SoftDeletes;
     Use UuidGeneratorTrait;
     use SearchTrait;
+    use TimeZoneLocalTrait;
 
     protected $table = 'couriers';
 

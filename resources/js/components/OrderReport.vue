@@ -26,7 +26,7 @@
                                             input-class = "form-control date-picker"
                                             format = "dd/MM/yyyy"
                                             v-model="start"
-                                            @input="form.start = changeDate($event)"
+                                            @input="form.start = changeDate($event, 0, 0, 0)"
 
                                     ></date-picker>
                                 </div>
@@ -41,7 +41,7 @@
                                             input-class = "form-control date-picker"
                                             format = "dd/MM/yyyy"
                                             v-model="end"
-                                            @input="form.end = changeDate($event)"
+                                            @input="form.end = changeDate($event, 23, 59, 59)"
 
                                     ></date-picker>
                                 </div>
@@ -172,8 +172,8 @@
         },
 
         mounted() {
-            this.form.start = this.changeDate(this.start);
-            this.form.end = this.changeDate(this.end);
+            this.form.start = this.changeDate(this.start, 0, 0, 0);
+            this.form.end = this.changeDate(this.end, 23, 59, 59);
         },
 
         methods: {
@@ -213,12 +213,10 @@
                 }
             },
 
-            changeDate: function (date) {
-                let day = (date.getDate() < 10) ? '0' + date.getDate() : date.getDate();
-                let month = ((date.getMonth() + 1) < 10) ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1);
-                let year = date.getFullYear();
+            changeDate(date, h, i, s) {
+                date.setHours(h, i, s);
 
-                return year + '-' + month + '-' + day;
+                return date;
             },
         },
 

@@ -35,7 +35,7 @@
                                         <td>{{ $box->description }}</td>
                                         <td>{{ $box->size }}</td>
                                         <td>{{ $box->weight }}</td>
-                                        <td>{{ $box->created_at->format('d-m-Y') }}</td>
+                                        <td>{{ $box->created_at_local->format('d-m-Y') }}</td>
                                         <td>
                                             <a href="{{ route('box.edit', $box->uuid) }}" class="btn btn-warning">
                                                 <i class="fa fa-edit"></i>

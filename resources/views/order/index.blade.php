@@ -34,7 +34,7 @@
                                         </td>
                                         <td>{{ $order->customer->description }}</td>
                                         <td>{{ $order->courier->name }}</td>
-                                        <td>{{ $order->date->format('d-m-Y') }}</td>
+                                        <td>{{ $order->date_local->format('d-m-Y') }}</td>
                                         <td>{!! $order->statusHtml() !!}</td>
                                         <td>
                                             <a href="{{ route('order.edit', $order->uuid) }}" class="btn btn-warning">

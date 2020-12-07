@@ -37,7 +37,7 @@
                                         <td>{{ $customer->email }}</td>
                                         <td>{{ $customer->defaultCourier->name }}</td>
                                         <td>{{ $customer->phone }}</td>
-                                        <td>{{ $customer->created_at->format('d-m-Y') }}</td>
+                                        <td>{{ $customer->created_at_local->format('d-m-Y') }}</td>
                                         <td>
                                             <a href="{{ route('customer.edit', $customer->uuid) }}" class="btn btn-warning">
                                                 <i class="fa fa-edit"></i>

@@ -35,7 +35,7 @@
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
                                         <td>{{ $user->role() }}</td>
-                                        <td>{{ $user->created_at->format('d-m-Y') }}</td>
+                                        <td>{{ $user->created_at_local->format('d-m-Y') }}</td>
                                         <td>
                                             <a href="{{ route('user.edit', [$user->uuid]) }}" class="btn btn-warning">
                                                 <i class="fa fa-edit"></i>

@@ -4,6 +4,7 @@ namespace App;
 
 use App\Contract\IuuidGenerator;
 use App\Contract\SearchTrait;
+use App\Contract\TimeZoneLocalTrait;
 use App\Contract\UuidGeneratorTrait;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
@@ -19,6 +20,7 @@ class User extends Authenticatable implements IuuidGenerator
     use SoftDeletes;
     use UuidGeneratorTrait;
     use SearchTrait;
+    use TimeZoneLocalTrait;
 
     /** User roles */
     const ROLE_ADMIN = 'admin';

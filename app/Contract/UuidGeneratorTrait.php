@@ -3,14 +3,12 @@
 namespace App\Contract;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 
 trait UuidGeneratorTrait {
 
-    public function __construct(array $attributes = [])
+    public function initializeUuidGeneratorTrait()
     {
-        Model::__construct($attributes);
-        return $this instanceof IuuidGenerator && $this->generateUuid();
+        return ! $this->uuid && $this->generateUuid();
     }
 
     public function generateUuid(): string
