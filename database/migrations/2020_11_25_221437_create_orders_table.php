@@ -16,15 +16,11 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->string('uuid', 15)->unique();
-            $table->integer('customer_id')->unsigned();
-            $table->foreign('customer_id')->references('id')->on('customers');
-            $table->integer('courier_id')->unsigned();
-            $table->foreign('courier_id')->references('id')->on('couriers');
+            $table->foreignId('customer_id')->constrained('customers');
+            $table->foreignId('courier_id')->constrained('couriers');
             $table->dateTime('date');
-            $table->integer('created_by')->unsigned();
-            $table->foreign('created_by')->references('id')->on('users');
-            $table->integer('approved_by')->unsigned()->nullable();
-            $table->foreign('approved_by')->references('id')->on('users');
+            $table->foreignId('created_by')->constrained('users');
+            $table->foreignId('approved_by')->nullable()->constrained('users');
             $table->string('invoice_number');
             $table->string('sign')->nullable();
             $table->string('photo')->nullable();

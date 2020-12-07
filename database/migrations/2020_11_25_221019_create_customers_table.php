@@ -19,8 +19,7 @@ class CreateCustomersTable extends Migration
             $table->string('description');
             $table->string('phone');
             $table->string('email');
-            $table->integer('default_courier_id')->unsigned();
-            $table->foreign('default_courier_id')->references('id')->on('couriers');
+            $table->foreignId('default_courier_id')->constrained('couriers');
             $table->text('address');
             $table->timestamps();
             $table->softDeletes();
