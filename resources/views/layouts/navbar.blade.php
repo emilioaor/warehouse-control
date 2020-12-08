@@ -72,6 +72,10 @@
                 [
                     'label' => __('navbar.report'),
                     'route' => route('order.report')
+                ],
+                [
+                    'label' => __('navbar.packingList'),
+                    'route' => route('order.packingList')
                 ]
             ]
         ])

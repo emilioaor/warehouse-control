@@ -15,6 +15,9 @@ return [
     'report' => 'Report',
     'generateLabels' => 'Generate labels',
     'labels' => 'labels',
-    'print' => 'Print'
+    'print' => 'Print',
+    'date' => 'Date',
+    'freightForwarder' => 'Freight forwarder',
+    'sendByEmail' => 'Send by email'
 
 ];

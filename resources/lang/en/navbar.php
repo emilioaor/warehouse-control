@@ -11,6 +11,7 @@ return [
     'orders' => 'Orders',
     'config' => 'Configuration',
     'security' => 'Security',
-    'logout' => 'Logout'
+    'logout' => 'Logout',
+    'packingList' => 'Packing list'
 
 ];

@@ -195,6 +195,32 @@ class Order extends Model implements IuuidGenerator
     }
 
     /**
+     * Scope status pending
+     */
+    public function scopePending(Builder $query): Builder
+    {
+        return $query->where('status', self::STATUS_PENDING_SEND);
+    }
+
+    /**
+     * Scope packing list
+     */
+    public function scopePackingList(Builder $query, int $courierId, ?int $customerId): Builder
+    {
+        $query
+            ->pending()
+            ->where('courier_id', $courierId)
+            ->with(['orderDetails', 'customer', 'courier'])
+        ;
+
+        if ($customerId) {
+            $query->where('customer_id', $customerId);
+        }
+
+        return $query;
+    }
+
+    /**
      * Attach document to order
      */
     public function attachDocument(string $base64, string $filename): string

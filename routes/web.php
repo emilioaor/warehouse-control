@@ -32,6 +32,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'warehouse'], function () {
 
     Route::get('order/report', 'OrderController@report')->name('order.report');
     Route::post('order/report', 'OrderController@reportProcess');
+    Route::get('order/packing-list', 'OrderController@packingList')->name('order.packingList');
+    Route::post('order/packing-list', 'OrderController@packingListProcess');
     Route::get('order/{order}/labels', 'OrderController@labels')->name('order.labels');
     Route::resource('order', 'OrderController');
 

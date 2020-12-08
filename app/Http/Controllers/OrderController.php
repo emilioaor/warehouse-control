@@ -182,4 +182,27 @@ class OrderController extends Controller
 
         return view('order.labels', compact('order'));
     }
+
+    /**
+     * Packing list
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function packingList()
+    {
+        return view('order.packingList');
+    }
+
+    /**
+     * Packing list process
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function packingListProcess(Request $request)
+    {
+        $orders = Order::query()->packingList($request->courier_id, $request->customer_id)->get();
+
+        return response()->json(['success' => true, 'data' => $orders]);
+    }
 }

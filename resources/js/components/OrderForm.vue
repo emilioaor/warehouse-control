@@ -49,7 +49,7 @@
                                 </div>
 
                                 <div class="col-sm-6 col-md-4 form-group">
-                                    <label for="customer_id"> {{ t('validation.attributes.courier') }}</label>
+                                    <label for="courier_id"> {{ t('validation.attributes.courier') }}</label>
 
                                     <search-input
                                             route="/warehouse/courier"
