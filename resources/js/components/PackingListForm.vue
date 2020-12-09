@@ -81,48 +81,30 @@
                                     {{ t('form.print') }}
                                 </button>
 
-                                <button-confirmation
-                                        :label="t('form.sendByEmail')"
-                                        btn-class="btn btn-secondary"
-                                        icon-class="fa fa-check"
-                                        v-if="!loading && hasOneCustomerOnly()"
-                                        :confirmation="t('form.areYouSure')"
-                                        :buttons="[
-                                        {
-                                            label: t('form.yes'),
-                                            btnClass: 'btn btn-success',
-                                            code: 'yes'
-                                        },
-                                        {
-                                            label: t('form.no'),
-                                            btnClass: 'btn btn-danger',
-                                            code: 'no'
-                                        }
-                                    ]"
-                                        @confirmed="sendEmail($event)"
-                                ></button-confirmation>
-
                                 <img src="/img/loading.gif" v-if="loading">
                             </div>
 
                             <div class="row" v-if="results.length">
+                                <div class="col-12 text-right table-head">
+                                    <img src="/img/techland.png" class="logo">
+                                </div>
+
+                                <div class="col-8 table-head">
+                                    <h5>
+                                        <strong>{{ t('form.freightForwarder') }}:</strong>
+                                        {{ courier ? courier.name : '' }}
+                                    </h5>
+                                </div>
+                                <div class="col-4 text-right table-head">
+                                    <h5>
+                                        <strong>{{ t('form.date') }}:</strong>
+                                        {{ (new Date()).toLocaleDateString() }}
+                                    </h5>
+                                </div>
+
                                 <div class="col-12">
                                     <table class="table table-responsive mt-4">
                                         <thead>
-                                            <tr class="d-none table-head">
-                                                <td colspan="3">
-                                                    <h5>
-                                                        <strong>{{ t('form.freightForwarder') }}:</strong>
-                                                        {{ courier ? courier.name : '' }}
-                                                    </h5>
-                                                </td>
-                                                <td colspan="2" class="text-right">
-                                                    <h5>
-                                                        <strong>{{ t('form.date') }}:</strong>
-                                                        20-10-2020
-                                                    </h5>
-                                                </td>
-                                            </tr>
                                             <tr>
                                                 <th class="text-center">{{ t('validation.attributes.salesOrder') }}</th>
                                                 <th class="text-center">{{ t('validation.attributes.customer') }}</th>
@@ -132,8 +114,8 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <template v-for="result in results">
-                                                <tr v-for="(detail, i) in result.order_details" :key="i">
+                                            <template v-for="(result, i) in results">
+                                                <tr v-for="(detail, ii) in result.order_details" :key="i + '-' + ii">
                                                     <td class="text-center">{{ result.invoice_number }}</td>
                                                     <td class="text-center">{{ result.customer.description }}</td>
                                                     <td class="text-center">{{ detail.qty }}</td>
@@ -210,24 +192,32 @@
 
             print() {
                 window.print()
-            },
-
-            hasOneCustomerOnly() {
-                return this.results.length && !this.results.some(r => r.customer_id !== this.form.customer_id)
-            },
-
-            sendEmail(code) {
-                if (code === 'yes') {
-                    //TODO
-                }
             }
         }
     }
 </script>
 
 <style lang="scss" scoped>
+    .table-head {
+        display: none;
+    }
 
     @media print {
+        @page {
+            margin: 85px 0 100px 0;
+        }
+        .table-head {
+            display: block;
+        }
+        .logo {
+            margin: 0 0 1rem;
+        }
+
+        h5 {
+            font-size: 1.5rem;
+            margin: 1rem 0;
+        }
+
         .form, .buttons, .card-header {
             display: none;
         }
@@ -238,10 +228,8 @@
 
         .table {
             border: solid 2px #999999;
-
-            .table-head {
-                display: table-row !important;
-            }
+            font-size: 1.2rem;
+            margin-top: 0 !important;
         }
     }
 </style>
