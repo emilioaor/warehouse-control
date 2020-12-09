@@ -124,9 +124,9 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <th class="text-center" width="1%">{{ t('validation.attributes.pv') }}</th>
+                                                <th class="text-center">{{ t('validation.attributes.salesOrder') }}</th>
                                                 <th class="text-center">{{ t('validation.attributes.customer') }}</th>
-                                                <th class="text-center">{{ t('validation.attributes.boxes') }}</th>
+                                                <th class="text-center" width="1%">{{ t('validation.attributes.boxes') }}</th>
                                                 <th class="text-center">{{ t('validation.attributes.size') }}</th>
                                                 <th class="text-center">{{ t('validation.attributes.weight') }}</th>
                                             </tr>

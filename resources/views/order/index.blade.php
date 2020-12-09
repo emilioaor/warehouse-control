@@ -18,6 +18,7 @@
                                 <tr>
                                     <th @if(!$orders->total()) width="1%" @endif>{{ __('validation.attributes.customer') }}</th>
                                     <th>{{ __('validation.attributes.courier') }}</th>
+                                    <th>{{ __('validation.attributes.salesOrder') }}</th>
                                     <th>{{ __('validation.attributes.created_at') }}</th>
                                     <th>{{ __('validation.attributes.status') }}</th>
                                     <th width="5%"></th>
@@ -28,6 +29,7 @@
                                     <tr>
                                         <td>{{ $order->customer->description }}</td>
                                         <td>{{ $order->courier->name }}</td>
+                                        <td>{{ $order->invoice_number }}</td>
                                         <td>{{ $order->date_local->format('d-m-Y') }}</td>
                                         <td>{!! $order->statusHtml() !!}</td>
                                         <td>

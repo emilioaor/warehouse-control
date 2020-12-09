@@ -109,7 +109,7 @@
                                             <th>{{ t('validation.attributes.date') }}</th>
                                             <th>{{ t('validation.attributes.customer') }}</th>
                                             <th>{{ t('validation.attributes.courier') }}</th>
-                                            <th>{{ t('validation.attributes.invoiceNumber') }}</th>
+                                            <th>{{ t('validation.attributes.salesOrder') }}</th>
                                             <th width="1%" class="text-center">{{ t('validation.attributes.status') }}</th>
                                         </tr>
                                     </thead>

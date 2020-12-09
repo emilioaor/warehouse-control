@@ -75,7 +75,7 @@
                                 </div>
 
                                 <div class="col-sm-6 form-group" :class="!!editData ? 'col-md-2' : 'col-md-4'">
-                                    <label for="invoice_number"> {{ t('validation.attributes.invoiceNumber') }}</label>
+                                    <label for="invoice_number"> {{ t('validation.attributes.salesOrder') }}</label>
 
                                     <input
                                             type="text"
