@@ -16,8 +16,7 @@
                         <table class="table table-responsive mt-3">
                             <thead>
                                 <tr>
-                                    <th @if(!$boxes->total()) width="1%" @endif>{{ __('validation.attributes.id') }}</th>
-                                    <th>{{ __('validation.attributes.description') }}</th>
+                                    <th @if(!$boxes->total()) width="1%" @endif>{{ __('validation.attributes.description') }}</th>
                                     <th>{{ __('validation.attributes.size') }}</th>
                                     <th>{{ __('validation.attributes.weight') }}</th>
                                     <th>{{ __('validation.attributes.created_at') }}</th>
@@ -27,11 +26,6 @@
                             <tbody>
                                 @foreach($boxes as $box)
                                     <tr>
-                                        <td>
-                                            <a href="{{ route('box.edit', [$box->uuid]) }}">
-                                                {{ $box->uuid }}
-                                            </a>
-                                        </td>
                                         <td>{{ $box->description }}</td>
                                         <td>{{ $box->size }}</td>
                                         <td>{{ $box->weight }}</td>

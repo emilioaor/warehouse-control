@@ -28,7 +28,7 @@
 
                                     <search-input
                                         route="/warehouse/customer"
-                                        :description-fields="['description', 'uuid']"
+                                        :description-fields="['description']"
                                         @selectResult="changeCustomer($event)"
                                         :input-class="errors.has('customer_id') ? 'is-invalid' : ''"
                                         :value="customer ? customer.searchDescription : ''"
@@ -53,7 +53,7 @@
 
                                     <search-input
                                             route="/warehouse/courier"
-                                            :description-fields="['name', 'uuid']"
+                                            :description-fields="['name']"
                                             @selectResult="changeCourier($event)"
                                             :input-class="errors.has('courier_id') ? 'is-invalid' : ''"
                                             :value="courier ? courier.searchDescription : ''"
@@ -386,11 +386,11 @@
                 };
                 this.customer = {
                     ...this.editData.customer,
-                    searchDescription: this.editData.customer.description + ' / ' + this.editData.customer.uuid
+                    searchDescription: this.editData.customer.description
                 };
                 this.courier = {
                     ...this.editData.courier,
-                    searchDescription: this.editData.courier.name + ' / ' + this.editData.courier.uuid
+                    searchDescription: this.editData.courier.name
                 };
             } else {
                 this.addDetail()
@@ -457,7 +457,7 @@
 
                 this.courier = {
                     ...result.default_courier,
-                    searchDescription: result.default_courier.name + ' / ' + result.default_courier.uuid
+                    searchDescription: result.default_courier.name
                 };
                 this.form.courier_id = result.default_courier_id;
             },

@@ -68,7 +68,7 @@
                                     <label> {{ t('validation.attributes.customer') }}</label>
                                     <search-input
                                             route="/warehouse/customer"
-                                            :description-fields="['description', 'uuid']"
+                                            :description-fields="['description']"
                                             @selectResult="changeCustomer($event)"
                                             :nullable="true"
                                             :value="customer ? customer.searchDescription : ''"
@@ -81,7 +81,7 @@
                                     <label> {{ t('validation.attributes.courier') }}</label>
                                     <search-input
                                             route="/warehouse/courier"
-                                            :description-fields="['name', 'uuid']"
+                                            :description-fields="['name']"
                                             @selectResult="changeCourier($event)"
                                             :nullable="true"
                                             :value="courier ? courier.searchDescription : ''"
@@ -106,17 +106,15 @@
                                 <table class="table table-responsive table-striped mt-4">
                                     <thead>
                                         <tr>
-                                            <th width="5%">{{ t('validation.attributes.id') }}</th>
                                             <th>{{ t('validation.attributes.date') }}</th>
                                             <th>{{ t('validation.attributes.customer') }}</th>
                                             <th>{{ t('validation.attributes.courier') }}</th>
                                             <th>{{ t('validation.attributes.invoiceNumber') }}</th>
-                                            <th class="text-center">{{ t('validation.attributes.status') }}</th>
+                                            <th width="1%" class="text-center">{{ t('validation.attributes.status') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr v-for="(result, i) in results" :key="i">
-                                            <td>{{ result.uuid }}</td>
                                             <td>{{ result.date |date }}</td>
                                             <td>{{ result.customer.description }}</td>
                                             <td>{{ result.courier.name }}</td>

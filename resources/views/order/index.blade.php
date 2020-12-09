@@ -16,8 +16,7 @@
                         <table class="table table-responsive mt-3">
                             <thead>
                                 <tr>
-                                    <th @if(!$orders->total()) width="1%" @endif>{{ __('validation.attributes.id') }}</th>
-                                    <th>{{ __('validation.attributes.customer') }}</th>
+                                    <th @if(!$orders->total()) width="1%" @endif>{{ __('validation.attributes.customer') }}</th>
                                     <th>{{ __('validation.attributes.courier') }}</th>
                                     <th>{{ __('validation.attributes.created_at') }}</th>
                                     <th>{{ __('validation.attributes.status') }}</th>
@@ -27,11 +26,6 @@
                             <tbody>
                                 @foreach($orders as $order)
                                     <tr>
-                                        <td>
-                                            <a href="{{ route('order.edit', $order->uuid) }}">
-                                                {{ $order->uuid }}
-                                            </a>
-                                        </td>
                                         <td>{{ $order->customer->description }}</td>
                                         <td>{{ $order->courier->name }}</td>
                                         <td>{{ $order->date_local->format('d-m-Y') }}</td>

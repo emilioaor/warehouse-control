@@ -84,7 +84,7 @@
                                     <label for="default_courier_id"> {{ t('validation.attributes.courierDefault') }}</label>
                                     <search-input
                                             route="/warehouse/courier"
-                                            :description-fields="['name', 'uuid']"
+                                            :description-fields="['name']"
                                             @selectResult="changeCourier($event)"
                                             :input-class="errors.has('default_courier_id') ? 'is-invalid' : ''"
                                             :value="courier ? courier.searchDescription : ''"
@@ -174,7 +174,7 @@
                 this.form = {...this.editData};
                 this.courier = {
                     ...this.editData.default_courier,
-                    searchDescription: this.editData.default_courier.name + ' / ' + this.editData.default_courier.uuid
+                    searchDescription: this.editData.default_courier.name
                 }
             }
         },
