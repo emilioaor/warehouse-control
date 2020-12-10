@@ -18,6 +18,7 @@ return [
     'print' => 'Print',
     'date' => 'Date',
     'freightForwarder' => 'Freight forwarder',
-    'sendByEmail' => 'Send by email'
+    'sendByEmail' => 'Send by email',
+    'lines' => 'Lines'
 
 ];

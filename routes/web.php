@@ -28,12 +28,12 @@ Route::group(['middleware' => 'auth', 'prefix' => 'warehouse'], function () {
     Route::resource('courier', 'CourierController');
     Route::resource('customer', 'CustomerController');
     Route::resource('box', 'BoxController');
+    Route::resource('packing-list', 'PackingListController');
 
 
     Route::get('order/report', 'OrderController@report')->name('order.report');
     Route::post('order/report', 'OrderController@reportProcess');
-    Route::get('order/packing-list', 'OrderController@packingList')->name('order.packingList');
-    Route::post('order/packing-list', 'OrderController@packingListProcess');
+    Route::post('order/packing-list', 'OrderController@packingListProcess')->name('order.packingList');
     Route::get('order/{order}/labels', 'OrderController@labels')->name('order.labels');
     Route::resource('order', 'OrderController');
 

@@ -25,7 +25,7 @@ class Courier extends Model implements IuuidGenerator
         'address'
     ];
 
-    protected $search_fields = ['uuid', 'name', 'address'];
+    protected $search_fields = ['name', 'address'];
 
     /**
      * Customers that configured this courier to default option
@@ -41,5 +41,13 @@ class Courier extends Model implements IuuidGenerator
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class, 'courier_id');
+    }
+
+    /**
+     * Packing lists
+     */
+    public function packingLists(): HasMany
+    {
+        return $this->hasMany(PackingList::class, 'courier_id');
     }
 }

@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class Order extends Model implements IuuidGenerator
 {
@@ -36,13 +35,14 @@ class Order extends Model implements IuuidGenerator
         'approved_by',
         'status',
         'invoice_number',
+        'packing_list_id'
     ];
 
     protected $casts = [
         'date' => 'datetime'
     ];
 
-    protected $search_fields = ['orders.uuid', 'customers.description', 'couriers.name'];
+    protected $search_fields = ['customers.description', 'couriers.name'];
 
     public function __construct(array $attributes = [])
     {
@@ -90,6 +90,14 @@ class Order extends Model implements IuuidGenerator
     public function orderDetails(): HasMany
     {
         return $this->hasMany(OrderDetail::class, 'order_id');
+    }
+
+    /**
+     * Packing list
+     */
+    public function packingList(): BelongsTo
+    {
+        return $this->belongsTo(PackingList::class, 'packing_list_id');
     }
 
     /**
@@ -205,7 +213,7 @@ class Order extends Model implements IuuidGenerator
     /**
      * Scope packing list
      */
-    public function scopePackingList(Builder $query, int $courierId, ?int $customerId): Builder
+    public function scopePendingForPackingList(Builder $query, int $courierId, ?int $customerId): Builder
     {
         $query
             ->pending()
@@ -218,28 +226,6 @@ class Order extends Model implements IuuidGenerator
         }
 
         return $query;
-    }
-
-    /**
-     * Attach document to order
-     */
-    public function attachDocument(string $base64, string $filename): string
-    {
-        $explode = explode(',', $base64);
-        $filename = sprintf('%s-%s', $filename, ((string) time()));
-
-        if (strpos($explode[0], 'image/png') > 0) {
-            $format = 'png';
-        } elseif (strpos($explode[0], 'image/jpg') > 0 || strpos($explode[0], 'image/jpeg') > 0) {
-            $format = 'jpg';
-        } else {
-            return false;
-        }
-
-        $path = sprintf('orders/%s/%s.%s', $this->uuid, $filename, $format);
-        Storage::disk('public')->put($path, base64_decode($explode[1]));
-
-        return $path;
     }
 
     /**

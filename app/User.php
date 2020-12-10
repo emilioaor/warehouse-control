@@ -56,7 +56,7 @@ class User extends Authenticatable implements IuuidGenerator
         'email_verified_at' => 'datetime',
     ];
 
-    protected $search_fields = ['uuid', 'name', 'email'];
+    protected $search_fields = ['name', 'email'];
 
     /**
      * Created orders

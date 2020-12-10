@@ -25,7 +25,7 @@ class Box extends Model implements IuuidGenerator
         'weight'
     ];
 
-    protected $search_fields = ['uuid', 'description', 'size', 'weight'];
+    protected $search_fields = ['description', 'size', 'weight'];
 
     /**
      * Order details that assigned this default box. The

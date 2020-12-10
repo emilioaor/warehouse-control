@@ -72,10 +72,20 @@
                 [
                     'label' => __('navbar.report'),
                     'route' => route('order.report')
+                ]
+            ]
+        ])
+
+        @include('layouts.dropdown-menu', [
+            'title' => __('navbar.packingList'),
+            'links' => [
+                [
+                    'label' => __('navbar.addNew'),
+                    'route' => route('packing-list.create')
                 ],
                 [
-                    'label' => __('navbar.packingList'),
-                    'route' => route('order.packingList')
+                    'label' => __('navbar.list'),
+                    'route' => route('packing-list.index')
                 ]
             ]
         ])

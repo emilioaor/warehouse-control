@@ -32,7 +32,6 @@ class Customer extends Model implements IuuidGenerator
     protected $with = ['defaultCourier'];
 
     protected $search_fields = [
-        'customers.uuid',
         'customers.description',
         'customers.phone',
         'customers.email',

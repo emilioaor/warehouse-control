@@ -91,7 +91,11 @@ class OrderController extends Controller
      */
     public function edit($id)
     {
-        $order = Order::query()->uuid($id)->with(['customer', 'courier', 'orderDetails'])->firstOrFail();
+        $order = Order::query()
+            ->uuid($id)
+            ->with(['customer', 'courier', 'orderDetails', 'packingList.packingListImages'])
+            ->firstOrFail()
+        ;
 
         return view('order.form', compact('order'));
     }
@@ -184,16 +188,6 @@ class OrderController extends Controller
     }
 
     /**
-     * Packing list
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function packingList()
-    {
-        return view('order.packingList');
-    }
-
-    /**
      * Packing list process
      *
      * @param Request $request
@@ -201,7 +195,7 @@ class OrderController extends Controller
      */
     public function packingListProcess(Request $request)
     {
-        $orders = Order::query()->packingList($request->courier_id, $request->customer_id)->get();
+        $orders = Order::query()->pendingForPackingList($request->courier_id, $request->customer_id)->get();
 
         return response()->json(['success' => true, 'data' => $orders]);
     }

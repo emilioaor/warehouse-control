@@ -224,68 +224,27 @@
                                     </table>
                                 </div>
 
-                                <div class="col-sm-6 col-md-3 form-group" v-if="!! editData">
-                                    <label for="photo"> {{ t('validation.attributes.photo') }}</label>
-
-                                    <input
-                                            type="file"
-                                            id="photo"
-                                            class="d-none"
-                                            accept="image/jpeg|image/png"
-                                            @change="changeImage($event)"
-                                    >
-
-                                    <div
-                                            class="photo"
-                                            :class="{'is-invalid': errors.has('photo')}"
-                                            @click="openImageExplorer()"
-                                    >
-                                        <img
-                                                :src="form.status === 'sent' ? '/storage/' + form.photo : form.photo"
-                                                alt="photo"
-                                                v-if="form.photo"
-                                        >
-
-                                        <i class="fa fa-camera" v-else></i>
-                                    </div>
-
-                                    <input v-if="form.sign" type="hidden" name="photo" v-model="form.photo" v-validate data-vv-rules="required">
-                                    <input v-else type="hidden" name="photo" v-model="form.photo">
-
-                                    <span class="invalid-feedback d-block" role="alert" v-if="errors.firstByRule('photo', 'required')">
-                                        <strong>{{ t('validation.required', {attribute: 'photo'}) }}</strong>
-                                    </span>
-                                </div>
-
-                                <div class="col-sm-6 col-md-3 form-group" v-if="!! editData">
+                                <div class="col-sm-6 col-md-3 form-group" v-if="form.status === 'sent'">
                                     <label for="sign"> {{ t('validation.attributes.sign') }}</label>
 
-                                    <div
-                                            class="sign"
-                                            @click="openSignature()"
-                                            :class="{'is-invalid': errors.has('sign')}"
-                                    >
-
+                                    <div class="sign" @click="openImageExplorer(form.packing_list.sign)">
                                         <img
-                                                :src="form.status === 'sent' ? '/storage/' + form.sign : form.sign"
-                                                alt="sign"
-                                                v-if="form.sign"
+                                            :src="'/storage/' + form.packing_list.sign"
                                         >
-
-                                        <i class="fa fa-edit" v-else></i>
                                     </div>
-
-                                    <span class="invalid-feedback d-block" role="alert" v-if="errors.firstByRule('sign', 'required')">
-                                        <strong>{{ t('validation.required', {attribute: 'sign'}) }}</strong>
-                                    </span>
-
-                                    <input v-if="form.photo" type="hidden" name="sign" v-model="form.sign" v-validate data-vv-rules="required">
-                                    <input v-else type="hidden" name="sign" v-model="form.sign">
-                                    <signature
-                                            ref="signature"
-                                            @save="changeSign($event)"
-                                    ></signature>
                                 </div>
+
+                                <template v-if="form.status === 'sent'">
+                                    <div class="col-sm-6 col-md-3 form-group" v-for="image in form.packing_list.packing_list_images">
+                                        <label for="photo"> {{ t('validation.attributes.photo') }}</label>
+
+                                        <div class="photo" @click="openImageExplorer(image.url)">
+                                            <img
+                                                :src="'/storage/' + image.url"
+                                            >
+                                        </div>
+                                    </div>
+                                </template>
                             </div>
 
                             <div>
@@ -296,27 +255,6 @@
                                     <i class="fa fa-save"></i>
                                      {{ t('form.save') }}
                                 </button>
-
-                                <button-confirmation
-                                    :label="t('form.markAsReceived')"
-                                    btn-class="btn btn-primary"
-                                    icon-class="fa fa-check"
-                                    v-if="!loading && editData && editData.status === 'pending_send'"
-                                    :confirmation="t('form.areYouSure')"
-                                    :buttons="[
-                                        {
-                                            label: t('form.yes'),
-                                            btnClass: 'btn btn-success',
-                                            code: 'yes'
-                                        },
-                                        {
-                                            label: t('form.no'),
-                                            btnClass: 'btn btn-danger',
-                                            code: 'no'
-                                        }
-                                    ]"
-                                    @confirmed="markAsReceived($event)"
-                                ></button-confirmation>
 
                                 <a
                                     v-if="!loading && editData"
@@ -503,54 +441,8 @@
                 }
             },
 
-            markAsReceived(code) {
-                if (code === 'yes') {
-                    this.validateForm();
-                }
-            },
-
-            openImageExplorer() {
-                if (this.form.status === 'sent') {
-                    if (this.form.photo) {
-                        window.open('/storage/' + this.form.photo);
-                    }
-                } else {
-                    document.querySelector('#photo').click();
-                }
-            },
-
-            openSignature() {
-              if (this.form.status === 'sent') {
-                  if (this.form.sign) {
-                      window.open('/storage/' + this.form.sign);
-                  }
-              } else {
-                  this.$refs.signature.open();
-              }
-            },
-
-            changeImage(e) {
-                const file = $('#photo')[0].files[0];
-
-                if (!file || (file.type !== 'image/png' && file.type !== 'image/jpeg')) {
-                    return false;
-                }
-
-                const reader = new FileReader();
-
-                reader.addEventListener('load', () => {
-                    if (reader.result) {
-                        this.form.photo = reader.result;
-                        this.errors.remove('photo');
-                    }
-                });
-
-                reader.readAsDataURL(file);
-            },
-
-            changeSign(event) {
-                this.form.sign = event.base64;
-                this.errors.remove('sign');
+            openImageExplorer(url) {
+                window.open('/storage/' + url);
             }
         }
     }

@@ -50,6 +50,18 @@ import VeeValidate from 'vee-validate';
 Vue.use(TranslationPlugin);
 Vue.use(AuthPlugin);
 Vue.use(VeeValidate);
+Vue.mixin({
+    filters: {
+        date(d) {
+            const date = new Date(d);
+            let day = (date.getDate() < 10) ? '0' + date.getDate() : date.getDate();
+            let month = ((date.getMonth() + 1) < 10) ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1);
+            let year = date.getFullYear();
+
+            return day + '-' + month + '-' + year;
+        }
+    }
+});
 
 const app = new Vue({
     el: '#app',
