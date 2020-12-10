@@ -8,8 +8,7 @@
                     class="form-control"
                     value="{{ Request::has('search') ? Request::get('search') : '' }}"
                     maxlength="30"
-                    required
-                    minlength="3">
+                    required>
             <span class="input-group-btn">
                 <button class="btn btn-primary">
                     <i class="fa fa-search"></i>
