@@ -19,6 +19,10 @@ class PackingList extends Model
     use SearchTrait;
     use TimeZoneLocalTrait;
 
+    /** Status */
+    const STATUS_PENDING_SEND = 'pending_send';
+    const STATUS_SENT = 'sent';
+
     protected $table = 'packing_lists';
 
     protected $fillable = ['courier_id'];
@@ -82,5 +86,38 @@ class PackingList extends Model
         Storage::disk('public')->put($path, base64_decode($explode[1]));
 
         return $path;
+    }
+
+    /**
+     * Status string
+     */
+    public function status()
+    {
+        return __(sprintf('status.%s', $this->status));
+    }
+
+    /**
+     * Status available
+     */
+    public static function statusAvailable(): array
+    {
+        return [
+            self::STATUS_PENDING_SEND => __(sprintf('status.%s', self::STATUS_PENDING_SEND)),
+            self::STATUS_SENT => __(sprintf('status.%s', self::STATUS_SENT)),
+        ];
+    }
+
+    /**
+     * Status HTML
+     */
+    public function statusHtml()
+    {
+        $status = $this->status;
+        $statusText = $this->status();
+        $class = $status === self::STATUS_PENDING_SEND ? 'bg-info text-white' : 'bg-success text-white';
+
+        return "<div class=\"{$class} d-inline-block p-1 rounded\" style='width: 80px; text-align: center'>
+                    <strong>{$statusText}</strong>
+                </div>";
     }
 }

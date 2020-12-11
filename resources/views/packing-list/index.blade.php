@@ -18,6 +18,7 @@
                                 <tr>
                                     <th @if(!$packingLists->total()) width="1%" @endif>{{ __('validation.attributes.courier') }}</th>
                                     <th>{{ __('validation.attributes.created_at') }}</th>
+                                    <th>{{ __('validation.attributes.status') }}</th>
                                     <th width="5%"></th>
                                 </tr>
                             </thead>
@@ -26,6 +27,7 @@
                                     <tr>
                                         <td>{{ $packingList->courier->name }}</td>
                                         <td>{{ $packingList->created_at_local->format('d-m-Y') }}</td>
+                                        <td>{!! $packingList->statusHtml() !!}</td>
                                         <td>
                                             <a class="btn btn-warning" href="{{ route('packing-list.edit', $packingList->uuid) }}">
                                                 <i class="fa fa-edit"></i>

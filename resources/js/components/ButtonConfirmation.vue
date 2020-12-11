@@ -6,6 +6,7 @@
                 :id="'open' + modalId"
                 data-toggle="modal"
                 :data-target="'#' + modalId"
+                :disabled="disabled"
         >
             <i v-if="iconClass" :class="iconClass"></i>
             {{ label }}
@@ -41,6 +42,7 @@
 
 <script>
     export default {
+        name: 'ButtonConfirmation',
         props: {
             btnClass: {
                 type: String,
@@ -61,6 +63,11 @@
             buttons: {
                 type: Array,
                 required: true
+            },
+            disabled: {
+                type: Boolean,
+                required: false,
+                default: false
             }
         },
 

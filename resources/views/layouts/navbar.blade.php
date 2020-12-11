@@ -1,5 +1,37 @@
 <ul class="navbar-nav mr-auto">
     @auth
+        @include('layouts.dropdown-menu', [
+            'title' => __('navbar.orders'),
+            'links' => [
+                [
+                    'label' => __('navbar.addNew'),
+                    'route' => route('order.create')
+                ],
+                [
+                    'label' => __('navbar.list'),
+                    'route' => route('order.index')
+                ],
+                [
+                    'label' => __('navbar.report'),
+                    'route' => route('order.report')
+                ]
+            ]
+        ])
+
+        @include('layouts.dropdown-menu', [
+            'title' => __('navbar.packingList'),
+            'links' => [
+                [
+                    'label' => __('navbar.addNew'),
+                    'route' => route('packing-list.create')
+                ],
+                [
+                    'label' => __('navbar.list'),
+                    'route' => route('packing-list.index')
+                ]
+            ]
+        ])
+
         @if(Auth::user()->isAdmin())
             @include('layouts.dropdown-menu', [
                 'title' => __('navbar.users'),
@@ -54,38 +86,6 @@
                 [
                     'label' => __('navbar.list'),
                     'route' => route('box.index')
-                ]
-            ]
-        ])
-
-        @include('layouts.dropdown-menu', [
-            'title' => __('navbar.orders'),
-            'links' => [
-                [
-                    'label' => __('navbar.addNew'),
-                    'route' => route('order.create')
-                ],
-                [
-                    'label' => __('navbar.list'),
-                    'route' => route('order.index')
-                ],
-                [
-                    'label' => __('navbar.report'),
-                    'route' => route('order.report')
-                ]
-            ]
-        ])
-
-        @include('layouts.dropdown-menu', [
-            'title' => __('navbar.packingList'),
-            'links' => [
-                [
-                    'label' => __('navbar.addNew'),
-                    'route' => route('packing-list.create')
-                ],
-                [
-                    'label' => __('navbar.list'),
-                    'route' => route('packing-list.index')
                 ]
             ]
         ])

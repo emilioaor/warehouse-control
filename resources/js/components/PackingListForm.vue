@@ -32,6 +32,7 @@
                                             @selectResult="changeCourier($event)"
                                             :input-class="errors.has('courier_id', 'report') ? 'is-invalid' : ''"
                                             :value="courier ? courier.searchDescription : ''"
+                                            :nullable="true"
                                             :read-only="!!editData"
                                     ></search-input>
                                     <input
@@ -39,7 +40,7 @@
                                             name="courier_id"
                                             id="courier_id"
                                             v-validate
-                                            data-vv-rules="required"
+                                            data-vv-rules=""
                                             data-vv-scope="report"
                                             v-model="form.courier_id"
                                     >
@@ -49,7 +50,7 @@
                                     </span>
                                 </div>
 
-                                <div class="col-sm-6 col-md-4 form-group">
+                                <div class="col-sm-6 col-md-4 form-group" v-if="! editData">
                                     <label for="customer_id">{{ t('validation.attributes.customer') }}</label>
 
                                     <search-input
@@ -58,7 +59,6 @@
                                             @selectResult="changeCustomer($event)"
                                             :input-class="errors.has('customer_id') ? 'is-invalid' : ''"
                                             :value="customer ? customer.searchDescription : ''"
-                                            :disabled="! courier"
                                             :nullable="true"
                                             :read-only="!!editData"
                                     ></search-input>
@@ -76,7 +76,19 @@
                                     </span>
                                 </div>
 
-                                <div class="col-sm-6 col-md-4 form-group">
+                                <div class="col-sm-6 col-md-4 form-group" v-if="editData">
+                                    <label> {{ t('validation.attributes.status') }}</label>
+                                    <div>
+                                        <span
+                                                class="d-inline-block p-1 rounded status"
+                                                :class="form.status === 'pending_send' ? 'bg-info text-white' : 'bg-success text-white'"
+                                        >
+                                            {{ t('status.' + form.status) }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 col-md-4 form-group text-right">
                                     <button
                                             type="button"
                                             class="btn btn-info text-white"
@@ -96,10 +108,11 @@
                                 </button>
 
                                 <button-confirmation
-                                        :label="t('form.markAsReceived')"
+                                        :label="t('form.save')"
                                         btn-class="btn btn-secondary"
-                                        icon-class="fa fa-check"
+                                        icon-class="fa fa-save"
                                         v-if="!loading && results.length && !editData"
+                                        :disabled="! oneCourierOnly"
                                         :confirmation="t('form.areYouSure')"
                                         :buttons="[
                                         {
@@ -116,10 +129,35 @@
                                         @confirmed="validatePackingList($event)"
                                 ></button-confirmation>
 
+                                <button-confirmation
+                                        :label="t('form.markAsReceived')"
+                                        btn-class="btn btn-primary"
+                                        icon-class="fa fa-check"
+                                        v-if="!loading && form.status === 'pending_send'"
+                                        :confirmation="t('form.areYouSure')"
+                                        :buttons="[
+                                        {
+                                            label: t('form.yes'),
+                                            btnClass: 'btn btn-success',
+                                            code: 'yes'
+                                        },
+                                        {
+                                            label: t('form.no'),
+                                            btnClass: 'btn btn-danger',
+                                            code: 'no'
+                                        }
+                                    ]"
+                                        @confirmed="validatePackingList($event)"
+                                ></button-confirmation>
+
+                                <span class="invalid-feedback d-block" role="alert" v-if="results.length && ! oneCourierOnly">
+                                    <strong>{{ t('validation.oneCourier') }}</strong>
+                                </span>
+
                                 <img src="/img/loading.gif" v-if="loading">
                             </div>
 
-                            <div class="row mt-4 not-print" v-if="results.length">
+                            <div class="row mt-4 not-print" v-if="results.length && editData">
                                 <div class="col-sm-6 col-md-3 form-group">
                                     <label for="sign"> {{ t('validation.attributes.sign') }}</label>
 
@@ -130,7 +168,7 @@
                                     >
 
                                         <img
-                                                :src="editData ? '/storage/' + form.sign : form.sign"
+                                                :src="form.status === 'sent' ? '/storage/' + form.sign : form.sign"
                                                 alt="sign"
                                                 v-if="form.sign"
                                         >
@@ -154,16 +192,16 @@
                                     <label for="photo"> {{ t('validation.attributes.photo') }}</label>
 
                                     <div class="photo" @click="openImageExplorer(image.url)">
-                                        <button class="btn btn-danger" @click="removeImage(i)" v-if="! editData">
+                                        <button type="button" class="btn btn-danger" @click="removeImage(i)" v-if="form.status === 'pending_send'">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                         <img
-                                            :src="editData ? '/storage/' + image.url : image.url"
+                                            :src="form.status === 'sent' ? '/storage/' + image.url : image.url"
                                         >
                                     </div>
                                 </div>
 
-                                <div class="col-sm-6 col-md-3 form-group not-print" v-if="!editData">
+                                <div class="col-sm-6 col-md-3 form-group not-print" v-if="editData && form.status === 'pending_send'">
                                     <label for="photo"> {{ t('validation.attributes.photo') }}</label>
 
                                     <input
@@ -225,7 +263,8 @@
                                                 <template v-for="(detail, ii) in result.order_details">
                                                     <tr v-if="ii === 0 && ! editData" class="not-print">
                                                         <td colspan="6" class="order-head">
-                                                            Order ({{ result.date | date }})
+                                                            {{ result.courier.name }}
+                                                            ({{ result.date | date }})
                                                             {{ result.order_details.length }}
                                                             {{ t('form.lines') }}
 
@@ -332,9 +371,17 @@
 
             savePackingList() {
                 this.loading = true;
-                this.form.orderIds = this.results.map(r => r.id);
+                const payload = {
+                    ...this.form
+                };
+                payload.orderIds = this.results.map(r => r.id);
+                payload.courier_id = this.results[0].courier_id;
 
-                ApiService.post('/warehouse/packing-list', this.form).then(res => {
+                const apiService = this.editData ?
+                    ApiService.put('/warehouse/packing-list/' + this.editData.uuid, payload) :
+                    ApiService.post('/warehouse/packing-list', payload);
+
+                apiService.then(res => {
 
                     if (res.data.success) {
                         location.href = res.data.redirect;
@@ -346,8 +393,14 @@
             },
 
             changeCourier(result) {
-                this.courier = result;
-                this.form.courier_id= result.id;
+                if (result) {
+                    this.courier = result;
+                    this.form.courier_id= result.id;
+                } else {
+                    this.courier = null;
+                    this.form.courier_id= null;
+                }
+
                 this.results = [];
             },
 
@@ -359,6 +412,8 @@
                     this.customer = null;
                     this.form.customer_id = null;
                 }
+
+                this.results = [];
             },
 
             print() {
@@ -370,7 +425,7 @@
             },
 
             openImageExplorer(url) {
-                if (this.editData) {
+                if (this.form.status === 'sent') {
                     window.open('/storage/' + url);
                 } else if (! url) {
                     document.querySelector('#photo').click();
@@ -378,7 +433,7 @@
             },
 
             openSignature() {
-                if (this.editData) {
+                if (this.form.status === 'sent') {
                     if (this.form.sign) {
                         window.open('/storage/' + this.form.sign);
                     }
@@ -415,6 +470,18 @@
 
             removeImage(index) {
                 this.form.packing_list_images.splice(index, 1);
+            }
+        },
+
+        computed: {
+            oneCourierOnly() {
+                if (this.results.length) {
+                    const courierId = this.results[0].courier_id;
+
+                    return ! this.results.find(r => r.courier_id !== courierId);
+                }
+
+                return false;
             }
         }
     }
@@ -506,5 +573,10 @@
             max-height: 160px;
             max-width: 100%;
         }
+    }
+
+    .status {
+        width: 80px;
+        text-align: center;
     }
 </style>

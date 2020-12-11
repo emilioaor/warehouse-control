@@ -109,7 +109,7 @@ class Order extends Model implements IuuidGenerator
     }
 
     /**
-     * Roles available
+     * Status available
      */
     public static function statusAvailable(): array
     {
@@ -213,13 +213,16 @@ class Order extends Model implements IuuidGenerator
     /**
      * Scope packing list
      */
-    public function scopePendingForPackingList(Builder $query, int $courierId, ?int $customerId): Builder
+    public function scopePendingForPackingList(Builder $query, ?int $courierId, ?int $customerId): Builder
     {
         $query
-            ->pending()
-            ->where('courier_id', $courierId)
+            ->whereNull('packing_list_id')
             ->with(['orderDetails', 'customer', 'courier'])
         ;
+
+        if ($courierId) {
+            $query->where('courier_id', $courierId);
+        }
 
         if ($customerId) {
             $query->where('customer_id', $customerId);

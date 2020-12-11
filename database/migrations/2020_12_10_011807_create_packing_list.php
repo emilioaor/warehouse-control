@@ -17,7 +17,8 @@ class CreatePackingList extends Migration
             $table->id();
             $table->string('uuid', 15)->unique();
             $table->foreignId('courier_id')->constrained('couriers');
-            $table->string('sign');
+            $table->string('sign')->nullable();
+            $table->enum('status', ['pending_send', 'sent']);
             $table->timestamps();
             $table->softDeletes();
         });
