@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OrderCreated;
 use App\Order;
 use App\OrderDetail;
 use App\Service\AlertService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -64,6 +66,8 @@ class OrderController extends Controller
             $detail->order_id = $order->id;
             $detail->save();
         }
+
+        Mail::to([$order->customer->email])->send(new OrderCreated($order));
 
         DB::commit();
 
