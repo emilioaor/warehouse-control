@@ -527,7 +527,7 @@
         }
 
         h5 {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             margin: 1rem 0;
         }
 
@@ -541,7 +541,7 @@
 
         .table {
             border: solid 2px #999999;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             margin-top: 0 !important;
         }
     }
