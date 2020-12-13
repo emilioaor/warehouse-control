@@ -6,7 +6,7 @@
                     <div class="card-header">
 
                         {{ t('navbar.report') }}
-                        {{ t('navbar.orders') }}
+                        {{ t('navbar.packingList') }}
                     </div>
 
                     <div class="card-body">
@@ -65,19 +65,6 @@
                                 </div>
 
                                 <div class="col-sm-6 col-md-4 form-group">
-                                    <label> {{ t('validation.attributes.customer') }}</label>
-                                    <search-input
-                                            route="/warehouse/customer"
-                                            :description-fields="['description']"
-                                            @selectResult="changeCustomer($event)"
-                                            :nullable="true"
-                                            :value="customer ? customer.searchDescription : ''"
-                                    ></search-input>
-
-                                    <input type="hidden" v-model="form.customer_id">
-                                </div>
-
-                                <div class="col-sm-6 col-md-4 form-group">
                                     <label> {{ t('validation.attributes.courier') }}</label>
                                     <search-input
                                             route="/warehouse/courier"
@@ -107,25 +94,31 @@
                                     <thead>
                                         <tr>
                                             <th>{{ t('validation.attributes.date') }}</th>
-                                            <th>{{ t('validation.attributes.customer') }}</th>
                                             <th>{{ t('validation.attributes.courier') }}</th>
-                                            <th>{{ t('validation.attributes.salesOrder') }}</th>
                                             <th width="1%" class="text-center">{{ t('validation.attributes.status') }}</th>
+                                            <th width="5%"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr v-for="(result, i) in results" :key="i">
-                                            <td>{{ result.date |date }}</td>
-                                            <td>{{ result.customer.description }}</td>
+                                            <td>{{ result.created_at |date }}</td>
                                             <td>{{ result.courier.name }}</td>
-                                            <td>{{ result.invoice_number }}</td>
                                             <td class="text-center">
                                                 <span
-                                                        class="d-inline-block p-1 rounded status"
-                                                        :class="result.status === 'pending_send' ? 'bg-info text-white' : 'bg-success text-white'"
+                                                    class="d-inline-block p-1 rounded status"
+                                                    :class="result.status === 'pending_send' ? 'bg-info text-white' : 'bg-success text-white'"
                                                 >
                                                     {{ t('status.' + result.status) }}
                                                 </span>
+                                            </td>
+                                            <td>
+                                                <a
+                                                    class="btn btn-warning"
+                                                    :href="'/warehouse/packing-list/' + result.uuid + '/edit'"
+                                                    target="_blank"
+                                                >
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -144,6 +137,7 @@
     import ApiService from '../services/ApiService'
 
     export default {
+        name: 'PackingListReport',
         props: {
             statusList: {
                 type: Object,
@@ -157,12 +151,9 @@
                 end: new Date(),
                 form: {
                     start: null,
-                    end: null,
-                    customer_id: null,
                     courier_id: null,
                     status: 0
                 },
-                customer: null,
                 courier: null,
                 loading: false,
                 results: []
@@ -183,22 +174,12 @@
                 this.loading = true;
                 this.results = [];
 
-                ApiService.post('/warehouse/order/report', this.form).then(res => {
+                ApiService.post('/warehouse/packing-list/report', this.form).then(res => {
                     this.results = res.data.data;
                     this.loading = false;
                 }).catch(err => {
                     this.loading = false;
                 })
-            },
-
-            changeCustomer(result) {
-                if (result) {
-                    this.customer = result;
-                    this.form.customer_id = result.id;
-                } else {
-                    this.customer = null;
-                    this.form.customer_id = null;
-                }
             },
 
             changeCourier(result) {

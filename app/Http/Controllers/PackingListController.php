@@ -153,4 +153,27 @@ class PackingListController extends Controller
     {
         //
     }
+
+    /**
+     * Report
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function report()
+    {
+        return view('packing-list.report');
+    }
+
+    /**
+     * Report order
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function reportProcess(Request $request)
+    {
+        $orders = PackingList::query()->report($request->all())->get();
+
+        return response()->json(['success' => true, 'data' => $orders]);
+    }
 }

@@ -28,6 +28,10 @@
                 [
                     'label' => __('navbar.list'),
                     'route' => route('packing-list.index')
+                ],
+                [
+                    'label' => __('navbar.report'),
+                    'route' => route('packing-list.report')
                 ]
             ]
         ])

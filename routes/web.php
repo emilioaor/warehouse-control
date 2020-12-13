@@ -28,8 +28,10 @@ Route::group(['middleware' => 'auth', 'prefix' => 'warehouse'], function () {
     Route::resource('courier', 'CourierController');
     Route::resource('customer', 'CustomerController');
     Route::resource('box', 'BoxController');
-    Route::resource('packing-list', 'PackingListController');
 
+    Route::get('packing-list/report', 'PackingListController@report')->name('packing-list.report');
+    Route::post('packing-list/report', 'PackingListController@reportProcess');
+    Route::resource('packing-list', 'PackingListController');
 
     Route::get('order/report', 'OrderController@report')->name('order.report');
     Route::post('order/report', 'OrderController@reportProcess');

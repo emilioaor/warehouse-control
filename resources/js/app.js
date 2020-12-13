@@ -32,6 +32,7 @@ Vue.component('box-form', require('./components/BoxForm.vue').default);
 Vue.component('order-form', require('./components/OrderForm.vue').default);
 Vue.component('order-report', require('./components/OrderReport.vue').default);
 Vue.component('packing-list-form', require('./components/PackingListForm.vue').default);
+Vue.component('packing-list-report', require('./components/PackingListReport.vue').default);
 Vue.component('button-confirmation', require('./components/ButtonConfirmation.vue').default);
 Vue.component('signature', require('./components/Signature.vue').default);
 

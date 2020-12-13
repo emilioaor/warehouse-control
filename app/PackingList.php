@@ -5,6 +5,7 @@ namespace App;
 use App\Contract\SearchTrait;
 use App\Contract\TimeZoneLocalTrait;
 use App\Contract\UuidGeneratorTrait;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -119,5 +120,32 @@ class PackingList extends Model
         return "<div class=\"{$class} d-inline-block p-1 rounded\" style='width: 80px; text-align: center'>
                     <strong>{$statusText}</strong>
                 </div>";
+    }
+
+    /**
+     * Scope report
+     */
+    public function scopeReport(Builder $query, array $params): Builder
+    {
+        $start = new Carbon($params['start']);
+        $end = new Carbon($params['end']);
+        $status = $params['status'];
+        $courierId = $params['courier_id'];
+
+        $query
+            ->whereBetween('created_at', [$start, $end])
+            ->with(['courier'])
+            ->orderBy('created_at')
+        ;
+
+        if ($status !== 0) {
+            $query->where('status', $status);
+        }
+
+        if ($courierId) {
+            $query->where('courier_id', $courierId);
+        }
+
+        return $query;
     }
 }
