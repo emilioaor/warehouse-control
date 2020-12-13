@@ -253,8 +253,8 @@
                                                 <th width="1%" class="text-center not-print" v-if="! editData"></th>
                                                 <th class="text-center">{{ t('validation.attributes.salesOrder') }}</th>
                                                 <th class="text-center">{{ t('validation.attributes.customer') }}</th>
-                                                <th class="text-center" width="1%">{{ t('validation.attributes.boxes') }}</th>
                                                 <th class="text-center">{{ t('validation.attributes.size') }}</th>
+                                                <th class="text-center" width="1%">{{ t('validation.attributes.boxes') }}</th>
                                                 <th class="text-center">{{ t('validation.attributes.weight') }}</th>
                                             </tr>
                                         </thead>
@@ -285,13 +285,22 @@
                                                         </td>
                                                         <td class="text-center">{{ result.invoice_number }}</td>
                                                         <td class="text-center">{{ result.customer.description }}</td>
-                                                        <td class="text-center">{{ detail.qty }}</td>
                                                         <td class="text-center">{{ detail.size }}</td>
+                                                        <td class="text-center">{{ detail.qty }}</td>
                                                         <td class="text-center">{{ detail.weight }}</td>
                                                     </tr>
                                                 </template>
                                             </template>
                                         </tbody>
+                                        <tfoot v-if="editData">
+                                            <tr>
+                                                <th class="text-center">{{ t('form.totals') }}</th>
+                                                <td></td>
+                                                <td></td>
+                                                <td class="text-center">{{ qtySum }}</td>
+                                                <td class="text-center">{{ weightSum }}</td>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
@@ -482,6 +491,24 @@
                 }
 
                 return false;
+            },
+
+            weightSum() {
+                let sum = 0;
+                this.results.forEach(result => {
+                    result.order_details.forEach(detail => sum += detail.weight);
+                });
+
+                return sum
+            },
+
+            qtySum() {
+                let sum = 0;
+                this.results.forEach(result => {
+                    result.order_details.forEach(detail => sum += detail.qty);
+                });
+
+                return sum
             }
         }
     }

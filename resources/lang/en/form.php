@@ -20,6 +20,8 @@ return [
     'freightForwarder' => 'Freight forwarder',
     'sendByEmail' => 'Send by email',
     'lines' => 'Lines',
-    'addEmail' => 'Add email'
+    'addEmail' => 'Add email',
+    'total' => 'Total',
+    'totals' => 'Totals',
 
 ];

@@ -207,13 +207,12 @@
                                                     </button>
                                                 </td>
                                             </tr>
-                                            <tr>
+                                            <tr v-if="! editData">
                                                 <td colspan="6">
                                                     <button
                                                             type="button"
                                                             class="btn btn-success"
                                                             @click="addDetail()"
-                                                            v-if="! editData"
                                                     >
                                                         <i class="fa fa-box"></i>
                                                         {{ t('form.add') }} {{ t('navbar.boxes') }}
@@ -221,6 +220,27 @@
                                                 </td>
                                             </tr>
                                         </tbody>
+                                        <tfoot v-if="editData">
+                                            <tr>
+                                                <td colspan="3">{{ t('form.totals') }}</td>
+                                                <td>
+                                                    <input
+                                                        type="text"
+                                                        class="form-control"
+                                                        readonly="readonly"
+                                                        :value="weightSum"
+                                                    >
+                                                </td>
+                                                <td>
+                                                    <input
+                                                        type="text"
+                                                        class="form-control"
+                                                        readonly="readonly"
+                                                        :value="qtySum"
+                                                    >
+                                                </td>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
 
@@ -443,6 +463,22 @@
 
             openImageExplorer(url) {
                 window.open('/storage/' + url);
+            }
+        },
+
+        computed: {
+            weightSum() {
+                let sum = 0;
+                this.form.order_details.forEach(detail => sum += detail.weight);
+
+                return sum
+            },
+
+            qtySum() {
+                let sum = 0;
+                this.form.order_details.forEach(detail => sum += detail.qty);
+
+                return sum
             }
         }
     }
