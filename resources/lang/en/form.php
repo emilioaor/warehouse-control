@@ -19,6 +19,7 @@ return [
     'date' => 'Date',
     'freightForwarder' => 'Freight forwarder',
     'sendByEmail' => 'Send by email',
-    'lines' => 'Lines'
+    'lines' => 'Lines',
+    'addEmail' => 'Add email'
 
 ];

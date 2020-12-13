@@ -28,7 +28,7 @@
                                 @foreach($customers as $customer)
                                     <tr>
                                         <td>{{ $customer->description }}</td>
-                                        <td>{{ $customer->email }}</td>
+                                        <td>{{ $customer->customerEmails[0]->email }}</td>
                                         <td>{{ $customer->defaultCourier->name }}</td>
                                         <td>{{ $customer->phone }}</td>
                                         <td>{{ $customer->created_at_local->format('d-m-Y') }}</td>

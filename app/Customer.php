@@ -55,6 +55,14 @@ class Customer extends Model implements IuuidGenerator
     }
 
     /**
+     * Emails
+     */
+    public function customerEmails(): HasMany
+    {
+        return $this->hasMany(CustomerEmail::class, 'customer_id');
+    }
+
+    /**
      * Scope search
      */
     public function scopeSearch(Builder $query, ?string $search): Builder
@@ -62,5 +70,32 @@ class Customer extends Model implements IuuidGenerator
         $query->select(['customers.*'])->join('couriers', 'couriers.id', '=', 'customers.default_courier_id');
 
         return $this->_search($query, $search);
+    }
+
+    /**
+     * Update customer emails
+     */
+    public function updateCustomerEmails(array $customerEmails): void
+    {
+        $notDelete = [];
+
+        foreach ($customerEmails as $ce) {
+            if (isset($ce['id'])) {
+                // Update
+                $customerEmail = CustomerEmail::query()->find($ce['id']);
+                $customerEmail->email = $ce['email'];
+                $customerEmail->save();
+            } else {
+                // Create
+                $customerEmail = new CustomerEmail($ce);
+                $customerEmail->customer_id = $this->id;
+                $customerEmail->save();
+            }
+
+            $notDelete[] = $customerEmail->id;
+        }
+
+        // Delete
+        $this->customerEmails()->whereNotIn('id', $notDelete)->delete();
     }
 }

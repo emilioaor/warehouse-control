@@ -61,26 +61,6 @@
                                 </div>
 
                                 <div class="col-sm-6 col-md-4 form-group">
-                                    <label for="email"> {{ t('validation.attributes.email') }}</label>
-                                    <input
-                                            type="text"
-                                            name="email"
-                                            id="email"
-                                            class="form-control"
-                                            :class="{'is-invalid': errors.has('email')}"
-                                            v-validate
-                                            data-vv-rules="required|email"
-                                            v-model="form.email"
-                                    >
-                                    <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('email', 'required')">
-                                        <strong>{{ t('validation.required', {attribute: 'email'}) }}</strong>
-                                    </span>
-                                    <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('email', 'email')">
-                                        <strong>{{ t('validation.email', {attribute: 'email'}) }}</strong>
-                                    </span>
-                                </div>
-
-                                <div class="col-sm-6 col-md-4 form-group">
                                     <label for="default_courier_id"> {{ t('validation.attributes.courierDefault') }}</label>
                                     <search-input
                                             route="/warehouse/courier"
@@ -117,6 +97,48 @@
                                     <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('address', 'required')">
                                         <strong>{{ t('validation.required', {attribute: 'address'}) }}</strong>
                                     </span>
+                                </div>
+
+                                <div class="col-sm-6 col-md-4 form-group" v-for="(customerEmail, i) in form.customer_emails">
+                                    <label :for="'email' + i">
+                                        {{ t('validation.attributes.email') }}
+                                        {{ i + 1 }}
+                                    </label>
+
+                                    <div class="input-group">
+                                        <input
+                                                type="text"
+                                                :name="'email' + i"
+                                                :id="'email' + i"
+                                                class="form-control"
+                                                :class="{'is-invalid': errors.has('email'  + i)}"
+                                                v-validate
+                                                data-vv-rules="required|email"
+                                                v-model="customerEmail.email"
+                                        >
+                                        <span class="input-group-btn" v-if="i > 0">
+                                            <button type="button" class="btn btn-danger" @click="removeEmail(i)">
+                                                X
+                                            </button>
+                                        </span>
+
+                                        <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('email' + i, 'required')">
+                                            <strong>{{ t('validation.required', {attribute: 'email'}) }}</strong>
+                                        </span>
+                                        <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('email' + i, 'email')">
+                                            <strong>{{ t('validation.email', {attribute: 'email'}) }}</strong>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 col-md-4 form-group">
+                                    <label> {{ t('form.addEmail') }}</label>
+                                    <div>
+                                        <button type="button" class="btn btn-add-email w-100" @click="addEmail()">
+                                            <i class="fa fa-plus"></i>
+                                            <i class="fa fa-card"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
 
@@ -184,9 +206,11 @@
                 form: {
                     description: null,
                     phone: null,
-                    email: null,
                     default_courier_id: null,
-                    address: null
+                    address: null,
+                    customer_emails: [
+                        {email: null}
+                    ]
                 },
                 loading: false,
                 courier: null
@@ -234,6 +258,22 @@
                 this.courier = result;
                 this.form.default_courier_id= result.id;
             },
+
+            addEmail() {
+                this.form.customer_emails.push({
+                    email: null
+                })
+            },
+
+            removeEmail(index) {
+                this.form.customer_emails.splice(index, 1);
+            }
         }
     }
 </script>
+
+<style lang="scss" scoped>
+    .btn-add-email {
+        border: solid 1px #ccc;
+    }
+</style>

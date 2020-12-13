@@ -6,6 +6,7 @@ use App\Courier;
 use App\Customer;
 use App\Service\AlertService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
 {
@@ -26,7 +27,11 @@ class CustomerController extends Controller
      */
     public function index(Request $request)
     {
-        $customers = Customer::query()->search($request->search)->with(['defaultCourier'])->paginate();
+        $customers = Customer::query()
+            ->search($request->search)
+            ->with(['defaultCourier', 'customerEmails'])
+            ->paginate()
+        ;
 
         if ($request->wantsJson()) {
             return response()->json(['success' => true, 'data' => $customers]);
@@ -55,8 +60,14 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
+        DB::beginTransaction();
+
         $customer = new Customer($request->all());
         $customer->save();
+
+        $customer->updateCustomerEmails($request->customer_emails);
+
+        DB::commit();
 
         AlertService::alertSuccess(__('alert.processSuccessfully'));
 
@@ -82,7 +93,11 @@ class CustomerController extends Controller
      */
     public function edit($id)
     {
-        $customer = Customer::query()->uuid($id)->with(['defaultCourier'])->firstOrFail();
+        $customer = Customer::query()
+            ->uuid($id)
+            ->with(['defaultCourier', 'customerEmails'])
+            ->firstOrFail()
+        ;
 
         return view('customer.form', compact('customer'));
     }
@@ -96,9 +111,15 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
+        DB::beginTransaction();
+
         $customer = Customer::query()->uuid($id)->firstOrFail();
         $customer->fill($request->all());
         $customer->save();
+
+        $customer->updateCustomerEmails($request->customer_emails);
+
+        DB::commit();
 
         AlertService::alertSuccess(__('alert.processSuccessfully'));
 

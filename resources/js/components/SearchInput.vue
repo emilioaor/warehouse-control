@@ -13,6 +13,7 @@
             >
             <span class="input-group-btn">
                 <button
+                        type="button"
                         class="btn btn-danger"
                         v-if="nullable && value && ! readOnly"
                         @click="clearResult()"

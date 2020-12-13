@@ -67,7 +67,7 @@ class OrderController extends Controller
             $detail->save();
         }
 
-        Mail::to([$order->customer->email])->send(new OrderCreated($order));
+        Mail::to($order->customer->customerEmails->pluck('email')->toArray())->send(new OrderCreated($order));
 
         DB::commit();
 
