@@ -304,6 +304,26 @@
                                     </table>
                                 </div>
                             </div>
+
+                            <div class="row mt-5 print-only print-flex" v-if="results.length && editData && editData.status === 'sent'">
+                                <div class="col-sm-6 form-group">
+                                    <label> {{ t('validation.attributes.sign') }}</label>
+
+                                    <div class="sign">
+                                        <img :src="form.status === 'sent' ? '/storage/' + form.sign : form.sign" v-if="form.sign">
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 form-group" v-for="(image, i) in form.packing_list_images">
+                                    <label> {{ t('validation.attributes.photo') }}</label>
+
+                                    <div class="photo">
+                                        <img
+                                            :src="form.status === 'sent' ? '/storage/' + image.url : image.url"
+                                        >
+                                    </div>
+                                </div>
+                            </div>
                         </form>
 
                     </div>
@@ -545,6 +565,9 @@
         .not-print {
             display: none;
         }
+        .print-flex {
+            display: flex;
+        }
 
         @page {
             margin: 85px 0 100px 0;
@@ -570,6 +593,15 @@
             border: solid 2px #999999;
             font-size: 1.5rem;
             margin-top: 0 !important;
+        }
+
+        .sign,
+        .photo {
+            height: 300px;
+
+            img {
+                max-height: 300px;
+            }
         }
     }
 
