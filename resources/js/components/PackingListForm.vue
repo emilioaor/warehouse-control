@@ -291,16 +291,14 @@
                                                     </tr>
                                                 </template>
                                             </template>
-                                        </tbody>
-                                        <tfoot v-if="editData">
-                                            <tr>
+                                            <tr v-if="editData">
                                                 <th class="text-center">{{ t('form.totals') }}</th>
                                                 <td></td>
                                                 <td></td>
                                                 <td class="text-center">{{ qtySum }}</td>
                                                 <td class="text-center">{{ weightSum }}</td>
                                             </tr>
-                                        </tfoot>
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>
