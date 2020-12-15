@@ -28,7 +28,7 @@ class PackingList extends Model
 
     protected $fillable = ['courier_id'];
 
-    protected $search_fields = ['courier.name'];
+    protected $search_fields = ['couriers.name'];
 
     /**
      * Attached images

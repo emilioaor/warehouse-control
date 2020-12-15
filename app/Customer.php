@@ -34,7 +34,7 @@ class Customer extends Model implements IuuidGenerator
     protected $search_fields = [
         'customers.description',
         'customers.phone',
-        'customers.email',
+        'customer_emails.email',
         'couriers.name'
     ];
 
@@ -67,7 +67,11 @@ class Customer extends Model implements IuuidGenerator
      */
     public function scopeSearch(Builder $query, ?string $search): Builder
     {
-        $query->select(['customers.*'])->join('couriers', 'couriers.id', '=', 'customers.default_courier_id');
+        $query->select(['customers.*'])
+            ->join('couriers', 'couriers.id', '=', 'customers.default_courier_id')
+            ->join('customer_emails', 'customer_emails.customer_id', '=', 'customers.id')
+            ->distinct()
+        ;
 
         return $this->_search($query, $search);
     }

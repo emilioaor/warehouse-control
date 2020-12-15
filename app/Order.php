@@ -42,7 +42,11 @@ class Order extends Model implements IuuidGenerator
         'date' => 'datetime'
     ];
 
-    protected $search_fields = ['customers.description', 'couriers.name'];
+    protected $search_fields = [
+        'customers.description',
+        'couriers.name',
+        'orders.invoice_number'
+    ];
 
     public function __construct(array $attributes = [])
     {
