@@ -230,7 +230,7 @@
 
                             <div class="row" v-if="results.length">
                                 <div class="col-12 text-right print-only">
-                                    <img src="/img/techland.png" class="logo">
+                                    <img src="/img/logo.jpeg" class="logo">
                                 </div>
 
                                 <div class="col-8 print-only">
@@ -243,6 +243,13 @@
                                     <h5>
                                         <strong>{{ t('form.date') }}:</strong>
                                         {{ (new Date()) | date }}
+                                    </h5>
+                                </div>
+
+                                <div class="col-12 print-only">
+                                    <h5>
+                                        1701 NW 87 Av suite 300 Doral FL 33122 /
+                                        <strong>{{ t('form.phone') }}:</strong> 305 614 4478
                                     </h5>
                                 </div>
 
@@ -572,6 +579,7 @@
         }
         .logo {
             margin: 0 0 1rem;
+            width: 300px;
         }
 
         h5 {

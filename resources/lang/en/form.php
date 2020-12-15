@@ -23,5 +23,7 @@ return [
     'addEmail' => 'Add email',
     'total' => 'Total',
     'totals' => 'Totals',
+    'address' => 'Address',
+    'phone' => 'Phone'
 
 ];
