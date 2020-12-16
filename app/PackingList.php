@@ -139,19 +139,36 @@ class PackingList extends Model
         $end = new Carbon($params['end']);
         $status = $params['status'];
         $courierId = $params['courier_id'];
+        $customerId = $params['customer_id'];
+        $invoiceNumber = $params['invoice_number'];
 
         $query
-            ->whereBetween('created_at', [$start, $end])
-            ->with(['courier'])
-            ->orderBy('created_at')
+            ->select(['packing_lists.*'])
+            ->join('orders', 'orders.packing_list_id', '=', 'packing_lists.id')
+            ->whereBetween('packing_lists.created_at', [$start, $end])
+            ->with([
+                'courier',
+                'orders.orderDetails',
+                'orders.customer',
+            ])
+            ->orderBy('packing_lists.created_at')
+            ->distinct()
         ;
 
         if ($status !== 0) {
-            $query->where('status', $status);
+            $query->where('packing_lists.status', $status);
         }
 
         if ($courierId) {
-            $query->where('courier_id', $courierId);
+            $query->where('packing_lists.courier_id', $courierId);
+        }
+
+        if ($customerId) {
+            $query->where('orders.customer_id', $customerId);
+        }
+
+        if ($invoiceNumber) {
+            $query->where('orders.invoice_number', $invoiceNumber);
         }
 
         return $query;

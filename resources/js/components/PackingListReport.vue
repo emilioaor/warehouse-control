@@ -76,6 +76,24 @@
 
                                     <input type="hidden" v-model="form.courier_id">
                                 </div>
+
+                                <div class="col-sm-6 col-md-4 form-group">
+                                    <label> {{ t('validation.attributes.customer') }}</label>
+                                    <search-input
+                                            route="/warehouse/customer"
+                                            :description-fields="['description']"
+                                            @selectResult="changeCustomer($event)"
+                                            :nullable="true"
+                                            :value="customer ? customer.searchDescription : ''"
+                                    ></search-input>
+
+                                    <input type="hidden" v-model="form.courier_id">
+                                </div>
+
+                                <div class="col-sm-6 col-md-4 form-group">
+                                    <label> {{ t('validation.attributes.salesOrder') }}</label>
+                                    <input type="text" class="form-control" v-model="form.invoice_number">
+                                </div>
                             </div>
 
                             <div>
@@ -90,37 +108,60 @@
 
                         <div class="row" v-if="results.length">
                             <div class="col-12">
-                                <table class="table table-responsive table-striped mt-4">
+                                <table class="table table-responsive mt-4">
                                     <thead>
-                                        <tr>
-                                            <th>{{ t('validation.attributes.date') }}</th>
-                                            <th>{{ t('validation.attributes.courier') }}</th>
-                                            <th width="1%" class="text-center">{{ t('validation.attributes.status') }}</th>
-                                            <th width="5%"></th>
-                                        </tr>
+                                    <tr>
+                                        <th width="1%" class="text-center"></th>
+                                        <th class="text-center">{{ t('validation.attributes.salesOrder') }}</th>
+                                        <th class="text-center">{{ t('validation.attributes.customer') }}</th>
+                                        <th class="text-center" width="1%">{{ t('validation.attributes.boxes') }}</th>
+                                        <th class="text-center">{{ t('validation.attributes.size') }}</th>
+                                        <th class="text-center">{{ t('validation.attributes.weight') }}</th>
+                                    </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="(result, i) in results" :key="i">
-                                            <td>{{ result.created_at |date }}</td>
-                                            <td>{{ result.courier.name }}</td>
-                                            <td class="text-center">
-                                                <span
-                                                    class="d-inline-block p-1 rounded status"
-                                                    :class="result.status === 'pending_send' ? 'bg-info text-white' : 'bg-success text-white'"
-                                                >
-                                                    {{ t('status.' + result.status) }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <a
-                                                    class="btn btn-warning"
-                                                    :href="'/warehouse/packing-list/' + result.uuid + '/edit'"
-                                                    target="_blank"
-                                                >
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
+                                        <template v-for="(result, i) in results">
+                                            <template v-for="(order, ii) in result.orders">
+                                                <tr v-if="ii === 0" class="order-head">
+                                                    <td colspan="5" >
+                                                        {{ result.courier.name }}
+                                                        ({{ result.created_at | date }})
+                                                        {{ order.order_details.length }}
+                                                        {{ t('form.lines') }}
+
+                                                        <a
+                                                                class="btn btn-link text-white"
+                                                                :href="'/warehouse/packing-list/' + result.uuid + '/edit'"
+                                                                target="_blank"
+                                                        >
+                                                            <i class="fa fa-edit"></i>
+                                                            {{ t('form.edit') }}
+                                                        </a>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span
+                                                            class="d-inline-block p-1 rounded status text-center"
+                                                            :class="result.status === 'pending_send' ? 'bg-info text-white' : 'bg-success text-white'"
+                                                        >
+                                                            {{ t('status.' + result.status) }}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+
+                                                <template v-for="detail in order.order_details">
+                                                    <tr>
+                                                        <td class="">
+                                                            <i class="fa fa-arrow-right"></i>
+                                                        </td>
+                                                        <td class="text-center">{{ order.invoice_number }}</td>
+                                                        <td class="text-center">{{ order.customer.description }}</td>
+                                                        <td class="text-center">{{ detail.qty }}</td>
+                                                        <td class="text-center">{{ detail.size }}</td>
+                                                        <td class="text-center">{{ detail.weight }}</td>
+                                                    </tr>
+                                                </template>
+                                            </template>
+                                        </template>
                                     </tbody>
                                 </table>
                             </div>
@@ -152,9 +193,12 @@
                 form: {
                     start: null,
                     courier_id: null,
+                    customer_id: null,
+                    invoice_number: null,
                     status: 0
                 },
                 courier: null,
+                customer: null,
                 loading: false,
                 results: []
             }
@@ -192,6 +236,16 @@
                 }
             },
 
+            changeCustomer(result) {
+                if (result) {
+                    this.customer = result;
+                    this.form.customer_id = result.id;
+                } else {
+                    this.customer = null;
+                    this.form.customer_id = null;
+                }
+            },
+
             changeDate(date, h, i, s) {
                 date.setHours(h, i, s);
 
@@ -201,12 +255,30 @@
     }
 </script>
 
-<style>
+<style lang="scss">
     .date-picker[readonly] {
         background-color: #ffffff;
     }
 
     .status {
         width: 80px;
+    }
+    .order-head {
+        background-color: #666666;
+        color: #ffffff;
+        font-size: .9rem;
+        padding-top: 0;
+        padding-bottom: 0;
+
+        .btn {
+            font-size: .8rem;
+            &:focus {
+                box-shadow: none;
+                text-decoration: none;
+            }
+            &:hover {
+                text-decoration: none;
+            }
+        }
     }
 </style>
