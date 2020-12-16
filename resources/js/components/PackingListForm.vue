@@ -260,8 +260,8 @@
                                                 <th width="1%" class="text-center not-print" v-if="! editData"></th>
                                                 <th class="text-center">{{ t('validation.attributes.salesOrder') }}</th>
                                                 <th class="text-center">{{ t('validation.attributes.customer') }}</th>
-                                                <th class="text-center">{{ t('validation.attributes.size') }}</th>
                                                 <th class="text-center" width="1%">{{ t('validation.attributes.boxes') }}</th>
+                                                <th class="text-center">{{ t('validation.attributes.size') }}</th>
                                                 <th class="text-center">{{ t('validation.attributes.weight') }}</th>
                                             </tr>
                                         </thead>
@@ -292,8 +292,8 @@
                                                         </td>
                                                         <td class="text-center">{{ result.invoice_number }}</td>
                                                         <td class="text-center">{{ result.customer.description }}</td>
-                                                        <td class="text-center">{{ detail.size }}</td>
                                                         <td class="text-center">{{ detail.qty }}</td>
+                                                        <td class="text-center">{{ detail.size }}</td>
                                                         <td class="text-center">{{ detail.weight }}</td>
                                                     </tr>
                                                 </template>
@@ -301,8 +301,8 @@
                                             <tr v-if="editData">
                                                 <th class="text-center">{{ t('form.totals') }}</th>
                                                 <td></td>
-                                                <td></td>
                                                 <td class="text-center">{{ qtySum }}</td>
+                                                <td></td>
                                                 <td class="text-center">{{ weightSum }}</td>
                                             </tr>
                                         </tbody>
