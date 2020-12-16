@@ -14,7 +14,7 @@ return [
     'all' => 'All',
     'report' => 'Report',
     'generateLabels' => 'Generate labels',
-    'labels' => 'labels',
+    'labels' => 'Labels',
     'print' => 'Print',
     'date' => 'Date',
     'freightForwarder' => 'Freight forwarder',

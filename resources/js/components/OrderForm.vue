@@ -276,15 +276,11 @@
                                      {{ t('form.save') }}
                                 </button>
 
-                                <a
+                                <iframe
+                                    :src="'/warehouse/order/' + editData.uuid + '/labels'"
+                                    frameborder="0"
                                     v-if="!loading && editData"
-                                    :href="'/warehouse/order/' + editData.uuid + '/labels'"
-                                    target="_blank"
-                                    class="btn btn-info text-white"
-                                >
-                                    <i class="fa fa-tag"></i>
-                                    {{ t('form.generateLabels') }}
-                                </a>
+                                ></iframe>
 
                                 <button-confirmation
                                         :label="t('form.delete')"
@@ -514,5 +510,12 @@
 
     .form-control[readonly] {
         background-color: #ffffff;
+    }
+
+    iframe {
+        width: 146px;
+        height: 37px;
+        position: relative;
+        bottom: -14px;
     }
 </style>

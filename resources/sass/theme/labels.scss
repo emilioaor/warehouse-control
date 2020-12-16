@@ -1,50 +1,51 @@
 .whs-labels {
-  max-width: 1000px !important;
-  min-width: 1000px !important;
-
   &__card {
-    border: solid 1px #cccccc;
-    padding: 10px 15px;
-    margin-bottom: 20px;
-  }
-
-  &__customer {
-    font-size: 25px;
-    font-weight: 800;
-  }
-
-  &__courier {
-    font-size: 22px;
-  }
-
-  &__tag {
-    font-size: 60px;
-    text-align: center;
-    font-weight: 800;
-    line-height: 60px;
+    display: none;
   }
 }
 
 @media print {
-  @page {
-    margin: 0;
+  * {
+    box-sizing: border-box;
   }
-  .alert {
+  .btn {
     display: none;
   }
+  .page-break {
+    page-break-after: always;
+  }
+
+  @page {
+    margin: 2cm 0;
+  }
   .whs-labels {
-    .card {
-      border: none;
-    }
-    .card-header {
-      display: none;
-    }
-    .card-footer {
-      display: none;
+    &__card {
+      display: block;
+      padding: 10px 15px;
+      position: relative;
+
+      &-content {
+       // transform: rotate(90deg);
+        //position: absolute;
+        //top: 30%;
+        //left: 30%;
+      }
     }
 
-    &__card {
-      border: none;
+    &__customer {
+      font-size: 75px;
+      font-weight: 800;
+    }
+
+    &__courier {
+      font-size: 65px;
+    }
+
+    &__tag {
+      font-size: 200px;
+      text-align: center;
+      font-weight: 800;
+      //line-height: 120px;
     }
   }
 }
