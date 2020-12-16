@@ -31,6 +31,7 @@ class OrderController extends Controller
     {
         $orders = Order::query()
             ->search($request->search)
+            ->whereNull('packing_list_id')
             ->with(['customer', 'courier'])
             ->orderBy('date', 'DESC')
             ->paginate();
