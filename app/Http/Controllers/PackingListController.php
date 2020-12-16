@@ -21,6 +21,7 @@ class PackingListController extends Controller
     {
         $packingLists = PackingList::query()
             ->search($request->search)
+            ->pending()
             ->with(['courier'])
             ->orderBy('created_at', 'DESC')
             ->paginate();

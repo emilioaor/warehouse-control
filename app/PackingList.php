@@ -123,6 +123,14 @@ class PackingList extends Model
     }
 
     /**
+     * Scope status pending
+     */
+    public function scopePending(Builder $query): Builder
+    {
+        return $query->where('status', self::STATUS_PENDING_SEND);
+    }
+
+    /**
      * Scope report
      */
     public function scopeReport(Builder $query, array $params): Builder
