@@ -57,6 +57,20 @@ class PackingList extends Model
     }
 
     /**
+     * Received at local accessor
+     *
+     * @return Carbon|null
+     */
+    public function getReceivedAtLocalAttribute()
+    {
+        if (! $this->received_at) {
+            return null;
+        }
+
+        return $this->dateToLocalDate($this->received_at);
+    }
+
+    /**
      * Scope search
      */
     public function scopeSearch(Builder $query, ?string $search): Builder

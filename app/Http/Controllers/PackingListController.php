@@ -9,6 +9,7 @@ use App\Service\AlertService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class PackingListController extends Controller
 {
@@ -178,5 +179,27 @@ class PackingListController extends Controller
         $orders = PackingList::query()->report($request->all())->get();
 
         return response()->json(['success' => true, 'data' => $orders]);
+    }
+
+    /**
+     * Send email
+     *
+     * @param int $id
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function sendEmail($id, Request $request)
+    {
+        $packingList = PackingList::query()
+            ->with(['orders.orderDetails', 'orders.customer', 'courier'])
+            ->uuid($id)
+            ->firstOrFail()
+        ;
+
+        Mail::to($request->emails)->send(new \App\Mail\PackingList($packingList));
+
+        AlertService::alertSuccess(__('alert.processSuccessfully'));
+
+        return response()->json(['success' => true]);
     }
 }

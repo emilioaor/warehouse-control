@@ -150,6 +150,12 @@
                                         @confirmed="validatePackingList($event)"
                                 ></button-confirmation>
 
+                                <packing-list-email
+                                    v-if="editData"
+                                    :title="t('form.sendByEmail')"
+                                    :edit-data="editData"
+                                ></packing-list-email>
+
                                 <span class="invalid-feedback d-block" role="alert" v-if="results.length && ! oneCourierOnly">
                                     <strong>{{ t('validation.oneCourier') }}</strong>
                                 </span>
