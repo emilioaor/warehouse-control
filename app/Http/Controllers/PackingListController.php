@@ -6,6 +6,7 @@ use App\Order;
 use App\PackingList;
 use App\PackingListImage;
 use App\Service\AlertService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -109,6 +110,7 @@ class PackingListController extends Controller
 
         $packingList = PackingList::query()->uuid($id)->firstOrFail();
         $packingList->status = PackingList::STATUS_SENT;
+        $packingList->received_at = new Carbon();
         $packingList->sign = $packingList->attachDocument($request->sign, 'sign');
 
         if (! $packingList->sign) {

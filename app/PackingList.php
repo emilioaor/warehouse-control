@@ -30,6 +30,8 @@ class PackingList extends Model
 
     protected $search_fields = ['couriers.name'];
 
+    protected $dates = ['received_at'];
+
     /**
      * Attached images
      */
