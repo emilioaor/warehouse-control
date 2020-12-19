@@ -15,7 +15,7 @@
                     :height="height"
             ></canvas>
 
-            <div>
+            <div class="text-center">
                 <button type="button" class="btn btn-primary" @click="save()">
                     {{ t('form.save') }}
                 </button>
@@ -97,16 +97,20 @@
                 this.canvas.width = this.canvas.width;
             },
             save() {
+                document.querySelector('body').className = document.querySelector('body').className.replace('overflow-hidden', '');
                 this.isOpen = false;
                 this.$emit('save', {base64: this.canvas.toDataURL()});
                 this.clear();
             },
             close() {
+                document.querySelector('body').className = document.querySelector('body').className.replace('overflow-hidden', '');
                 this.isOpen = false;
                 this.$emit('close');
                 this.clear();
             },
             open() {
+                document.querySelector('body').className += ' overflow-hidden';
+                $(window).scrollTop(0)
                 this.isOpen = true;
             }
         }
@@ -115,7 +119,7 @@
 
 <style scoped lang="scss">
     section {
-        background-color: rgba(0,0,0,.3);
+        background-color: #cccccc;
         position: fixed;
         top: 0;
         left: 0;
