@@ -30,7 +30,7 @@ class PackingList extends Model
 
     protected $search_fields = ['couriers.name'];
 
-    protected $dates = ['received_at'];
+    protected $dates = ['received_at', 'status_date'];
 
     /**
      * Attached images
@@ -159,15 +159,21 @@ class PackingList extends Model
         $invoiceNumber = $params['invoice_number'];
 
         $query
-            ->select(['packing_lists.*'])
+            ->selectRaw('packing_lists.*, COALESCE(received_at, packing_lists.created_at) as status_date')
             ->join('orders', 'orders.packing_list_id', '=', 'packing_lists.id')
-            ->whereBetween('packing_lists.created_at', [$start, $end])
+            ->whereRaw("
+                CASE WHEN  received_at IS NULL THEN 
+                    packing_lists.created_at between '{$start}' and '{$end}'
+                ELSE
+                    packing_lists.received_at between '{$start}' and '{$end}'
+                END
+            ")
             ->with([
                 'courier',
                 'orders.orderDetails',
                 'orders.customer',
             ])
-            ->orderBy('packing_lists.created_at')
+            ->orderBy('status_date')
             ->distinct()
         ;
 
