@@ -54,13 +54,31 @@ Vue.use(AuthPlugin);
 Vue.use(VeeValidate);
 Vue.mixin({
     filters: {
-        date(d) {
+        date(d, time = false) {
             const date = new Date(d);
+            let response = '';
             let day = (date.getDate() < 10) ? '0' + date.getDate() : date.getDate();
             let month = ((date.getMonth() + 1) < 10) ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1);
             let year = date.getFullYear();
 
-            return day + '-' + month + '-' + year;
+            response = day + '-' + month + '-' + year;
+
+            if (time) {
+                let meridiam = 'AM';
+                let hours = date.getHours();
+                let minutes = (date.getMinutes() < 10) ? '0' + date.getMinutes() : date.getMinutes();
+
+                if (hours > 12) {
+                    hours -= 12;
+                    meridiam = 'PM';
+                }
+
+                hours = (hours < 10) ? '0' + hours : hours;
+
+                response += ' ' + hours + ':' + minutes + ' ' + meridiam;
+            }
+
+            return response;
         }
     }
 });

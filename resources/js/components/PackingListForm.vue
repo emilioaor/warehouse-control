@@ -246,17 +246,17 @@
                                     </h5>
                                 </div>
 
-                                <div class="col-8 print-only">
+                                <div class="col-7 print-only">
                                     <h5>
                                         <strong>{{ t('form.freightForwarder') }}:</strong>
                                         {{ courier ? courier.name : '' }}
                                     </h5>
                                 </div>
-                                <div class="col-4 text-right print-only">
+                                <div class="col-5 text-right print-only">
                                     <h5>
                                         <strong>{{ t('form.date') }}:</strong>
-                                        <span v-if="editData && editData.status === 'sent'">{{ (new Date(editData.received_at)) | date }}</span>
-                                        <span v-else>{{ (new Date()) | date }}</span>
+                                        <span v-if="editData && editData.status === 'sent'">{{ (new Date(editData.received_at)) | date(true) }}</span>
+                                        <span v-else>{{ (new Date()) | date(true) }}</span>
                                     </h5>
                                 </div>
 

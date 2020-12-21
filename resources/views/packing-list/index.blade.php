@@ -26,7 +26,7 @@
                                 @foreach($packingLists as $packingList)
                                     <tr>
                                         <td>{{ $packingList->courier->name }}</td>
-                                        <td>{{ $packingList->created_at_local->format('d-m-Y') }}</td>
+                                        <td>{{ $packingList->created_at_local->format('d-m-Y h:i a') }}</td>
                                         <td>{!! $packingList->statusHtml() !!}</td>
                                         <td>
                                             <a class="btn btn-warning" href="{{ route('packing-list.edit', $packingList->uuid) }}">

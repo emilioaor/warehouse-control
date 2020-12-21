@@ -125,7 +125,7 @@
                                                 <tr v-if="ii === 0" class="order-head">
                                                     <td colspan="5" >
                                                         {{ result.courier.name }}
-                                                        ({{ result.created_at | date }})
+                                                        ({{ result.created_at | date(true) }})
                                                         {{ order.order_details.length }}
                                                         {{ t('form.lines') }}
 
