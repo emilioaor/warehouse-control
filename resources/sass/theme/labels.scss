@@ -33,18 +33,19 @@
     }
 
     &__customer {
-      font-size: 75px;
+      font-size: 130px;
       font-weight: 800;
     }
 
     &__courier {
-      font-size: 65px;
+      font-size: 110px;
     }
 
     &__tag {
-      font-size: 200px;
-      text-align: center;
-      font-weight: 800;
+      font-size: 380px;
+      //text-align: center;
+      font-weight: 80;
+      margin-left: 230px;
       //line-height: 120px;
     }
   }
