@@ -151,7 +151,7 @@
                                 ></button-confirmation>
 
                                 <packing-list-email
-                                    v-if="editData"
+                                    v-if="!loading && editData"
                                     :title="t('form.sendByEmail')"
                                     :edit-data="editData"
                                 ></packing-list-email>

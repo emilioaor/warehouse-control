@@ -75,5 +75,54 @@
             </tr>
         </tbody>
     </table>
+
+    @if($packingList->status === App\PackingList::STATUS_SENT)
+        <table style="width: 100%; margin-top: 20px;">
+            <tr>
+                <td width="50%" >
+                        <p style="height: 30px;">{{ __('validation.attributes.sign') }}</p>
+                        <img 
+                            src="{{ asset('storage/' . $packingList->sign) }}" 
+                            style="width: 100%; max-height: 160px;"
+                            >
+                </td>
+
+                @if(isset($packingList->packingListImages[0]))
+                    <td width="50%">
+                        <p style="height: 30px;">{{ __('validation.attributes.photo') }}</p>
+                        <img 
+                            src="{{ asset('storage/' . $packingList->packingListImages[0]->url) }}" 
+                            style="width: 100%; max-height: 160px;"
+                            >
+                    </td>
+                @endif
+            </tr>
+            @for($x = 1; $x < count($packingList->packingListImages); $x++)
+                @if($x === 1 || ($x - 1) % 2 === 0)
+                    <tr>
+                        <td width="50%">
+                            <p style="height: 30px;">{{ __('validation.attributes.photo') }}</p>
+                            <img 
+                                src="{{ asset('storage/' . $packingList->packingListImages[$x]->url) }}" 
+                                style="width: 100%; max-height: 160px;"
+                                >
+                        </td>
+                        @if(isset($packingList->packingListImages[$x + 1]))
+                            <td width="50%">
+                                <p style="height: 30px;">{{ __('validation.attributes.photo') }}</p>
+                                <img 
+                                    src="{{ asset('storage/' . $packingList->packingListImages[$x + 1]->url) }}" 
+                                    style="width: 100%; max-height: 160px;"
+                                    >
+                            </td>
+                        @endif
+                    </tr>
+                @endif
+            @endfor
+        </table>
+
+
+        
+    @endif
 </body>
 </html>
