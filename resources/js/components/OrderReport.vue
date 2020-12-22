@@ -111,11 +111,12 @@
                                             <th>{{ t('validation.attributes.courier') }}</th>
                                             <th>{{ t('validation.attributes.salesOrder') }}</th>
                                             <th width="1%" class="text-center">{{ t('validation.attributes.status') }}</th>
+                                            <th width="1%" class="text-center"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr v-for="(result, i) in results" :key="i">
-                                            <td>{{ result.date |date }}</td>
+                                            <td>{{ result.date |date(true) }}</td>
                                             <td>{{ result.customer.description }}</td>
                                             <td>{{ result.courier.name }}</td>
                                             <td>{{ result.invoice_number }}</td>
@@ -126,6 +127,14 @@
                                                 >
                                                     {{ t('status.' + result.status) }}
                                                 </span>
+                                            </td>
+                                            <td>
+                                                <a
+                                                    class="btn btn-warning"
+                                                    target="_blank"
+                                                    :href="'/warehouse/order/' + result.uuid + '/edit'">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
                                             </td>
                                         </tr>
                                     </tbody>
