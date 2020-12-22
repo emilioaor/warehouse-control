@@ -69,12 +69,14 @@
         },
         methods: {
             start(event) {
+                event.preventDefault();
                 this.drawing = true;
                 this.currX = event.offsetX !== undefined ? event.offsetX : event.touches[0].pageX - event.touches[0].target.offsetLeft;
                 this.currY = event.offsetY !== undefined ? event.offsetY : event.touches[0].pageY - event.touches[0].target.offsetTop;
                 this.ctx.moveTo(this.currX, this.currY);
             },
             move: function(event) {
+                event.preventDefault();
                 this.prevX = this.currX;
                 this.prevY = this.currY;
 
@@ -103,12 +105,14 @@
                 this.clear();
             },
             close() {
+                document.querySelector('html').className = document.querySelector('body').className.replace('overflow-hidden', '');
                 document.querySelector('body').className = document.querySelector('body').className.replace('overflow-hidden', '');
                 this.isOpen = false;
                 this.$emit('close');
                 this.clear();
             },
             open() {
+                document.querySelector('html').className += ' overflow-hidden';
                 document.querySelector('body').className += ' overflow-hidden';
                 $(window).scrollTop(0)
                 this.isOpen = true;
