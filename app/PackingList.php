@@ -162,7 +162,7 @@ class PackingList extends Model
             ->selectRaw('packing_lists.*, COALESCE(received_at, packing_lists.created_at) as status_date')
             ->join('orders', 'orders.packing_list_id', '=', 'packing_lists.id')
             ->whereRaw("
-                CASE WHEN  received_at IS NULL THEN 
+                CASE WHEN  received_at IS NULL THEN
                     packing_lists.created_at between '{$start}' and '{$end}'
                 ELSE
                     packing_lists.received_at between '{$start}' and '{$end}'
@@ -173,7 +173,7 @@ class PackingList extends Model
                 'orders.orderDetails',
                 'orders.customer',
             ])
-            ->orderBy('status_date')
+            ->orderBy('status_date', 'DESC')
             ->distinct()
         ;
 

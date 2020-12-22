@@ -176,7 +176,7 @@ class Order extends Model implements IuuidGenerator
         $query
             ->whereBetween('date', [$start, $end])
             ->with(['customer', 'courier'])
-            ->orderBy('date')
+            ->orderBy('date', 'DESC')
         ;
 
         if ($status !== 0) {
