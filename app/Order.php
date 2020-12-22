@@ -172,6 +172,7 @@ class Order extends Model implements IuuidGenerator
         $status = $params['status'];
         $customerId = $params['customer_id'];
         $courierId = $params['courier_id'];
+        $invoiceNumber = $params['invoice_number'];
 
         $query
             ->whereBetween('date', [$start, $end])
@@ -189,6 +190,10 @@ class Order extends Model implements IuuidGenerator
 
         if ($courierId) {
             $query->where('courier_id', $courierId);
+        }
+
+        if ($invoiceNumber) {
+            $query->where('invoice_number', $invoiceNumber);
         }
 
         return $query;

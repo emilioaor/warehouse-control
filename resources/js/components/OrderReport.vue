@@ -89,6 +89,11 @@
 
                                     <input type="hidden" v-model="form.courier_id">
                                 </div>
+
+                                <div class="col-sm-6 col-md-4 form-group">
+                                    <label> {{ t('validation.attributes.salesOrder') }}</label>
+                                    <input type="text" class="form-control" v-model="form.invoice_number">
+                                </div>
                             </div>
 
                             <div>
@@ -169,7 +174,8 @@
                     end: null,
                     customer_id: null,
                     courier_id: null,
-                    status: 0
+                    status: 0,
+                    invoice_number: null
                 },
                 customer: null,
                 courier: null,
