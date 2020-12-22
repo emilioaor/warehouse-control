@@ -35,9 +35,9 @@
             <td style="padding-top: 30px;text-align: right;font-size: 20px;">
                 <strong>{{ __('form.date') }}:</strong>
                 @if($packingList->status === \App\PackingList::STATUS_SENT)
-                    {{ $packingList->receivedAtLocal->format('d-m-Y') }}
+                    {{ $packingList->receivedAtLocal->format('d-m-Y h:i a') }}
                 @else
-                    {{ date('d-m-Y') }}
+                    {{ $packingList->dateToLocalDate(\Carbon\Carbon::now())->format('d-m-Y h:i a') }}
                 @endif
             </td>
         </tr>
@@ -81,8 +81,8 @@
             <tr>
                 <td width="50%" >
                         <p style="height: 30px;">{{ __('validation.attributes.sign') }}</p>
-                        <img 
-                            src="{{ asset('storage/' . $packingList->sign) }}" 
+                        <img
+                            src="{{ asset('storage/' . $packingList->sign) }}"
                             style="width: 100%; max-height: 160px;"
                             >
                 </td>
@@ -90,8 +90,8 @@
                 @if(isset($packingList->packingListImages[0]))
                     <td width="50%">
                         <p style="height: 30px;">{{ __('validation.attributes.photo') }}</p>
-                        <img 
-                            src="{{ asset('storage/' . $packingList->packingListImages[0]->url) }}" 
+                        <img
+                            src="{{ asset('storage/' . $packingList->packingListImages[0]->url) }}"
                             style="width: 100%; max-height: 160px;"
                             >
                     </td>
@@ -102,16 +102,16 @@
                     <tr>
                         <td width="50%">
                             <p style="height: 30px;">{{ __('validation.attributes.photo') }}</p>
-                            <img 
-                                src="{{ asset('storage/' . $packingList->packingListImages[$x]->url) }}" 
+                            <img
+                                src="{{ asset('storage/' . $packingList->packingListImages[$x]->url) }}"
                                 style="width: 100%; max-height: 160px;"
                                 >
                         </td>
                         @if(isset($packingList->packingListImages[$x + 1]))
                             <td width="50%">
                                 <p style="height: 30px;">{{ __('validation.attributes.photo') }}</p>
-                                <img 
-                                    src="{{ asset('storage/' . $packingList->packingListImages[$x + 1]->url) }}" 
+                                <img
+                                    src="{{ asset('storage/' . $packingList->packingListImages[$x + 1]->url) }}"
                                     style="width: 100%; max-height: 160px;"
                                     >
                             </td>
@@ -122,7 +122,7 @@
         </table>
 
 
-        
+
     @endif
 </body>
 </html>

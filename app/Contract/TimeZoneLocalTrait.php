@@ -17,7 +17,7 @@ trait TimeZoneLocalTrait {
         return $this->dateToLocalDate($this->updated_at);
     }
 
-    protected function dateToLocalDate(Carbon $date): Carbon
+    public function dateToLocalDate(Carbon $date): Carbon
     {
         $clone = clone $date;
 
