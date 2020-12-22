@@ -22,7 +22,7 @@
     @for($x = 0; $x < $order->boxes_sum; $x++)
         <div class="whs-labels__card page-break">
             <div class="whs-labels__card-content">
-                <div class="whs-labels__customer">{{ $order->customer->description }}</div>
+                <div class="whs-labels__customer" id="customer_description">{{ $order->customer->description }}</div>
                 <div class="whs-labels__courier">
                     <strong>{{ __('validation.attributes.salesOrder') }}:</strong>
                     {{ $order->invoice_number}}
@@ -35,3 +35,16 @@
     @endfor
 </body>
 </html>
+
+<script>
+    const customer = '{{ $order->customer->description }}';
+    const maxLength = 16;
+    let fontSize = 100;
+
+    if (customer.length > maxLength) {
+        let reduce = Math.round((customer.length * 100 / maxLength) / 100);
+        fontSize = Math.round(fontSize - reduce);
+    }
+
+    document.querySelector('#customer_description').style.cssText += 'font-size: ' + fontSize + 'px;';
+</script>
