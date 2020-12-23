@@ -65,19 +65,6 @@
                                 </div>
 
                                 <div class="col-sm-6 col-md-4 form-group">
-                                    <label> {{ t('validation.attributes.courier') }}</label>
-                                    <search-input
-                                            route="/warehouse/courier"
-                                            :description-fields="['name']"
-                                            @selectResult="changeCourier($event)"
-                                            :nullable="true"
-                                            :value="courier ? courier.searchDescription : ''"
-                                    ></search-input>
-
-                                    <input type="hidden" v-model="form.courier_id">
-                                </div>
-
-                                <div class="col-sm-6 col-md-4 form-group">
                                     <label> {{ t('validation.attributes.customer') }}</label>
                                     <search-input
                                             route="/warehouse/customer"
@@ -85,6 +72,19 @@
                                             @selectResult="changeCustomer($event)"
                                             :nullable="true"
                                             :value="customer ? customer.searchDescription : ''"
+                                    ></search-input>
+
+                                    <input type="hidden" v-model="form.courier_id">
+                                </div>
+
+                                <div class="col-sm-6 col-md-4 form-group">
+                                    <label> {{ t('validation.attributes.courier') }}</label>
+                                    <search-input
+                                        route="/warehouse/courier"
+                                        :description-fields="['name']"
+                                        @selectResult="changeCourier($event)"
+                                        :nullable="true"
+                                        :value="courier ? courier.searchDescription : ''"
                                     ></search-input>
 
                                     <input type="hidden" v-model="form.courier_id">

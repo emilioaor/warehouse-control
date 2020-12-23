@@ -10,7 +10,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}?version=3.0.0&token=kdlgmjbegwtsdhywbxorkdjey" defer></script>
+    <script src="{{ asset('js/app.js') }}?version=3.1.0&token=kdjeurtywbxnchdgsgfwpeow" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
