@@ -23,33 +23,6 @@
 
                             <div class="row form">
 
-                                <div class="col-sm-6 col-md-4 form-group">
-                                    <label for="courier_id">{{ t('validation.attributes.courier') }}</label>
-
-                                    <search-input
-                                            route="/warehouse/courier"
-                                            :description-fields="['name']"
-                                            @selectResult="changeCourier($event)"
-                                            :input-class="errors.has('courier_id', 'report') ? 'is-invalid' : ''"
-                                            :value="courier ? courier.searchDescription : ''"
-                                            :nullable="true"
-                                            :read-only="!!editData"
-                                    ></search-input>
-                                    <input
-                                            type="hidden"
-                                            name="courier_id"
-                                            id="courier_id"
-                                            v-validate
-                                            data-vv-rules=""
-                                            data-vv-scope="report"
-                                            v-model="form.courier_id"
-                                    >
-
-                                    <span class="invalid-feedback d-block" role="alert" v-if="errors.firstByRule('courier_id', 'required')">
-                                        <strong>{{ t('validation.required', {attribute: 'courier'}) }}</strong>
-                                    </span>
-                                </div>
-
                                 <div class="col-sm-6 col-md-4 form-group" v-if="! editData">
                                     <label for="customer_id">{{ t('validation.attributes.customer') }}</label>
 
@@ -76,7 +49,34 @@
                                     </span>
                                 </div>
 
-                                <div class="col-sm-6 col-md-4 form-group" :class="!!editData ? 'col-md-2' : 'col-md-4'">
+                                <div class="col-sm-6 col-md-4 form-group">
+                                    <label for="courier_id">{{ t('validation.attributes.courier') }}</label>
+
+                                    <search-input
+                                        route="/warehouse/courier"
+                                        :description-fields="['name']"
+                                        @selectResult="changeCourier($event)"
+                                        :input-class="errors.has('courier_id', 'report') ? 'is-invalid' : ''"
+                                        :value="courier ? courier.searchDescription : ''"
+                                        :nullable="true"
+                                        :read-only="!!editData"
+                                    ></search-input>
+                                    <input
+                                        type="hidden"
+                                        name="courier_id"
+                                        id="courier_id"
+                                        v-validate
+                                        data-vv-rules=""
+                                        data-vv-scope="report"
+                                        v-model="form.courier_id"
+                                    >
+
+                                    <span class="invalid-feedback d-block" role="alert" v-if="errors.firstByRule('courier_id', 'required')">
+                                        <strong>{{ t('validation.required', {attribute: 'courier'}) }}</strong>
+                                    </span>
+                                </div>
+
+                                <div class="col-sm-6 col-md-4 form-group" v-if="!editData">
                                     <label for="invoice_number"> {{ t('validation.attributes.salesOrder') }}</label>
 
                                     <input
@@ -88,7 +88,6 @@
                                         v-validate
                                         data-vv-rules=""
                                         v-model="form.invoice_number"
-                                        :readonly="!! editData"
                                     >
 
                                     <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('invoice_number', 'required')">
