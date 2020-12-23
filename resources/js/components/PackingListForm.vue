@@ -274,8 +274,9 @@
                                 <div class="col-5 text-right print-only">
                                     <h5>
                                         <strong>{{ t('form.date') }}:</strong>
-                                        <span v-if="editData && editData.status === 'sent'">{{ (new Date(editData.received_at)) | date(true) }}</span>
-                                        <span v-else>{{ (new Date()) | date(true) }}</span>
+                                        <span v-if="!editData">{{ (new Date()) | date(true) }}</span>
+                                        <span v-else-if="editData.status === 'sent'">{{ (new Date(editData.received_at)) | date(true) }}</span>
+                                        <span v-else>{{ (new Date(editData.created_at)) | date(true) }}</span>
                                     </h5>
                                 </div>
 

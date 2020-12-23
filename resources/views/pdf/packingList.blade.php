@@ -37,7 +37,7 @@
                 @if($packingList->status === \App\PackingList::STATUS_SENT)
                     {{ $packingList->receivedAtLocal->format('d-m-Y h:i a') }}
                 @else
-                    {{ $packingList->dateToLocalDate(\Carbon\Carbon::now())->format('d-m-Y h:i a') }}
+                    {{ $packingList->created_at_local->format('d-m-Y h:i a') }}
                 @endif
             </td>
         </tr>
