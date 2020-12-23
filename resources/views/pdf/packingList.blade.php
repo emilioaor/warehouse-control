@@ -90,10 +90,12 @@
                 @if(isset($packingList->packingListImages[0]))
                     <td width="50%">
                         <p style="height: 30px;">{{ __('validation.attributes.photo') }}</p>
-                        <img
-                            src="{{ asset('storage/' . $packingList->packingListImages[0]->url) }}"
-                            style="width: 100%; max-height: 160px;"
+                        <div style="display: flex;justify-content: center;text-align: center;">
+                            <img
+                                src="{{ asset('storage/' . $packingList->packingListImages[0]->url) }}"
+                                style="max-width: 340px; max-height: 160px;"
                             >
+                        </div>
                     </td>
                 @endif
             </tr>
