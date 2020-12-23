@@ -202,4 +202,16 @@ class PackingListController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+    /**
+     * Show PDF
+     */
+    public function pdf($id)
+    {
+        $packingList = PackingList::query()->uuid($id)->firstOrFail();
+        $packingList->completeInfoPDF();
+        $pdf = \PDF::loadView('pdf.packingList', ['packingList' => $packingList])->setPaper('letter');
+
+        return $pdf->stream();
+    }
 }

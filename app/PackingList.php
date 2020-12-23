@@ -195,4 +195,22 @@ class PackingList extends Model
 
         return $query;
     }
+
+    /**
+     * Complete info to PDF
+     */
+    public function completeInfoPDF()
+    {
+        $boxTotal = 0;
+        $weightTotal = 0;
+        foreach ($this->orders as $order) {
+            foreach ($order->orderDetails as $detail) {
+                $boxTotal += $detail->qty;
+                $weightTotal += $detail->weight;
+            }
+        }
+
+        $this->boxTotal = $boxTotal;
+        $this->weightTotal = $weightTotal;
+    }
 }
