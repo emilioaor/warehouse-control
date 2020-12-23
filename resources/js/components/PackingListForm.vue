@@ -76,6 +76,26 @@
                                     </span>
                                 </div>
 
+                                <div class="col-sm-6 col-md-4 form-group" :class="!!editData ? 'col-md-2' : 'col-md-4'">
+                                    <label for="invoice_number"> {{ t('validation.attributes.salesOrder') }}</label>
+
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        name="invoice_number"
+                                        id="invoice_number"
+                                        :class="{'is-invalid': errors.has('invoice_number')}"
+                                        v-validate
+                                        data-vv-rules=""
+                                        v-model="form.invoice_number"
+                                        :readonly="!! editData"
+                                    >
+
+                                    <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('invoice_number', 'required')">
+                                        <strong>{{ t('validation.required', {attribute: 'invoiceNumber'}) }}</strong>
+                                    </span>
+                                </div>
+
                                 <div class="col-sm-6 col-md-4 form-group" v-if="editData">
                                     <label> {{ t('validation.attributes.status') }}</label>
                                     <div>
@@ -361,6 +381,7 @@
                 form: {
                     courier_id: null,
                     customer_id: null,
+                    invoice_number: null,
                     sign: null,
                     packing_list_images: [],
                     orderIds: []

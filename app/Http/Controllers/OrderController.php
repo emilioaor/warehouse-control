@@ -200,7 +200,7 @@ class OrderController extends Controller
      */
     public function packingListProcess(Request $request)
     {
-        $orders = Order::query()->pendingForPackingList($request->courier_id, $request->customer_id)->get();
+        $orders = Order::query()->pendingForPackingList($request->all())->get();
 
         return response()->json(['success' => true, 'data' => $orders]);
     }

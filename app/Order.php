@@ -222,8 +222,12 @@ class Order extends Model implements IuuidGenerator
     /**
      * Scope packing list
      */
-    public function scopePendingForPackingList(Builder $query, ?int $courierId, ?int $customerId): Builder
+    public function scopePendingForPackingList(Builder $query, array $params): Builder
     {
+        $courierId = $params['courier_id'];
+        $customerId = $params['customer_id'];
+        $invoiceNumber = $params['invoice_number'];
+
         $query
             ->whereNull('packing_list_id')
             ->with(['orderDetails', 'customer', 'courier'])
@@ -235,6 +239,10 @@ class Order extends Model implements IuuidGenerator
 
         if ($customerId) {
             $query->where('customer_id', $customerId);
+        }
+
+        if ($invoiceNumber) {
+            $query->where('invoice_number', $invoiceNumber);
         }
 
         return $query;
