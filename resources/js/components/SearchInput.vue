@@ -47,6 +47,7 @@
                                 <input
                                         type="text"
                                         class="form-control"
+                                        :id="'input-filter' + modalId"
                                         v-model="search"
                                         @keypress="filter()"
                                         @keydown="filter()"
@@ -136,6 +137,7 @@
 
         methods: {
             filter() {
+                window.setTimeout(this.focusFilter, 500);
                 this.results = [];
 
                 ApiService.get(this.route + '?search=' + this.search).then(res => {
@@ -174,6 +176,11 @@
                 const button = document.querySelector('#open' + this.modalId);
 
                 return button && button.click();
+            },
+
+            focusFilter() {
+                console.log(document.querySelector('#input-filter' + this.modalId));
+                document.querySelector('#input-filter' + this.modalId).focus();
             }
         }
     }
