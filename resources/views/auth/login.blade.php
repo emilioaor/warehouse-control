@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8 col-xl-6">
-            <div class="card py-2">
+            <div id="login-container" class="card py-2 d-none">
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
@@ -74,8 +74,14 @@
 @section('scripts')
     <script>
         window.onload = function () {
+            /**
+             * I prevent the login until page loaded to send timezone to backend
+             */
             function getUTC() {
+                const loginContainer = document.querySelector('#login-container');
+
                 document.querySelector('#UTC').value = parseInt((new Date()).getTimezoneOffset().toString()) * -1;
+                loginContainer.className = loginContainer.className.replace('d-none', '');
             }
 
             getUTC();
