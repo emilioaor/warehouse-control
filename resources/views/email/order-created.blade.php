@@ -9,6 +9,8 @@
 
 **{{ __('validation.attributes.salesOrder') }}:** {{ $order->invoice_number }}
 
+**{{ __('validation.attributes.way') }}:** {{ $order->way() }}
+
 ----------------------------------------------
 @foreach($order->orderDetails as $i => $detail)
 **{{ $i + 1 }}.** {{ $detail->description }} / {{ $detail->size }} / {{ $detail->weight }} / {{ $detail->qty }} {{ __('validation.attributes.boxes') }}

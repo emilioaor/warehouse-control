@@ -178,7 +178,8 @@ return [
         'startDate' => 'Start date',
         'endDate' => 'End date',
         'address' => 'Address',
-        'comment' => 'Comment'
+        'comment' => 'Comment',
+        'way' => 'Way'
     ],
 
 ];

@@ -46,6 +46,7 @@
     <table border="1" style="width: 100%; margin-top: 20px">
         <thead>
             <tr>
+                <th>{{ __('validation.attributes.way') }}</th>
                 <th>{{ __('validation.attributes.salesOrder') }}</th>
                 <th>{{ __('validation.attributes.customer') }}</th>
                 <th>{{ __('validation.attributes.boxes') }}</th>
@@ -57,6 +58,7 @@
             @foreach($packingList->orders as $order)
                 @foreach($order->orderDetails as $detail)
                     <tr>
+                        <td class="text-center">{{ $order->way() }}</td>
                         <td class="text-center">{{ $order->invoice_number }}</td>
                         <td class="text-center">{{ $order->customer->description }}</td>
                         <td class="text-center">{{ $detail->qty }}</td>
@@ -68,6 +70,7 @@
 
             <tr>
                 <th class="text-center">{{ __('form.totals') }}</th>
+                <td class="text-center"></td>
                 <td class="text-center"></td>
                 <td class="text-center">{{ $packingList->boxTotal }}</td>
                 <td class="text-center"></td>

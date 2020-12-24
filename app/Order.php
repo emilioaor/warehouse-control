@@ -25,6 +25,10 @@ class Order extends Model implements IuuidGenerator
     const STATUS_PENDING_SEND = 'pending_send';
     const STATUS_SENT = 'sent';
 
+    /** Ways */
+    const AIRWAY = 'airway';
+    const SEAWAY = 'seaway';
+
     protected $table = 'orders';
 
     protected $fillable = [
@@ -36,7 +40,8 @@ class Order extends Model implements IuuidGenerator
         'status',
         'invoice_number',
         'packing_list_id',
-        'comment'
+        'comment',
+        'way'
     ];
 
     protected $casts = [
@@ -114,6 +119,14 @@ class Order extends Model implements IuuidGenerator
     }
 
     /**
+     * Status string
+     */
+    public function way()
+    {
+        return __(sprintf('way.%s', $this->way));
+    }
+
+    /**
      * Status available
      */
     public static function statusAvailable(): array
@@ -121,6 +134,17 @@ class Order extends Model implements IuuidGenerator
         return [
             self::STATUS_PENDING_SEND => __(sprintf('status.%s', self::STATUS_PENDING_SEND)),
             self::STATUS_SENT => __(sprintf('status.%s', self::STATUS_SENT)),
+        ];
+    }
+
+    /**
+     * Status available
+     */
+    public static function waysAvailable(): array
+    {
+        return [
+            self::AIRWAY => __(sprintf('way.%s', self::AIRWAY)),
+            self::SEAWAY => __(sprintf('way.%s', self::SEAWAY)),
         ];
     }
 

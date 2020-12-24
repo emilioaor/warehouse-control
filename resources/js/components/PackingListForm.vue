@@ -285,6 +285,7 @@
                                         <thead>
                                             <tr>
                                                 <th width="1%" class="text-center not-print" v-if="! editData"></th>
+                                                <th class="text-center">{{ t('validation.attributes.way') }}</th>
                                                 <th class="text-center">{{ t('validation.attributes.salesOrder') }}</th>
                                                 <th class="text-center">{{ t('validation.attributes.customer') }}</th>
                                                 <th class="text-center" width="1%">{{ t('validation.attributes.boxes') }}</th>
@@ -296,7 +297,7 @@
                                             <template v-for="(result, i) in results">
                                                 <template v-for="(detail, ii) in result.order_details">
                                                     <tr v-if="ii === 0 && ! editData" class="not-print">
-                                                        <td colspan="6" class="order-head">
+                                                        <td colspan="7" class="order-head">
                                                             {{ result.courier.name }}
                                                             ({{ result.date | date }})
                                                             {{ result.order_details.length }}
@@ -317,6 +318,7 @@
                                                         <td class="not-print" v-if="! editData">
                                                             <i class="fa fa-arrow-right"></i>
                                                         </td>
+                                                        <td class="text-center">{{ t('way.' + result.way) }}</td>
                                                         <td class="text-center">{{ result.invoice_number }}</td>
                                                         <td class="text-center">{{ result.customer.description }}</td>
                                                         <td class="text-center">{{ detail.qty }}</td>
@@ -327,6 +329,7 @@
                                             </template>
                                             <tr v-if="editData">
                                                 <th class="text-center">{{ t('form.totals') }}</th>
+                                                <td></td>
                                                 <td></td>
                                                 <td class="text-center">{{ qtySum }}</td>
                                                 <td></td>

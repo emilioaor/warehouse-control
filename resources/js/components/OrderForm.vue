@@ -79,6 +79,30 @@
                                 </div>
 
                                 <div class="col-sm-6 form-group col-md-4">
+                                    <label for="invoice_number"> {{ t('validation.attributes.way') }}</label>
+
+                                    <select
+                                        class="form-control"
+                                        name="way"
+                                        id="way"
+                                        :class="{'is-invalid': errors.has('way')}"
+                                        v-validate
+                                        data-vv-rules=""
+                                        v-model="form.way"
+                                        :disabled="!! editData"
+                                    >
+                                        <option
+                                            v-for="(label, value) in waysAvailable"
+                                            :value="value"
+                                        >{{ label }}</option>
+                                    </select>
+
+                                    <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('way', 'required')">
+                                        <strong>{{ t('validation.required', {attribute: 'way'}) }}</strong>
+                                    </span>
+                                </div>
+
+                                <div class="col-sm-6 form-group col-md-4">
                                     <label for="invoice_number"> {{ t('validation.attributes.salesOrder') }}</label>
 
                                     <input
@@ -94,7 +118,7 @@
                                     >
 
                                     <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('invoice_number', 'required')">
-                                        <strong>{{ t('validation.required', {attribute: 'invoiceNumber'}) }}</strong>
+                                        <strong>{{ t('validation.required', {attribute: 'salesOrder'}) }}</strong>
                                     </span>
                                 </div>
 
@@ -371,6 +395,10 @@
             editData: {
                 type: Object,
                 required: false
+            },
+            waysAvailable: {
+                type: Object,
+                required: true
             }
         },
 
@@ -407,7 +435,8 @@
                     courier_id: null,
                     invoice_number: null,
                     order_details: [],
-                    comment: null
+                    comment: null,
+                    way: 'airway'
                 },
                 loading: false,
                 customer: null,
@@ -568,7 +597,8 @@
         text-align: center;
     }
 
-    .form-control[readonly] {
+    .form-control[readonly],
+    select[disabled] {
         background-color: #ffffff;
     }
 
