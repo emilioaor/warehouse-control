@@ -9,8 +9,16 @@
 
 **{{ __('validation.attributes.salesOrder') }}:** {{ $order->invoice_number }}
 
+----------------------------------------------
 @foreach($order->orderDetails as $i => $detail)
 **{{ $i + 1 }}.** {{ $detail->description }} / {{ $detail->size }} / {{ $detail->weight }} / {{ $detail->qty }} {{ __('validation.attributes.boxes') }}
 
 @endforeach
+----------------------------------------------
+
+@if($order->comment)
+**{{ __('validation.attributes.comment') }}:**
+
+{{ $order->comment }}
+@endif
 @endcomponent

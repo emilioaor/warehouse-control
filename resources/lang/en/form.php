@@ -25,6 +25,7 @@ return [
     'total' => 'Total',
     'totals' => 'Totals',
     'address' => 'Address',
-    'phone' => 'Phone'
+    'phone' => 'Phone',
+    'addComment' => 'Add comment'
 
 ];

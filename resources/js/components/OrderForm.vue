@@ -253,6 +253,36 @@
                                     </table>
                                 </div>
 
+                                <div class="col-12 form-group">
+                                    <template v-if="isCommentShow">
+                                        <label for="comment"> {{ t('validation.attributes.comment') }}</label>
+                                        <button
+                                            type="button"
+                                            class="btn btn-success ml-3"
+                                            v-if="!loading && editData"
+                                            @click="validateForm()"
+                                        >
+                                            {{ t('form.save') }}
+                                        </button>
+
+                                        <textarea
+                                            name="comment"
+                                            id="comment"
+                                            class="form-control mt-1"
+                                            cols="30"
+                                            rows="5"
+                                            v-model="form.comment"
+                                        ></textarea>
+                                    </template>
+
+                                    <template v-else>
+                                        <button type="button" class="btn btn-secondary" @click="showComment()">
+                                            <i class="fa fa-comment"></i>
+                                            {{ t('form.addComment') }}
+                                        </button>
+                                    </template>
+                                </div>
+
                                 <div class="col-sm-6 col-md-3 form-group" v-if="form.status === 'sent'">
                                     <label for="sign"> {{ t('validation.attributes.sign') }}</label>
 
@@ -376,11 +406,13 @@
                     customer_id: null,
                     courier_id: null,
                     invoice_number: null,
-                    order_details: []
+                    order_details: [],
+                    comment: null
                 },
                 loading: false,
                 customer: null,
-                courier: null
+                courier: null,
+                isCommentShow: this.editData && this.editData.comment
             }
         },
 
@@ -482,6 +514,11 @@
 
             print() {
                 window.print();
+            },
+
+            showComment() {
+                this.isCommentShow = true;
+                window.setTimeout(() => document.querySelector('#comment').focus(), 500);
             }
         },
 

@@ -177,7 +177,8 @@ return [
         'sign' => 'Sign',
         'startDate' => 'Start date',
         'endDate' => 'End date',
-        'address' => 'Address'
+        'address' => 'Address',
+        'comment' => 'Comment'
     ],
 
 ];
