@@ -34,7 +34,8 @@
 
     &__customer {
       //font-size: 100px;
-      font-weight: 800;
+        font-weight: 800;
+        max-width: 1000px;
     }
 
     &__courier {
@@ -45,7 +46,7 @@
       font-size: 300px;
       //text-align: center;
       font-weight: 800;
-      margin-left: 200px;
+      margin-left: 180px;
       //line-height: 120px;
     }
   }
