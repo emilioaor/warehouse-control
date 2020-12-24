@@ -15,7 +15,7 @@
     </style>
 </head>
 <body>
-    <button type="button" class="btn btn-info text-white" onclick="window.print()">
+    <button type="button" class="btn btn-primary text-white" onclick="window.print()">
         <i class="fa fa-tag"></i>
         {{ __('form.generateLabels') }}
     </button>

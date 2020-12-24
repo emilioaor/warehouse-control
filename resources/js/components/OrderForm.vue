@@ -23,6 +23,10 @@
 
                             <div class="row">
 
+                                <div class="col-12 text-right print-only">
+                                    <img src="/img/logo.jpeg" class="logo">
+                                </div>
+
                                 <div class="col-sm-6 col-md-4 form-group">
                                     <label for="customer_id"> {{ t('validation.attributes.customer') }}</label>
 
@@ -74,7 +78,7 @@
                                     </span>
                                 </div>
 
-                                <div class="col-sm-6 form-group" :class="!!editData ? 'col-md-2' : 'col-md-4'">
+                                <div class="col-sm-6 form-group col-md-4">
                                     <label for="invoice_number"> {{ t('validation.attributes.salesOrder') }}</label>
 
                                     <input
@@ -94,7 +98,12 @@
                                     </span>
                                 </div>
 
-                                <div class="col-sm-6 col-md-2 form-group" v-if="!! editData">
+                                <div class="col-sm-6 col-md-4 form-group print-only7" v-if="!! editData">
+                                    <label> {{ t('validation.attributes.date') }}</label>
+                                    <input type="text" class="form-control" :readonly="true" :value="editData.created_at | date(true)">
+                                </div>
+
+                                <div class="col-sm-6 col-md-4 form-group not-print" v-if="!! editData">
                                     <label> {{ t('validation.attributes.status') }}</label>
                                     <div>
                                         <span
@@ -282,6 +291,16 @@
                                     v-if="!loading && editData"
                                 ></iframe>
 
+                                <button
+                                    type="button"
+                                    class="btn btn-info text-white"
+                                    @click="print()"
+                                    v-if="!loading && editData"
+                                >
+                                    <i class="fa fa-print"></i>
+                                    {{ t('form.print') }}
+                                </button>
+
                                 <button-confirmation
                                         :label="t('form.delete')"
                                         btn-class="btn btn-danger"
@@ -459,6 +478,10 @@
 
             openImageExplorer(url) {
                 window.open('/storage/' + url);
+            },
+
+            print() {
+                window.print();
             }
         },
 
@@ -517,5 +540,50 @@
         height: 37px;
         position: relative;
         bottom: -14px;
+    }
+</style>
+
+<style lang="scss">
+    .print-only {
+        display: none;
+    }
+
+    @media print {
+        .print-only {
+            display: block;
+        }
+        .not-print {
+            display: none;
+        }
+
+        body {
+            font-size: 20px;                                                                               ;
+        }
+
+        .logo {
+            margin: 0 0 1rem;
+            width: 300px;
+        }
+
+        .form-control {
+            border: none;
+            font-size: 20px;
+        }
+
+        .card-header {
+            display: none;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        thead, tfoot {
+            font-weight: bold;
+
+            .form-control {
+                font-weight: bold;
+            }
+        }
     }
 </style>
