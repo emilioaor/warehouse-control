@@ -143,17 +143,17 @@
                                     <table class="table table-responsive mt-4">
                                         <thead>
                                             <tr>
-                                                <td>{{ t('validation.attributes.box') }}</td>
+                                                <td v-if="!editData">{{ t('validation.attributes.box') }}</td>
                                                 <td>{{ t('validation.attributes.description') }}</td>
                                                 <td>{{ t('validation.attributes.size') }}</td>
                                                 <td>{{ t('validation.attributes.weight') }}</td>
-                                                <td>{{ t('validation.attributes.qty') }}</td>
+                                                <td width="1%">{{ t('validation.attributes.qty') }}</td>
                                                 <td width="5%" v-if="! editData"></td>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr v-for="(detail, i) in form.order_details">
-                                                <td>
+                                                <td v-if="!editData">
                                                     <search-input
                                                             route="/warehouse/box"
                                                             :description-fields="['description', 'size', 'weight']"
@@ -216,7 +216,7 @@
                                                 <td>
                                                     <input
                                                             type="text"
-                                                            class="form-control"
+                                                            class="form-control input-qty"
                                                             :name="'qty' + i"
                                                             :id="'qty' + i"
                                                             :class="{'is-invalid': errors.has('qty' + i)}"
@@ -255,7 +255,7 @@
                                         </tbody>
                                         <tfoot v-if="editData">
                                             <tr>
-                                                <td colspan="3">{{ t('form.totals') }}</td>
+                                                <td colspan="2">{{ t('form.totals') }}</td>
                                                 <td>
                                                     <input
                                                         type="text"
@@ -607,6 +607,10 @@
         height: 37px;
         position: relative;
         bottom: -14px;
+    }
+
+    .input-qty {
+        min-width: 200px;
     }
 </style>
 
