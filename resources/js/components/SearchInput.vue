@@ -150,7 +150,7 @@
                                 description += ' / ';
                             }
 
-                            description += current[i];
+                            description += current[i] ? current[i] : '-';
                         }
 
                         return {

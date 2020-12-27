@@ -49,7 +49,7 @@
                                             class="form-control"
                                             :class="{'is-invalid': errors.has('size')}"
                                             v-validate
-                                            data-vv-rules="required"
+                                            data-vv-rules=""
                                             v-model="form.size"
                                     >
                                     <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('size', 'required')">

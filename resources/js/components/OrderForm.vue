@@ -189,7 +189,7 @@
                                                             v-validate
                                                             data-vv-rules="required"
                                                             v-model="detail.size"
-                                                            :readonly="detail.box_id || editData"
+                                                            :readonly="editData"
                                                     >
 
                                                     <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('size' + i, 'required')">
