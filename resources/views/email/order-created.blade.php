@@ -13,7 +13,7 @@
 
 ----------------------------------------------
 @foreach($order->orderDetails as $i => $detail)
-**{{ $i + 1 }}.** {{ $detail->description }} / {{ $detail->size }} / {{ $detail->weight }} / {{ $detail->qty }} {{ __('validation.attributes.boxes') }}
+**{{ $i + 1 }}.** {{ $detail->description }} / {{ str_replace('*', '\*', $detail->size) }} / {{ $detail->weight }} / {{ $detail->qty }} {{ __('validation.attributes.boxes') }}
 
 @endforeach
 ----------------------------------------------
