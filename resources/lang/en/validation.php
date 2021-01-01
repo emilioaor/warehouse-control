@@ -179,7 +179,8 @@ return [
         'endDate' => 'End date',
         'address' => 'Address',
         'comment' => 'Comment',
-        'way' => 'Way'
+        'way' => 'Way',
+        'courierAddress' => 'Courier address'
     ],
 
 ];

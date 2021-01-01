@@ -139,6 +139,13 @@
                                     </div>
                                 </div>
 
+                                <div class="col-12 print-only" v-if="!! editData">
+                                    <label> {{ t('validation.attributes.courierAddress') }}</label>
+                                    <div>
+                                       {{ editData.courier.address }}
+                                    </div>
+                                </div>
+
                                 <div class="col-12">
                                     <table class="table table-responsive mt-4">
                                         <thead>
