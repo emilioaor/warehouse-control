@@ -561,7 +561,7 @@
         computed: {
             weightSum() {
                 let sum = 0;
-                this.form.order_details.forEach(detail => sum += detail.weight);
+                this.form.order_details.forEach(detail => sum += (detail.weight * detail.qty));
 
                 return sum
             },

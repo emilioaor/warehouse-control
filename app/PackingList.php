@@ -206,7 +206,7 @@ class PackingList extends Model
         foreach ($this->orders as $order) {
             foreach ($order->orderDetails as $detail) {
                 $boxTotal += $detail->qty;
-                $weightTotal += $detail->weight;
+                $weightTotal += ($detail->weight * $detail->qty);
             }
         }
 
