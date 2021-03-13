@@ -179,7 +179,6 @@
             },
 
             focusFilter() {
-                console.log(document.querySelector('#input-filter' + this.modalId));
                 document.querySelector('#input-filter' + this.modalId).focus();
             }
         }

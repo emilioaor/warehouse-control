@@ -62,7 +62,7 @@
                                             :input-class="errors.has('courier_id') ? 'is-invalid' : ''"
                                             :value="courier ? courier.searchDescription : ''"
                                             :disabled="! customer"
-                                            :read-only="!! editData"
+                                            :read-only="editData && this.authUser() && (this.authUser().role !== 'admin' || editData.status === 'sent')"
                                     ></search-input>
                                     <input
                                             type="hidden"
@@ -287,14 +287,6 @@
                                 <div class="col-12 form-group">
                                     <template v-if="isCommentShow">
                                         <label for="comment"> {{ t('validation.attributes.comment') }}</label>
-                                        <button
-                                            type="button"
-                                            class="btn btn-success ml-3"
-                                            v-if="!loading && editData"
-                                            @click="validateForm()"
-                                        >
-                                            {{ t('form.save') }}
-                                        </button>
 
                                         <textarea
                                             name="comment"
@@ -339,8 +331,12 @@
 
                             <div>
                                 <button
-                                        class="btn btn-primary"
-                                        v-if="!loading && ! editData"
+                                    class="btn"
+                                    :class="{
+                                        'btn-primary': !editData,
+                                        'btn-success': editData
+                                    }"
+                                    v-if="!loading && this.authUser() && (! editData || this.authUser().role === 'admin')"
                                 >
                                     <i class="fa fa-save"></i>
                                      {{ t('form.save') }}

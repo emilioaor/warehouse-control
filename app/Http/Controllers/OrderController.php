@@ -115,7 +115,7 @@ class OrderController extends Controller
     public function update(Request $request, $id)
     {
         $order = Order::query()->uuid($id)->firstOrFail();
-        $order->comment = $request->comment;
+        $order->fill($request->only(['comment', 'courier_id']));
         $order->save();
 
         AlertService::alertSuccess(__('alert.processSuccessfully'));
