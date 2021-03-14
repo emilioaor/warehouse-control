@@ -175,6 +175,15 @@
                                     :edit-data="editData"
                                 ></packing-list-email>
 
+                                <a
+                                    :href="'/warehouse/packing-list/' + editData.uuid + '/excel'"
+                                    class="btn btn-success"
+                                    v-if="!loading && editData"
+                                >
+                                    <i class="fa fa-download"></i>
+                                    {{ t('form.downloadExcel') }}
+                                </a>
+
                                 <span class="invalid-feedback d-block" role="alert" v-if="results.length && ! oneCourierOnly">
                                     <strong>{{ t('validation.oneCourier') }}</strong>
                                 </span>

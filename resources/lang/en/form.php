@@ -26,6 +26,7 @@ return [
     'totals' => 'Totals',
     'address' => 'Address',
     'phone' => 'Phone',
-    'addComment' => 'Add comment'
+    'addComment' => 'Add comment',
+    'downloadExcel' => 'Download excel'
 
 ];

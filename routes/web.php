@@ -33,6 +33,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'warehouse'], function () {
     Route::post('packing-list/report', 'PackingListController@reportProcess');
     Route::post('packing-list/{id}/email', 'PackingListController@sendEmail')->name('packing-list.email');
     Route::get('packing-list/{id}/pdf', 'PackingListController@pdf')->name('packing-list.pdf');
+    Route::get('packing-list/{id}/excel', 'PackingListController@excel')->name('packing-list.excel');
     Route::resource('packing-list', 'PackingListController');
 
     Route::get('order/report', 'OrderController@report')->name('order.report');

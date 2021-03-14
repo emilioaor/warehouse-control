@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\PackingListExport;
 use App\Order;
 use App\PackingList;
 use App\PackingListImage;
@@ -10,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PackingListController extends Controller
 {
@@ -213,5 +215,18 @@ class PackingListController extends Controller
         $pdf = \PDF::loadView('pdf.packingList', ['packingList' => $packingList])->setPaper('letter');
 
         return $pdf->stream();
+    }
+
+    /**
+     * Export excel
+     *
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function excel($id)
+    {
+        $packingList = PackingList::query()->uuid($id)->firstOrFail();
+
+        return Excel::download(new PackingListExport($packingList), 'packing-list-' . $id . '.xlsx');
     }
 }
