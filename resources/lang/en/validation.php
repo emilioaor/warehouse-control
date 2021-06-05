@@ -180,7 +180,8 @@ return [
         'address' => 'Address',
         'comment' => 'Comment',
         'way' => 'Way',
-        'courierAddress' => 'Courier address'
+        'courierAddress' => 'Courier address',
+        'lockerNumber' => 'Locker number',
     ],
 
 ];

@@ -99,6 +99,22 @@
                                     </span>
                                 </div>
 
+                                <div class="col-sm-6 col-md-4 form-group">
+                                    <label for="address"> {{ t('validation.attributes.lockerNumber') }}</label>
+                                    <input
+                                        type="text"
+                                        name="locker_number"
+                                        id="locker_number"
+                                        class="form-control"
+                                        :class="{'is-invalid': errors.has('locker_number')}"
+                                        v-validate
+                                        v-model="form.locker_number"
+                                    >
+                                    <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('locker_number', 'required')">
+                                        <strong>{{ t('validation.required', {attribute: 'lockerNumber'}) }}</strong>
+                                    </span>
+                                </div>
+
                                 <div class="col-sm-6 col-md-4 form-group" v-for="(customerEmail, i) in form.customer_emails">
                                     <label :for="'email' + i">
                                         {{ t('validation.attributes.email') }}
@@ -208,6 +224,7 @@
                     phone: null,
                     default_courier_id: null,
                     address: null,
+                    locker_number: null,
                     customer_emails: [
                         {email: null}
                     ]
