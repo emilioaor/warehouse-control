@@ -58,7 +58,7 @@ class Order extends Model implements IuuidGenerator
     {
         $this->status = self::STATUS_PENDING_SEND;
         $this->date = Carbon::now();
-        $this->created_by = Auth::user()->id;
+        $this->created_by = Auth::check() ? Auth::user()->id : null;
         parent::__construct($attributes);
     }
 

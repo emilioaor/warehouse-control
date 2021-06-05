@@ -110,7 +110,7 @@
                                             class="form-control"
                                             name="invoice_number"
                                             id="invoice_number"
-                                            :class="{'is-invalid': errors.has('invoice_number')}"
+                                            :class="{'is-invalid': errors.has('invoice_number') || exists}"
                                             v-validate
                                             data-vv-rules="required"
                                             v-model="form.invoice_number"
@@ -119,6 +119,10 @@
 
                                     <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('invoice_number', 'required')">
                                         <strong>{{ t('validation.required', {attribute: 'salesOrder'}) }}</strong>
+                                    </span>
+
+                                    <span class="invalid-feedback" role="alert" v-if="exists">
+                                        <strong>{{ t('validation.unique', {attribute: 'salesOrder'}) }}</strong>
                                     </span>
                                 </div>
 
@@ -450,7 +454,8 @@
                 loading: false,
                 customer: null,
                 courier: null,
-                isCommentShow: this.editData && this.editData.comment
+                isCommentShow: this.editData && this.editData.comment,
+                exists: false
             }
         },
 
@@ -472,8 +477,12 @@
 
                 }).catch(err => {
                     this.loading = false;
-                    if (err.status === 400) {
+                    if (err.response.status === 400) {
                         location.reload();
+                    } else if (err.response.status === 422) {
+                        if (err.response.data.errors.invoice_number) {
+                            this.exists = true;
+                        }
                     }
                 })
             },
@@ -577,6 +586,12 @@
                 this.form.order_details.forEach(detail => sum += detail.qty);
 
                 return sum
+            }
+        },
+
+        watch: {
+            "form.invoice_number"() {
+                this.exists = false;
             }
         }
     }

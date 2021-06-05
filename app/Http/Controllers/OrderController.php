@@ -57,6 +57,8 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate(['invoice_number' => 'unique:orders'], $request->all());
+
         DB::beginTransaction();
 
         $order = new Order($request->all());
