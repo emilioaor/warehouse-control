@@ -34,6 +34,7 @@
                                             v-validate
                                             data-vv-rules="required"
                                             v-model="form.description"
+                                            :readonly="! authUser() || authUser().role === 'seller'"
                                     >
                                     <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('description', 'required')">
                                         <strong>{{ t('validation.required', {attribute: 'name'}) }}</strong>
@@ -51,6 +52,7 @@
                                             v-validate
                                             data-vv-rules="required|regex:^([\+])?[0-9]+$"
                                             v-model="form.phone"
+                                            :readonly="! authUser() || authUser().role === 'seller'"
                                     >
                                     <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('phone', 'required')">
                                         <strong>{{ t('validation.required', {attribute: 'phone'}) }}</strong>
@@ -68,6 +70,7 @@
                                             @selectResult="changeCourier($event)"
                                             :input-class="errors.has('default_courier_id') ? 'is-invalid' : ''"
                                             :value="courier ? courier.searchDescription : ''"
+                                            :readOnly="! authUser() || authUser().role === 'seller'"
                                     ></search-input>
                                     <input
                                             type="hidden"
@@ -93,6 +96,7 @@
                                             v-validate
                                             data-vv-rules="required"
                                             v-model="form.address"
+                                            :readonly="! authUser() || authUser().role === 'seller'"
                                     >
                                     <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('address', 'required')">
                                         <strong>{{ t('validation.required', {attribute: 'address'}) }}</strong>
@@ -100,7 +104,7 @@
                                 </div>
 
                                 <div class="col-sm-6 col-md-4 form-group">
-                                    <label for="address"> {{ t('validation.attributes.lockerNumber') }}</label>
+                                    <label for="locker_number"> {{ t('validation.attributes.lockerNumber') }}</label>
                                     <input
                                         type="text"
                                         name="locker_number"
@@ -109,9 +113,33 @@
                                         :class="{'is-invalid': errors.has('locker_number')}"
                                         v-validate
                                         v-model="form.locker_number"
+                                        :readonly="! authUser() || authUser().role === 'seller'"
                                     >
                                     <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('locker_number', 'required')">
                                         <strong>{{ t('validation.required', {attribute: 'lockerNumber'}) }}</strong>
+                                    </span>
+                                </div>
+
+                                <div class="col-sm-6 col-md-4 form-group">
+                                    <label for="seller"> {{ t('validation.attributes.seller') }}</label>
+                                    <search-input
+                                        route="/warehouse/user/seller"
+                                        :description-fields="['name']"
+                                        @selectResult="changeSeller($event)"
+                                        :input-class="errors.has('seller') ? 'is-invalid' : ''"
+                                        :value="form.seller ? form.seller.searchDescription : ''"
+                                        :readOnly="! authUser() || authUser().role === 'seller'"
+                                    ></search-input>
+                                    <input
+                                        type="hidden"
+                                        name="seller"
+                                        id="seller"
+                                        v-validate
+                                        data-vv-rules="required"
+                                        v-model="form.seller_id"
+                                    >
+                                    <span class="invalid-feedback d-block" role="alert" v-if="errors.firstByRule('seller', 'required')">
+                                        <strong>{{ t('validation.required', {attribute: 'seller'}) }}</strong>
                                     </span>
                                 </div>
 
@@ -131,6 +159,7 @@
                                                 v-validate
                                                 data-vv-rules="required|email"
                                                 v-model="customerEmail.email"
+                                                :readonly="! authUser() || authUser().role === 'seller'"
                                         >
                                         <span class="input-group-btn" v-if="i > 0">
                                             <button type="button" class="btn btn-danger" @click="removeEmail(i)">
@@ -147,7 +176,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-sm-6 col-md-4 form-group">
+                                <div class="col-sm-6 col-md-4 form-group" v-if="this.authUser() && this.authUser().role !== 'seller'">
                                     <label> {{ t('form.addEmail') }}</label>
                                     <div>
                                         <button type="button" class="btn btn-add-email w-100" @click="addEmail()">
@@ -158,7 +187,7 @@
                                 </div>
                             </div>
 
-                            <div>
+                            <div v-if="this.authUser() && this.authUser().role !== 'seller'">
                                 <button class="btn btn-primary" v-if="!loading">
                                     <i class="fa fa-save"></i>
                                      {{ t('form.save') }}
@@ -213,7 +242,11 @@
                 this.courier = {
                     ...this.editData.default_courier,
                     searchDescription: this.editData.default_courier.name
-                }
+                };
+                this.form.seller = {
+                    ...this.editData.seller,
+                    searchDescription: this.editData.seller.name
+                };
             }
         },
 
@@ -223,11 +256,14 @@
                     description: null,
                     phone: null,
                     default_courier_id: null,
+                    default_courier: null,
                     address: null,
                     locker_number: null,
                     customer_emails: [
                         {email: null}
-                    ]
+                    ],
+                    seller_id: null,
+                    seller: null
                 },
                 loading: false,
                 courier: null
@@ -276,6 +312,11 @@
                 this.form.default_courier_id= result.id;
             },
 
+            changeSeller(result) {
+                this.form.seller = result;
+                this.form.seller_id= result.id;
+            },
+
             addEmail() {
                 this.form.customer_emails.push({
                     email: null
@@ -292,5 +333,10 @@
 <style lang="scss" scoped>
     .btn-add-email {
         border: solid 1px #ccc;
+    }
+
+    .form-control[readonly],
+    select[disabled] {
+        background-color: #ffffff;
     }
 </style>

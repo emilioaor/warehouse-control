@@ -308,7 +308,7 @@
                                         ></textarea>
                                     </template>
 
-                                    <template v-else>
+                                    <template v-else-if="authUser() && authUser().role !== 'seller'">
                                         <button type="button" class="btn btn-secondary" @click="showComment()">
                                             <i class="fa fa-comment"></i>
                                             {{ t('form.addComment') }}
@@ -339,7 +339,7 @@
                                 </template>
                             </div>
 
-                            <div>
+                            <div v-if="authUser() && authUser().role !== 'seller'">
                                 <button
                                     class="btn"
                                     :class="{

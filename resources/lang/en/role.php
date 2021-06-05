@@ -2,6 +2,7 @@
 
 return [
     'admin' => 'Administrator',
-    'warehouse' => 'Warehouse'
+    'warehouse' => 'Warehouse',
+    'seller' => 'Seller',
 
 ];

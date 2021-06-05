@@ -25,6 +25,7 @@ class User extends Authenticatable implements IuuidGenerator
     /** User roles */
     const ROLE_ADMIN = 'admin';
     const ROLE_WAREHOUSE = 'warehouse';
+    const ROLE_SELLER = 'seller';
 
     /**
      * The attributes that are mass assignable.
@@ -75,6 +76,16 @@ class User extends Authenticatable implements IuuidGenerator
     }
 
     /**
+     * Customers assigned to seller user
+     *
+     * @return HasMany
+     */
+    public function customers()
+    {
+        return $this->hasMany(Customer::class, 'seller_id');
+    }
+
+    /**
      * Is admin?
      */
     public function isAdmin(): bool
@@ -88,6 +99,14 @@ class User extends Authenticatable implements IuuidGenerator
     public function isWarehouse(): bool
     {
         return $this->role === self::ROLE_WAREHOUSE;
+    }
+
+    /**
+     * Is seller?
+     */
+    public function isSeller(): bool
+    {
+        return $this->role === self::ROLE_SELLER;
     }
 
     /**
@@ -106,6 +125,7 @@ class User extends Authenticatable implements IuuidGenerator
         return [
             self::ROLE_ADMIN => __(sprintf('role.%s', self::ROLE_ADMIN)),
             self::ROLE_WAREHOUSE => __(sprintf('role.%s', self::ROLE_WAREHOUSE)),
+            self::ROLE_SELLER => __(sprintf('role.%s', self::ROLE_SELLER)),
         ];
     }
 

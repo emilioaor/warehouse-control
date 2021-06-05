@@ -1,6 +1,7 @@
 <ul class="navbar-nav mr-auto">
     @auth
         @include('layouts.dropdown-menu', [
+            'show' => ! Auth::user()->isSeller(),
             'title' => __('navbar.orders'),
             'links' => [
                 [
@@ -19,6 +20,22 @@
         ])
 
         @include('layouts.dropdown-menu', [
+                'show' => Auth::user()->isSeller(),
+                'title' => __('navbar.orders'),
+                'links' => [
+                    [
+                        'label' => __('navbar.list'),
+                        'route' => route('seller.order.index')
+                    ],
+                    [
+                        'label' => __('navbar.report'),
+                        'route' => route('seller.order.report')
+                    ]
+                ]
+            ])
+
+        @include('layouts.dropdown-menu', [
+            'show' => ! Auth::user()->isSeller(),
             'title' => __('navbar.packingList'),
             'links' => [
                 [
@@ -36,23 +53,23 @@
             ]
         ])
 
-        @if(Auth::user()->isAdmin())
-            @include('layouts.dropdown-menu', [
-                'title' => __('navbar.users'),
-                'links' => [
-                    [
-                        'label' => __('navbar.addNew'),
-                        'route' => route('user.create')
-                    ],
-                    [
-                        'label' => __('navbar.list'),
-                        'route' => route('user.index')
-                    ]
+        @include('layouts.dropdown-menu', [
+            'title' => __('navbar.users'),
+            'show' => Auth::user()->isAdmin(),
+            'links' => [
+                [
+                    'label' => __('navbar.addNew'),
+                    'route' => route('user.create')
+                ],
+                [
+                    'label' => __('navbar.list'),
+                    'route' => route('user.index')
                 ]
-            ])
-        @endif
+            ]
+        ])
 
         @include('layouts.dropdown-menu', [
+            'show' => ! Auth::user()->isSeller(),
             'title' => __('navbar.couriers'),
             'links' => [
                 [
@@ -67,6 +84,7 @@
         ])
 
         @include('layouts.dropdown-menu', [
+            'show' => ! Auth::user()->isSeller(),
             'title' => __('navbar.customers'),
             'links' => [
                 [
@@ -81,6 +99,18 @@
         ])
 
         @include('layouts.dropdown-menu', [
+                'show' => Auth::user()->isSeller(),
+                'title' => __('navbar.customers'),
+                'links' => [
+                    [
+                        'label' => __('navbar.list'),
+                        'route' => route('seller.customer.index')
+                    ]
+                ]
+            ])
+
+        @include('layouts.dropdown-menu', [
+            'show' => ! Auth::user()->isSeller(),
             'title' => __('navbar.boxes'),
             'links' => [
                 [

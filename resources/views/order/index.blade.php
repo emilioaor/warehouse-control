@@ -9,7 +9,7 @@
 
                     <div class="card-body">
                         @include('layouts.table-search', [
-                            'route' => route('order.index'),
+                            'route' => Auth::user()->isSeller() ? route('seller.order.index') : route('order.index'),
                             'total' => $orders->total()
                         ])
 
@@ -33,7 +33,10 @@
                                         <td>{{ $order->date_local->format('d-m-Y h:i a') }}</td>
                                         <td>{!! $order->statusHtml() !!}</td>
                                         <td>
-                                            <a href="{{ route('order.edit', $order->uuid) }}" class="btn btn-warning">
+                                            <a
+                                                href="{{ Auth::user()->isSeller() ? route('seller.order.edit', $order->uuid) : route('order.edit', $order->uuid) }}"
+                                                class="btn btn-warning"
+                                            >
                                                 <i class="fa fa-edit"></i>
                                             </a>
                                         </td>

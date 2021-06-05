@@ -188,6 +188,27 @@ class Order extends Model implements IuuidGenerator
     }
 
     /**
+     * My customers' orders
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeMy(Builder $query)
+    {
+        if (Auth::user()->isSeller()) {
+            $isJoined = collect($query->getQuery()->joins)->pluck('table')->contains('customers');
+
+            if (! $isJoined) {
+                $query->join('customers', 'customers.id', '=', 'orders.customer_id');
+            }
+
+            $query->where('customers.seller_id', Auth::user()->id);
+        }
+
+        return $query;
+    }
+
+    /**
      * Scope report
      */
     public function scopeReport(Builder $query, array $params): Builder
@@ -200,6 +221,8 @@ class Order extends Model implements IuuidGenerator
         $invoiceNumber = $params['invoice_number'];
 
         $query
+            ->select(['orders.*'])
+            ->my()
             ->whereBetween('date', [$start, $end])
             ->with(['customer', 'courier'])
             ->orderBy('date', 'DESC')
@@ -220,6 +243,7 @@ class Order extends Model implements IuuidGenerator
         if ($invoiceNumber) {
             $query->where('invoice_number', $invoiceNumber);
         }
+
 
         return $query;
     }

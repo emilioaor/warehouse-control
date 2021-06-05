@@ -159,4 +159,17 @@ class UserController extends Controller
 
         return response()->json(['success' => true, 'redirect' => route('user.config')]);
     }
+
+    /**
+     * Sellers
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function sellers(Request $request)
+    {
+        $sellers = User::query()->search($request->get('search'))->where('role', User::ROLE_SELLER)->paginate();
+
+        return response()->json(['success' => true, 'data' => $sellers]);
+    }
 }

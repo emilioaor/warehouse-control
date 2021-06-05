@@ -183,6 +183,7 @@ return [
         'way' => 'Way',
         'courierAddress' => 'Courier address',
         'lockerNumber' => 'Locker number',
+        'seller' => 'Seller',
     ],
 
 ];

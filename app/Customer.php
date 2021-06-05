@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Customer extends Model implements IuuidGenerator
 {
@@ -27,7 +28,8 @@ class Customer extends Model implements IuuidGenerator
         'email',
         'default_courier_id',
         'address',
-        'locker_number'
+        'locker_number',
+        'seller_id'
     ];
 
     protected $with = ['defaultCourier'];
@@ -64,6 +66,14 @@ class Customer extends Model implements IuuidGenerator
     }
 
     /**
+     * Seller
+     */
+    public function seller()
+    {
+        return $this->belongsTo(User::class, 'seller_id')->withTrashed();
+    }
+
+    /**
      * Scope search
      */
     public function scopeSearch(Builder $query, ?string $search): Builder
@@ -75,6 +85,21 @@ class Customer extends Model implements IuuidGenerator
         ;
 
         return $this->_search($query, $search);
+    }
+
+    /**
+     * My customers
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeMy(Builder $query)
+    {
+        if (Auth::user()->isSeller()) {
+            $query->where('seller_id', Auth::user()->id);
+        }
+
+        return $query;
     }
 
     /**

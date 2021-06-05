@@ -9,7 +9,7 @@
 
                     <div class="card-body">
                         @include('layouts.table-search', [
-                            'route' => route('customer.index'),
+                            'route' => Auth::user()->isSeller() ? route('seller.customer.index') : route('customer.index'),
                             'total' => $customers->total()
                         ])
 
@@ -33,7 +33,10 @@
                                         <td>{{ $customer->phone }}</td>
                                         <td>{{ $customer->created_at_local->format('d-m-Y') }}</td>
                                         <td>
-                                            <a href="{{ route('customer.edit', $customer->uuid) }}" class="btn btn-warning">
+                                            <a
+                                                href="{{ Auth::user()->isSeller() ? route('seller.customer.edit', $customer->uuid) : route('customer.edit', $customer->uuid) }}"
+                                                class="btn btn-warning"
+                                            >
                                                 <i class="fa fa-edit"></i>
                                             </a>
                                         </td>

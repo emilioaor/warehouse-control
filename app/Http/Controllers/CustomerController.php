@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Courier;
 use App\Customer;
 use App\Service\AlertService;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -29,6 +30,7 @@ class CustomerController extends Controller
     {
         $customers = Customer::query()
             ->search($request->search)
+            ->my()
             ->with(['defaultCourier', 'customerEmails'])
             ->paginate()
         ;
@@ -47,9 +49,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        $couriers = Courier::query()->orderBy('name')->pluck('name', 'id');
-
-        return view('customer.form', compact('couriers'));
+        return view('customer.form');
     }
 
     /**
@@ -95,7 +95,8 @@ class CustomerController extends Controller
     {
         $customer = Customer::query()
             ->uuid($id)
-            ->with(['defaultCourier', 'customerEmails'])
+            ->my()
+            ->with(['defaultCourier', 'customerEmails', 'seller'])
             ->firstOrFail()
         ;
 

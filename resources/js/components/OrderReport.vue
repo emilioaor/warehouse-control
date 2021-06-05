@@ -11,7 +11,7 @@
 
                     <div class="card-body">
 
-                        <form @submit.prevent="validateForm()">
+                        <form @submit.prevent="validateForm()" v-if="authUser()">
 
 
                             <div class="row">
@@ -67,7 +67,7 @@
                                 <div class="col-sm-6 col-md-4 form-group">
                                     <label> {{ t('validation.attributes.customer') }}</label>
                                     <search-input
-                                            route="/warehouse/customer"
+                                            :route="authUser().role === 'seller' ? '/seller/customer' : '/warehouse/customer'"
                                             :description-fields="['description']"
                                             @selectResult="changeCustomer($event)"
                                             :nullable="true"
@@ -80,7 +80,7 @@
                                 <div class="col-sm-6 col-md-4 form-group">
                                     <label> {{ t('validation.attributes.courier') }}</label>
                                     <search-input
-                                            route="/warehouse/courier"
+                                            :route="authUser().role === 'seller' ? '/seller/courier' : '/warehouse/courier'"
                                             :description-fields="['name']"
                                             @selectResult="changeCourier($event)"
                                             :nullable="true"
@@ -137,7 +137,8 @@
                                                 <a
                                                     class="btn btn-warning"
                                                     target="_blank"
-                                                    :href="'/warehouse/order/' + result.uuid + '/edit'">
+                                                    v-if="authUser()"
+                                                    :href="authUser().role === 'seller' ? '/seller/order/' + result.uuid + '/edit' : '/warehouse/order/' + result.uuid + '/edit'">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
                                             </td>
@@ -180,7 +181,8 @@
                 customer: null,
                 courier: null,
                 loading: false,
-                results: []
+                results: [],
+                user: this.authUser()
             }
         },
 
@@ -197,8 +199,9 @@
             sendForm() {
                 this.loading = true;
                 this.results = [];
+                const route = this.user.role === 'seller' ? '/seller/order/report' : '/warehouse/order/report';
 
-                ApiService.post('/warehouse/order/report', this.form).then(res => {
+                ApiService.post(route, this.form).then(res => {
                     this.results = res.data.data;
                     this.loading = false;
                 }).catch(err => {

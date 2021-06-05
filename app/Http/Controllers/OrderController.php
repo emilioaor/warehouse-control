@@ -31,6 +31,7 @@ class OrderController extends Controller
     {
         $orders = Order::query()
             ->search($request->search)
+            ->my()
             ->whereNull('packing_list_id')
             ->with(['customer', 'courier'])
             ->orderBy('date', 'DESC')
@@ -100,6 +101,7 @@ class OrderController extends Controller
     {
         $order = Order::query()
             ->uuid($id)
+            //->my()
             ->with(['customer', 'courier', 'orderDetails', 'packingList.packingListImages', 'createdBy'])
             ->firstOrFail()
         ;
