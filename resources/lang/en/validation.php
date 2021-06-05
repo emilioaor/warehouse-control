@@ -155,6 +155,7 @@ return [
         'courierDefault' => 'Courier default',
         'role' => 'Role',
         'created_at' => 'Created at',
+        'created_by' => 'Created by',
         'total' => 'Total',
         'filter_by' => 'Filter by',
         'description' => 'Description',

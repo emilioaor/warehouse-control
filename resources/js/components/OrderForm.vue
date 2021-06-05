@@ -128,6 +128,11 @@
                                 </div>
 
                                 <div class="col-sm-6 col-md-4 form-group not-print" v-if="!! editData">
+                                    <label> {{ t('validation.attributes.created_by') }}</label>
+                                    <input type="text" class="form-control" :readonly="true" :value="editData.created_by.name">
+                                </div>
+
+                                <div class="col-sm-6 col-md-4 form-group not-print" v-if="!! editData">
                                     <label> {{ t('validation.attributes.status') }}</label>
                                     <div>
                                         <span
