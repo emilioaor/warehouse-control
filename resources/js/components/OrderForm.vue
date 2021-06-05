@@ -163,6 +163,7 @@
                                                 <td v-if="!editData">
                                                     <search-input
                                                             route="/warehouse/box"
+                                                            ref="searchBox"
                                                             :description-fields="['description', 'size', 'weight']"
                                                             @selectResult="changeBoxDetail($event, i)"
                                                             :nullable="true"
@@ -513,6 +514,10 @@
                     qty: null,
                     searchDescription: null
                 });
+
+                if (this.form.order_details.length > 1) {
+                    window.setTimeout(() => this.$refs.searchBox[this.form.order_details.length - 1].openModal());
+                }
             },
 
             removeDetail(i) {
