@@ -184,6 +184,7 @@ return [
         'courierAddress' => 'Courier address',
         'lockerNumber' => 'Locker number',
         'seller' => 'Seller',
+        'price' => 'Price',
     ],
 
 ];

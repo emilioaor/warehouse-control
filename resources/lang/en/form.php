@@ -27,6 +27,7 @@ return [
     'address' => 'Address',
     'phone' => 'Phone',
     'addComment' => 'Add comment',
-    'downloadExcel' => 'Download excel'
+    'downloadExcel' => 'Download excel',
+    'formatSize' => 'Format: width*length*height'
 
 ];

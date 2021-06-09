@@ -49,11 +49,15 @@
                                             class="form-control"
                                             :class="{'is-invalid': errors.has('size')}"
                                             v-validate
-                                            data-vv-rules=""
+                                            data-vv-rules="regex:^[0-9]+(.[0-9]+)?\*[0-9]+(.[0-9]+)?\*[0-9]+(.[0-9]+)?$"
                                             v-model="form.size"
                                     >
                                     <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('size', 'required')">
                                         <strong>{{ t('validation.required', {attribute: 'size'}) }}</strong>
+                                    </span>
+
+                                    <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('size', 'regex')">
+                                        <strong>{{ t('form.formatSize') }}</strong>
                                     </span>
                                 </div>
 

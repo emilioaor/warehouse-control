@@ -53,7 +53,7 @@
                                 </div>
 
                                 <div class="col-sm-6 col-md-4 form-group">
-                                    <label for="courier_id"> {{ t('validation.attributes.courier') }}</label>
+                                    <label for="courier_id">{{ t('validation.attributes.courier') }}</label>
 
                                     <search-input
                                             route="/warehouse/courier"
@@ -79,7 +79,7 @@
                                 </div>
 
                                 <div class="col-sm-6 form-group col-md-4">
-                                    <label for="invoice_number"> {{ t('validation.attributes.way') }}</label>
+                                    <label for="way"> {{ t('validation.attributes.way') }}</label>
 
                                     <select
                                         class="form-control"
@@ -159,12 +159,13 @@
                                     <table class="table table-responsive mt-4">
                                         <thead>
                                             <tr>
-                                                <td v-if="!editData">{{ t('validation.attributes.box') }}</td>
-                                                <td>{{ t('validation.attributes.description') }}</td>
-                                                <td>{{ t('validation.attributes.size') }}</td>
-                                                <td>{{ t('validation.attributes.weight') }}</td>
-                                                <td width="1%">{{ t('validation.attributes.qty') }}</td>
-                                                <td width="5%" v-if="! editData"></td>
+                                                <th v-if="!editData">{{ t('validation.attributes.box') }}</th>
+                                                <th>{{ t('validation.attributes.description') }}</th>
+                                                <th>{{ t('validation.attributes.size') }}</th>
+                                                <th>{{ t('validation.attributes.weight') }}</th>
+                                                <th width="1%">{{ t('validation.attributes.qty') }}</th>
+                                                <th width="10%">{{ t('validation.attributes.price') }}</th>
+                                                <th width="5%" v-if="! editData"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -204,13 +205,17 @@
                                                             :id="'size' + i"
                                                             :class="{'is-invalid': errors.has('size' + i)}"
                                                             v-validate
-                                                            data-vv-rules="required"
+                                                            data-vv-rules="required|regex:^[0-9]+(.[0-9]+)?\*[0-9]+(.[0-9]+)?\*[0-9]+(.[0-9]+)?$"
                                                             v-model="detail.size"
                                                             :readonly="editData"
                                                     >
 
                                                     <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('size' + i, 'required')">
                                                         <strong>{{ t('validation.required', {attribute: 'size'}) }}</strong>
+                                                    </span>
+
+                                                    <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('size' + i, 'regex')">
+                                                        <strong>{{ t('form.formatSize') }}</strong>
                                                     </span>
                                                 </td>
                                                 <td>
@@ -251,6 +256,14 @@
                                                         <strong>{{ t('validation.numeric', {attribute: 'qty'}) }}</strong>
                                                     </span>
                                                 </td>
+                                                <td>
+                                                    <input
+                                                        type="text"
+                                                        class="form-control"
+                                                        readonly
+                                                        :value="calculatePrice(detail)"
+                                                    >
+                                                </td>
                                                 <td v-if="! editData">
                                                     <button type="button" class="btn btn-danger" @click="removeDetail(i)">
                                                             <i class="fa fa-trash"></i>
@@ -272,23 +285,23 @@
                                         </tbody>
                                         <tfoot v-if="editData">
                                             <tr>
-                                                <td colspan="2">{{ t('form.totals') }}</td>
-                                                <td>
+                                                <th colspan="2">{{ t('form.totals') }}</th>
+                                                <th>
                                                     <input
                                                         type="text"
                                                         class="form-control"
                                                         readonly="readonly"
                                                         :value="weightSum"
                                                     >
-                                                </td>
-                                                <td>
+                                                </th>
+                                                <th>
                                                     <input
                                                         type="text"
                                                         class="form-control"
                                                         readonly="readonly"
                                                         :value="qtySum"
                                                     >
-                                                </td>
+                                                </th>
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -570,6 +583,13 @@
             showComment() {
                 this.isCommentShow = true;
                 window.setTimeout(() => document.querySelector('#comment').focus(), 500);
+            },
+
+            calculatePrice(detail) {
+                if (this.form.way === 'airway') {
+                    let weight = detail.weight;
+
+                }
             }
         },
 
@@ -638,7 +658,7 @@
     }
 
     .input-qty {
-        min-width: 200px;
+        min-width: 180px;
     }
 </style>
 

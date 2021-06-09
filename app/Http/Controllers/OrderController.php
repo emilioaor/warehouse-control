@@ -101,7 +101,7 @@ class OrderController extends Controller
     {
         $order = Order::query()
             ->uuid($id)
-            //->my()
+            ->my()
             ->with(['customer', 'courier', 'orderDetails', 'packingList.packingListImages', 'createdBy'])
             ->firstOrFail()
         ;

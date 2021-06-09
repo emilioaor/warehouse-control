@@ -1,5 +1,5 @@
 @component('mail::message')
-# {{ __('email.orderCreated') }}
+# {{ __('email.order') }} \#{{ $order->id }}
 
 {{ __('email.orderCreated.message') }}
 

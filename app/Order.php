@@ -202,7 +202,7 @@ class Order extends Model implements IuuidGenerator
                 $query->join('customers', 'customers.id', '=', 'orders.customer_id');
             }
 
-            $query->where('customers.seller_id', Auth::user()->id);
+            $query->select(['orders.*'])->where('customers.seller_id', Auth::user()->id);
         }
 
         return $query;
