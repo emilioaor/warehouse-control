@@ -89,7 +89,7 @@
                                         v-validate
                                         data-vv-rules=""
                                         v-model="form.way"
-                                        :disabled="!! editData"
+                                        :disabled="editData && editData.packing_list"
                                     >
                                         <option
                                             v-for="(label, value) in waysAvailable"
@@ -164,7 +164,14 @@
                                                 <th>{{ t('validation.attributes.size') }}</th>
                                                 <th>{{ t('validation.attributes.weight') }}</th>
                                                 <th width="1%">{{ t('validation.attributes.qty') }}</th>
-                                                <th width="10%">{{ t('validation.attributes.price') }}</th>
+                                                <th width="10%">
+                                                    <template v-if="form.way === 'airway'">
+                                                        {{ t('validation.attributes.volumetricWeight') }}
+                                                    </template>
+                                                    <template v-else>
+                                                        {{ t('validation.attributes.cubicFeet') }}
+                                                    </template>
+                                                </th>
                                                 <th width="5%" v-if="! editData"></th>
                                             </tr>
                                         </thead>
@@ -261,7 +268,7 @@
                                                         type="text"
                                                         class="form-control"
                                                         readonly
-                                                        :value="calculatePrice(detail)"
+                                                        :value="volumetricWeight(detail, i) ? volumetricWeight(detail, i) : '?'"
                                                     >
                                                 </td>
                                                 <td v-if="! editData">
@@ -300,6 +307,14 @@
                                                         class="form-control"
                                                         readonly="readonly"
                                                         :value="qtySum"
+                                                    >
+                                                </th>
+                                                <th>
+                                                    <input
+                                                        type="text"
+                                                        class="form-control"
+                                                        readonly="readonly"
+                                                        :value="volumetricWeightSum"
                                                     >
                                                 </th>
                                             </tr>
@@ -585,11 +600,32 @@
                 window.setTimeout(() => document.querySelector('#comment').focus(), 500);
             },
 
-            calculatePrice(detail) {
-                if (this.form.way === 'airway') {
-                    let weight = detail.weight;
+            volumetricWeight(detail, index) {
+                const weight = detail.weight;
+                const split = detail.size ? detail.size.split('*') : [];
+                let volumetricWeight = 0;
 
+                if (split.length === 3 && ! this.errors.has('size' + index)) {
+                    const width = split[0];
+                    const length = split[1];
+                    const height = split[2];
+
+                    if (width && length && height) {
+
+                        if (this.form.way === 'airway') {
+
+                            volumetricWeight = (width * length * height) / 166;
+                            volumetricWeight = volumetricWeight > weight ? volumetricWeight : weight;
+
+                        } else if (this.form.way === 'seaway') {
+                            volumetricWeight = (width * length * height) / 1728;
+                        }
+
+                        return Math.ceil(volumetricWeight * 100) / 100;
+                    }
                 }
+
+                return null;
             }
         },
 
@@ -604,6 +640,13 @@
             qtySum() {
                 let sum = 0;
                 this.form.order_details.forEach(detail => sum += detail.qty);
+
+                return sum
+            },
+
+            volumetricWeightSum() {
+                let sum = 0;
+                this.form.order_details.forEach((detail, i) => sum += this.volumetricWeight(detail, i));
 
                 return sum
             }
@@ -626,7 +669,7 @@
         justify-content: center;
         align-items: center;
         font-size: 40px;
-        height: 160px;
+        height: 140px;
         cursor: pointer;
 
         &.is-invalid {

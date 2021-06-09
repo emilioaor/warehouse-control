@@ -39,4 +39,30 @@ class OrderDetail extends Model implements IuuidGenerator
     {
         return $this->belongsTo(Box::class, 'box_id')->withTrashed();
     }
+
+    /**
+     * Volumetric weight
+     *
+     * @return float|int
+     */
+    public function volumetricWeight()
+    {
+        $weight = $this->weight;
+        $split = explode('*', $this->size);
+        $volumetricWeight = 0;
+        $width = $split[0];
+        $length = $split[1];
+        $height = $split[2];
+
+        if ($this->order->way === 'airway') {
+
+            $volumetricWeight = ($width * $length * $height) / 166;
+            $volumetricWeight = $volumetricWeight > $weight ? $volumetricWeight : $weight;
+
+        } else if ($this->order->way === 'seaway') {
+            $volumetricWeight = ($width * $length * $height) / 1728;
+        }
+
+        return ceil($volumetricWeight * 100) / 100;
+    }
 }

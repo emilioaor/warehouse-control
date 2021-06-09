@@ -118,9 +118,15 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
+        DB::beginTransaction();
+
         $order = Order::query()->uuid($id)->firstOrFail();
-        $order->fill($request->only(['comment', 'courier_id']));
+        $order->fill($request->only(['comment', 'courier_id', 'way']));
         $order->save();
+
+        Mail::to($order->customer->customerEmails->pluck('email')->toArray())->send(new OrderCreated($order));
+
+        DB::commit();
 
         AlertService::alertSuccess(__('alert.processSuccessfully'));
 

@@ -184,7 +184,8 @@ return [
         'courierAddress' => 'Courier address',
         'lockerNumber' => 'Locker number',
         'seller' => 'Seller',
-        'price' => 'Price',
+        'volumetricWeight' => 'Volumetric weight',
+        'cubicFeet' => 'Cubic feet',
     ],
 
 ];
