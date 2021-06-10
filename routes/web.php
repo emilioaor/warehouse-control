@@ -46,6 +46,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('packing-list/{id}/email', 'PackingListController@sendEmail')->name('packing-list.email');
         Route::get('packing-list/{id}/pdf', 'PackingListController@pdf')->name('packing-list.pdf');
         Route::get('packing-list/{id}/excel', 'PackingListController@excel')->name('packing-list.excel');
+        Route::post('packing-list/{id}/images', 'PackingListController@images')->name('packing-list.images');
         Route::resource('packing-list', 'PackingListController');
 
         Route::get('order/report', 'OrderController@report')->name('order.report');

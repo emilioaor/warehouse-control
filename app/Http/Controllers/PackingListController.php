@@ -105,7 +105,7 @@ class PackingListController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
@@ -124,18 +124,11 @@ class PackingListController extends Controller
 
         $packingList->save();
 
-        foreach ($request->packing_list_images as $i => $image) {
-            $packingListImage = new PackingListImage();
-            $packingListImage->packing_list_id = $packingList->id;
-            $packingListImage->url = $packingList->attachDocument($image['url'], sprintf('image%s', $i + 1));
+        if (! $packingList->updateImages($request->packing_list_images)) {
 
-            if (! $packingListImage->url) {
-                AlertService::alertFail(__('alert.invalidImageFormat'));
+            AlertService::alertFail(__('alert.invalidImageFormat'));
 
-                return response()->json(['success' => false], 400);
-            }
-
-            $packingListImage->save();
+            return response()->json(['success' => false], 400);
         }
 
         Order::query()->whereIn('id', $request->orderIds)->update([
@@ -228,5 +221,29 @@ class PackingListController extends Controller
         $packingList = PackingList::query()->uuid($id)->firstOrFail();
 
         return Excel::download(new PackingListExport($packingList), 'packing-list-' . $id . '.xlsx');
+    }
+
+    /**
+     * Update images
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function images(Request $request, $id)
+    {
+        DB::beginTransaction();
+
+        $packingList = PackingList::query()->uuid($id)->firstOrFail();
+
+        if (! $packingList->updateImages($request->packing_list_images)) {
+            return response()->json(['success' => false], 400);
+        }
+
+        DB::commit();
+
+        AlertService::alertSuccess(__('alert.processSuccessfully'));
+
+        return response()->json(['success' => true, 'redirect' => route('packing-list.edit', $packingList->uuid)]);
     }
 }

@@ -213,4 +213,37 @@ class PackingList extends Model
         $this->boxTotal = $boxTotal;
         $this->weightTotal = $weightTotal;
     }
+
+    /**
+     * Update images
+     *
+     * @param $images
+     * @return bool
+     */
+    public function updateImages($images)
+    {
+        $imageIds = [];
+
+        foreach ($images as $i => $image) {
+            if (! isset($image['id'])) {
+                $packingListImage = new PackingListImage();
+                $packingListImage->packing_list_id = $this->id;
+                $packingListImage->url = $this->attachDocument($image['url'], sprintf('image%s', $i + 1));
+
+                if (! $packingListImage->url) {
+                    return false;
+                }
+
+                $packingListImage->save();
+
+                $imageIds[] = $packingListImage->id;
+            } else {
+                $imageIds[] = $image['id'];
+            }
+        }
+
+        PackingListImage::query()->where('packing_list_id', $this->id)->whereNotIn('id', $imageIds)->delete();
+
+        return true;
+    }
 }

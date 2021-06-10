@@ -148,6 +148,15 @@
                                         @confirmed="validatePackingList($event)"
                                 ></button-confirmation>
 
+                                <button
+                                    class="btn btn-primary"
+                                    v-if="!loading && editData && editData.status === 'sent'"
+                                    @click="saveImages()"
+                                >
+                                    <i class="fa fa-list-alt"></i>
+                                    {{ t('form.save') }}
+                                </button>
+
                                 <button-confirmation
                                         :label="t('form.markAsReceived')"
                                         btn-class="btn btn-primary"
@@ -225,17 +234,18 @@
                                 <div class="col-sm-6 col-md-3 form-group" v-for="(image, i) in form.packing_list_images">
                                     <label for="photo"> {{ t('validation.attributes.photo') }}</label>
 
-                                    <div class="photo" @click="openImageExplorer(image.url)">
-                                        <button type="button" class="btn btn-danger" @click="removeImage(i)" v-if="form.status === 'pending_send'">
+                                    <div class="photo">
+                                        <button type="button" class="btn btn-danger" @click.prevent="removeImage(i)">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                         <img
-                                            :src="form.status === 'sent' ? '/storage/' + image.url : image.url"
+                                            @click="openImageExplorer(image)"
+                                            :src="image.id ? '/storage/' + image.url : image.url"
                                         >
                                     </div>
                                 </div>
 
-                                <div class="col-sm-6 col-md-3 form-group not-print" v-if="editData && form.status === 'pending_send'">
+                                <div class="col-sm-6 col-md-3 form-group not-print" v-if="editData">
                                     <label for="photo"> {{ t('validation.attributes.photo') }}</label>
 
                                     <input
@@ -253,12 +263,6 @@
                                     >
                                         <i class="fa fa-camera"></i>
                                     </div>
-
-                                    <input type="hidden" name="photo" :value="form.packing_list_images.length" v-validate data-vv-rules="min_value:1">
-
-                                    <span class="invalid-feedback d-block" role="alert" v-if="errors.firstByRule('photo', 'min_value')">
-                                        <strong>{{ t('validation.required', {attribute: 'photo'}) }}</strong>
-                                    </span>
                                 </div>
                             </div>
 
@@ -363,7 +367,7 @@
 
                                     <div class="photo">
                                         <img
-                                            :src="form.status === 'sent' ? '/storage/' + image.url : image.url"
+                                            :src="image.id ? '/storage/' + image.url : image.url"
                                         >
                                     </div>
                                 </div>
@@ -466,6 +470,22 @@
                 })
             },
 
+            saveImages() {
+                this.loading = true;
+
+                ApiService.post('/warehouse/packing-list/' + this.form.uuid + '/images', {
+                    packing_list_images: this.form.packing_list_images
+                }).then(res => {
+
+                    if (res.data.success) {
+                        location.href = res.data.redirect;
+                    }
+
+                }).catch(err => {
+                    this.loading = false;
+                })
+            },
+
             changeCourier(result) {
                 if (result) {
                     this.courier = result;
@@ -498,10 +518,10 @@
                 this.results.splice(index, 1);
             },
 
-            openImageExplorer(url) {
-                if (this.form.status === 'sent') {
-                    window.open('/storage/' + url);
-                } else if (! url) {
+            openImageExplorer(image) {
+                if (image && image.id) {
+                    window.open('/storage/' + image.url);
+                } else if (! image) {
                     document.querySelector('#photo').click();
                 }
             },
