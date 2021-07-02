@@ -22,6 +22,7 @@ class AddUniqueSalesOrderInOrders extends Migration
         ;
 
         $orders = \App\Order::query()
+            ->withTrashed()
             ->whereIn('invoice_number', $invoiceNumbers->pluck('invoice_number')->toArray())
             ->orderBy('invoice_number')
             ->get()
