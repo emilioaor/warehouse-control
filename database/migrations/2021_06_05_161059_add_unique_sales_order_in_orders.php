@@ -14,6 +14,7 @@ class AddUniqueSalesOrderInOrders extends Migration
     public function up()
     {
         $invoiceNumbers = \App\Order::query()
+            ->withTrashed()
             ->selectRaw('COUNT(id) as c, invoice_number')
             ->groupBy('invoice_number')
             ->having('c', '>', 1)
