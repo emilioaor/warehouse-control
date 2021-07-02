@@ -61,7 +61,7 @@ class CourierController extends Controller
         $courier = new Courier($request->all());
         $courier->save();
 
-        $courier->updateRates($request->courierRates);
+        $courier->updateRates($request->courier_rates);
 
         DB::commit();
 
@@ -104,9 +104,15 @@ class CourierController extends Controller
      */
     public function update(Request $request, $id)
     {
+        DB::beginTransaction();
+
         $courier = Courier::query()->uuid($id)->firstOrFail();
         $courier->fill($request->all());
         $courier->save();
+
+        $courier->updateRates($request->courier_rates);
+
+        DB::commit();
 
         AlertService::alertSuccess(__('alert.processSuccessfully'));
 
