@@ -115,6 +115,7 @@
                                             <th>{{ t('validation.attributes.customer') }}</th>
                                             <th>{{ t('validation.attributes.courier') }}</th>
                                             <th>{{ t('validation.attributes.salesOrder') }}</th>
+                                            <th>{{ t('validation.attributes.price') }}</th>
                                             <th width="1%" class="text-center">{{ t('validation.attributes.status') }}</th>
                                             <th width="1%" class="text-center"></th>
                                         </tr>
@@ -125,6 +126,7 @@
                                             <td>{{ result.customer.description }}</td>
                                             <td>{{ result.courier.name }}</td>
                                             <td>{{ result.invoice_number }}</td>
+                                            <td>{{ result.price }}</td>
                                             <td class="text-center">
                                                 <span
                                                         class="d-inline-block p-1 rounded status"

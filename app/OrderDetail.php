@@ -65,4 +65,29 @@ class OrderDetail extends Model implements IuuidGenerator
 
         return ceil($volumetricWeight * 100) / 100;
     }
+
+    /**
+     * Get rate by lbs
+     *
+     * @param Customer $customer
+     * @param Courier $courier
+     * @param string $way
+     * @return int|float
+     */
+    public static function getRate(Customer $customer, Courier $courier, string $way)
+    {
+        $customerRate = $customer->customerRates()->where('courier_id', $courier->id)->where('way', $way)->first();
+
+        if ($customerRate) {
+            return $customerRate->rate;
+        }
+
+        $courierRate = $courier->courierRates()->where('sector_id', $customer->sector_id)->where('way', $way)->first();
+
+        if ($courierRate) {
+            return $courierRate->rate;
+        }
+
+        return 0;
+    }
 }

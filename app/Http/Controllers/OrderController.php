@@ -66,8 +66,12 @@ class OrderController extends Controller
         $order->save();
 
         foreach ($request->order_details as $detail) {
+
+            $rate = OrderDetail::getRate($order->customer, $order->courier, $order->way);
+
             $detail = new OrderDetail($detail);
             $detail->order_id = $order->id;
+            $detail->price = $detail->volumetricWeight() * $detail->qty * $rate;
             $detail->save();
         }
 
@@ -123,6 +127,14 @@ class OrderController extends Controller
         $order = Order::query()->uuid($id)->firstOrFail();
         $order->fill($request->only(['comment', 'courier_id', 'way']));
         $order->save();
+
+        foreach ($order->orderDetails as $detail) {
+
+            $rate = OrderDetail::getRate($order->customer, $order->courier, $order->way);
+
+            $detail->price = $detail->volumetricWeight() * $detail->qty * $rate;
+            $detail->save();
+        }
 
         Mail::to($order->customer->customerEmails->pluck('email')->toArray())->send(new OrderCreated($order));
 

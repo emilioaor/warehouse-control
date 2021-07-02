@@ -221,10 +221,12 @@ class Order extends Model implements IuuidGenerator
         $invoiceNumber = $params['invoice_number'];
 
         $query
-            ->select(['orders.*'])
+            ->selectRaw('orders.*, SUM(price) as price')
             ->my()
             ->whereBetween('date', [$start, $end])
             ->with(['customer', 'courier'])
+            ->join('order_details', 'order_details.order_id', '=', 'orders.id')
+            ->groupBy('orders.id')
             ->orderBy('date', 'DESC')
         ;
 

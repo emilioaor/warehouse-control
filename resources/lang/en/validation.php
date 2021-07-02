@@ -188,6 +188,7 @@ return [
         'cubicFeet' => 'Cubic feet',
         'sector' => 'Sector',
         'rate' => 'Rate',
+        'price' => 'Price'
     ],
 
 ];
