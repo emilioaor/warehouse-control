@@ -85,6 +85,16 @@ class Customer extends Model implements IuuidGenerator
     }
 
     /**
+     * Customer rates
+     *
+     * @return HasMany
+     */
+    public function customerRates()
+    {
+        return $this->hasMany(CustomerRate::class);
+    }
+
+    /**
      * Scope search
      */
     public function scopeSearch(Builder $query, ?string $search): Builder
@@ -138,5 +148,39 @@ class Customer extends Model implements IuuidGenerator
 
         // Delete
         $this->customerEmails()->whereNotIn('id', $notDelete)->delete();
+    }
+
+    /**
+     * Update customer rates
+     *
+     * @param array $customerRates
+     */
+    public function updateCustomerRates(array $customerRates)
+    {
+        $notDelete = [];
+
+        foreach ($customerRates as $cr) {
+            if (isset($cr['id'])) {
+                // Update
+                $customerRate = CustomerRate::query()->find($cr['id']);
+                $customerRate->courier_id = $cr['courier_id'];
+                $customerRate->way = $cr['way'];
+                $customerRate->rate = $cr['rate'];
+                $customerRate->save();
+            } else {
+                // Create
+                $customerRate = new CustomerRate($cr);
+                $customerRate->customer_id = $this->id;
+                $customerRate->courier_id = $cr['courier_id'];
+                $customerRate->way = $cr['way'];
+                $customerRate->rate = $cr['rate'];
+                $customerRate->save();
+            }
+
+            $notDelete[] = $customerRate->id;
+        }
+
+        // Delete
+        $this->customerRates()->whereNotIn('id', $notDelete)->delete();
     }
 }

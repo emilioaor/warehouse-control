@@ -21,6 +21,23 @@ class CreateCourierRatesTable extends Migration
             $table->float('rate');
             $table->timestamps();
         });
+
+        $sectors = \App\Sector::all();
+        $couriers = \App\Courier::all();
+
+        foreach ($couriers as $courier) {
+            foreach (['airway', 'seaway'] as $way) {
+                foreach ($sectors as $sector) {
+
+                    $courierRate = new \App\CourierRate();
+                    $courierRate->courier_id = $courier->id;
+                    $courierRate->sector_id = $sector->id;
+                    $courierRate->way = $way;
+                    $courierRate->rate = 0;
+                    $courierRate->save();
+                }
+            }
+        }
     }
 
     /**

@@ -209,6 +209,99 @@
                                 </div>
                             </div>
 
+                            <div class="row mt-3">
+
+                                <div class="col-12 form-group">
+                                    <h5>{{ t('form.specialRates') }}</h5>
+
+                                    <table class="table table-responsive-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>{{ t('validation.attributes.courier') }}</th>
+                                                <th>{{ t('validation.attributes.way') }}</th>
+                                                <th width="15%">{{ t('validation.attributes.rate') }}</th>
+                                                <th width="5%"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(customerRate, i) in form.customer_rates">
+                                                <td>
+                                                    <search-input
+                                                        route="/warehouse/courier"
+                                                        :description-fields="['name']"
+                                                        @selectResult="changeRateCourier($event, i)"
+                                                        :input-class="errors.has('courier' + i) ? 'is-invalid' : ''"
+                                                        :value="customerRate.courier ? customerRate.courier.name : ''"
+                                                    ></search-input>
+                                                    <input type="hidden" :name="'courier' + i" v-validate data-vv-rules="required" v-if="! customerRate.courier">
+                                                    <input type="hidden" :name="'same' + customerRate.courier_id + customerRate.way" v-validate data-vv-rules="required" v-if="hasSameRateConfig(customerRate)">
+
+                                                    <span class="invalid-feedback d-block" role="alert" v-if="errors.firstByRule('courier' + i, 'required')">
+                                                        <strong>{{ t('validation.required', {attribute: 'courier'}) }}</strong>
+                                                    </span>
+
+                                                    <span class="invalid-feedback d-block" role="alert" v-if="errors.firstByRule('same' + customerRate.courier_id + customerRate.way, 'required')">
+                                                        <strong>{{ t('form.duplicated') }}</strong>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <select
+                                                        :name="'way' + i"
+                                                        class="form-control"
+                                                        :class="{'is-invalid': errors.has('way'  + i)}"
+                                                        v-model="customerRate.way"
+                                                        v-validate
+                                                        data-vv-rules="required"
+                                                    >
+                                                        <option value="airway">{{ t('way.airway') }}</option>
+                                                        <option value="seaway">{{ t('way.seaway') }}</option>
+                                                    </select>
+
+                                                    <span class="invalid-feedback d-block" role="alert" v-if="errors.firstByRule('way' + i, 'required')">
+                                                        <strong>{{ t('validation.required', {attribute: 'way'}) }}</strong>
+                                                    </span>
+
+                                                    <span class="invalid-feedback d-block" role="alert" v-if="errors.firstByRule('same' + customerRate.courier_id + customerRate.way, 'required')">
+                                                        <strong>{{ t('form.duplicated') }}</strong>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <input
+                                                        type="number"
+                                                        :name="'rate' + i"
+                                                        class="form-control"
+                                                        :class="{'is-invalid': errors.has('rate'  + i)}"
+                                                        v-validate
+                                                        data-vv-rules="required"
+                                                        v-model="customerRate.rate"
+                                                    >
+
+                                                    <span class="invalid-feedback d-block" role="alert" v-if="errors.firstByRule('rate' + i, 'required')">
+                                                        <strong>{{ t('validation.required', {attribute: 'rate'}) }}</strong>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-danger" @click="removeCustomerRate(i)">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th colspan="4">
+                                                    <button type="button" class="btn btn-success" @click="addCustomerRate()">
+                                                        <i class="fa fa-plus"></i>
+                                                        {{ t('form.addRate') }}
+                                                    </button>
+                                                </th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+
+                            </div>
+
                             <div v-if="this.authUser() && this.authUser().role !== 'seller'">
                                 <button class="btn btn-primary" v-if="!loading">
                                     <i class="fa fa-save"></i>
@@ -265,7 +358,10 @@
 
         mounted() {
             if (this.editData) {
-                this.form = {...this.editData};
+                this.form = {
+                    ...this.form,
+                    ...this.editData
+                };
                 this.courier = {
                     ...this.editData.default_courier,
                     searchDescription: this.editData.default_courier.name
@@ -291,7 +387,8 @@
                     ],
                     seller_id: null,
                     seller: null,
-                    sector_id: null
+                    sector_id: null,
+                    customer_rates: []
                 },
                 loading: false,
                 courier: null
@@ -353,6 +450,33 @@
 
             removeEmail(index) {
                 this.form.customer_emails.splice(index, 1);
+            },
+
+            addCustomerRate() {
+                this.form.customer_rates.push({
+                    courier: null,
+                    courier_id: null,
+                    way: null,
+                    rate: null
+                });
+            },
+
+            changeRateCourier(event, i) {
+                this.form.customer_rates[i].courier_id = event.id;
+                this.form.customer_rates[i].courier = event;
+            },
+
+            removeCustomerRate(index) {
+                this.form.customer_rates.splice(index, 1);
+            },
+
+            hasSameRateConfig(rate) {
+                return (
+                    rate.courier &&
+                    rate.way &&
+                    this.form.customer_rates
+                        .filter(cr => cr.courier_id == rate.courier_id && cr.way === rate.way).length > 1
+                )
             }
         }
     }

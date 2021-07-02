@@ -62,6 +62,16 @@ class Courier extends Model implements IuuidGenerator
     }
 
     /**
+     * Customer rates
+     *
+     * @return HasMany
+     */
+    public function customerRates()
+    {
+        return $this->hasMany(CustomerRate::class);
+    }
+
+    /**
      * Update courier rates
      *
      * @param $courierRates

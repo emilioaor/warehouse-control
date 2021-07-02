@@ -28,6 +28,9 @@ return [
     'phone' => 'Phone',
     'addComment' => 'Add comment',
     'downloadExcel' => 'Download excel',
-    'formatSize' => 'Format: width*length*height'
+    'formatSize' => 'Format: width*length*height',
+    'specialRates' => 'Special rates',
+    'addRate' => 'Add new rate',
+    'duplicated' => 'Duplicated'
 
 ];

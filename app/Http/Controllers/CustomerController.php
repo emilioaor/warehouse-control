@@ -69,6 +69,7 @@ class CustomerController extends Controller
         $customer->save();
 
         $customer->updateCustomerEmails($request->customer_emails);
+        $customer->updateCustomerRates($request->customer_rates);
 
         DB::commit();
 
@@ -100,7 +101,7 @@ class CustomerController extends Controller
         $customer = Customer::query()
             ->uuid($id)
             ->my()
-            ->with(['defaultCourier', 'customerEmails', 'seller'])
+            ->with(['defaultCourier', 'customerEmails', 'seller', 'customerRates.courier'])
             ->firstOrFail()
         ;
 
@@ -123,6 +124,7 @@ class CustomerController extends Controller
         $customer->save();
 
         $customer->updateCustomerEmails($request->customer_emails);
+        $customer->updateCustomerRates($request->customer_rates);
 
         DB::commit();
 

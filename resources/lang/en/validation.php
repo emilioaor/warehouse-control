@@ -187,6 +187,7 @@ return [
         'volumetricWeight' => 'Volumetric weight',
         'cubicFeet' => 'Cubic feet',
         'sector' => 'Sector',
+        'rate' => 'Rate',
     ],
 
 ];
