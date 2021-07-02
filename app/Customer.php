@@ -29,7 +29,8 @@ class Customer extends Model implements IuuidGenerator
         'default_courier_id',
         'address',
         'locker_number',
-        'seller_id'
+        'seller_id',
+        'sector_id'
     ];
 
     protected $with = ['defaultCourier'];
@@ -71,6 +72,16 @@ class Customer extends Model implements IuuidGenerator
     public function seller()
     {
         return $this->belongsTo(User::class, 'seller_id')->withTrashed();
+    }
+
+    /**
+     * Sector
+     *
+     * @return BelongsTo
+     */
+    public function sector()
+    {
+        return $this->belongsTo(Sector::class)->withTrashed();
     }
 
     /**

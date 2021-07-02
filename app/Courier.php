@@ -50,4 +50,39 @@ class Courier extends Model implements IuuidGenerator
     {
         return $this->hasMany(PackingList::class, 'courier_id');
     }
+
+    /**
+     * Courier rates
+     *
+     * @return HasMany
+     */
+    public function courierRates()
+    {
+        return $this->hasMany(CourierRate::class);
+    }
+
+    /**
+     * Update courier rates
+     *
+     * @param $courierRates
+     */
+    public function updateRates($courierRates)
+    {
+        foreach ($courierRates as $rate) {
+
+            $courierRate = CourierRate::query()
+                ->where('way', $rate['way'])
+                ->where('courier_id', $this->id)
+                ->where('sector_id', $rate['sector_id'])
+                ->firstOrNew([
+                    'way' => $rate['way'],
+                    'courier_id' => $this->id,
+                    'sector_id' => $rate['sector_id']
+                ])
+            ;
+
+            $courierRate->rate = $rate['rate'];
+            $courierRate->save();
+        }
+    }
 }

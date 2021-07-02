@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Courier;
+use App\Sector;
 use App\Service\AlertService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CourierController extends Controller
 {
@@ -41,7 +43,9 @@ class CourierController extends Controller
      */
     public function create()
     {
-        return view('courier.form');
+        $sectors = Sector::all();
+
+        return view('courier.form', compact('sectors'));
     }
 
     /**
@@ -52,8 +56,14 @@ class CourierController extends Controller
      */
     public function store(Request $request)
     {
+        DB::beginTransaction();
+
         $courier = new Courier($request->all());
         $courier->save();
+
+        $courier->updateRates($request->courierRates);
+
+        DB::commit();
 
         AlertService::alertSuccess(__('alert.processSuccessfully'));
 
@@ -79,9 +89,10 @@ class CourierController extends Controller
      */
     public function edit($id)
     {
-        $courier = Courier::query()->uuid($id)->firstOrFail();
+        $courier = Courier::query()->with(['courierRates.sector'])->uuid($id)->firstOrFail();
+        $sectors = Sector::all();
 
-        return view('courier.form', compact('courier'));
+        return view('courier.form', compact('courier', 'sectors'));
     }
 
     /**

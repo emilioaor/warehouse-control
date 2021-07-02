@@ -75,6 +75,36 @@
                                 </div>
                             </div>
 
+                            <div class="row">
+                                <div class="col-12">
+                                    <hr>
+                                </div>
+                                <div
+                                    class="col-sm-6 col-md-4 form-group"
+                                    v-for="(courierRate, i) in form.courier_rates"
+                                >
+                                    <label>
+                                        <i :class="ways.find(w => w.way === courierRate.way).icon"></i>
+                                        {{ courierRate.sector.name }}
+                                        ({{ t('way.' + courierRate.way) }})
+                                    </label>
+                                    <input
+                                        type="number"
+                                        :name="'rate' + i"
+                                        :id="'rate' + i"
+                                        class="form-control"
+                                        :class="{'is-invalid': errors.has('rate' + i)}"
+                                        v-validate
+                                        data-vv-rules="required"
+                                        v-model="courierRate.rate"
+                                    >
+                                    <span class="invalid-feedback" role="alert" v-if="errors.firstByRule('rate' + i, 'required')">
+                                        <strong>{{ t('validation.required', {attribute: courierRate.sector.name}) }}</strong>
+                                    </span>
+                                </div>
+
+                            </div>
+
                             <div>
                                 <button class="btn btn-primary" v-if="!loading">
                                     <i class="fa fa-save"></i>
@@ -121,12 +151,28 @@
             editData: {
                 type: Object,
                 required: false
+            },
+            sectors: {
+                type: Array,
+                required: true
             }
         },
 
         mounted() {
             if (this.editData) {
                 this.form = {...this.editData}
+            } else {
+
+                this.ways.forEach(way => {
+                    this.sectors.forEach(sector => {
+                        this.form.courier_rates.push({
+                            sector_id: sector.id,
+                            sector: sector,
+                            way: way.way,
+                            rate: 0
+                        })
+                    })
+                })
             }
         },
 
@@ -135,9 +181,20 @@
                 form: {
                     name: null,
                     phone: null,
-                    address: null
+                    address: null,
+                    courier_rates: []
                 },
-                loading: false
+                loading: false,
+                ways: [
+                    {
+                        way: 'airway',
+                        icon: 'fa fa-plane'
+                    },
+                    {
+                        way: 'seaway',
+                        icon: 'fa fa-water'
+                    }
+                ]
             }
         },
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Courier;
 use App\Customer;
+use App\Sector;
 use App\Service\AlertService;
 use App\User;
 use Illuminate\Http\Request;
@@ -49,7 +50,9 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        return view('customer.form');
+        $sectors = Sector::all();
+
+        return view('customer.form', compact('sectors'));
     }
 
     /**
@@ -93,6 +96,7 @@ class CustomerController extends Controller
      */
     public function edit($id)
     {
+        $sectors = Sector::all();
         $customer = Customer::query()
             ->uuid($id)
             ->my()
@@ -100,7 +104,7 @@ class CustomerController extends Controller
             ->firstOrFail()
         ;
 
-        return view('customer.form', compact('customer'));
+        return view('customer.form', compact('customer', 'sectors'));
     }
 
     /**

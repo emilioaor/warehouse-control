@@ -143,6 +143,28 @@
                                     </span>
                                 </div>
 
+                                <div class="col-sm-6 col-md-4 form-group">
+                                    <label for="sector_id"> {{ t('validation.attributes.sector') }}</label>
+                                    <select
+                                        id="sector_id"
+                                        name="sector_id"
+                                        class="form-control"
+                                        :class="{'is-invalid': errors.has('sector_id')}"
+                                        v-validate
+                                        data-vv-rules="required"
+                                        v-model="form.sector_id"
+                                    >
+                                        <option
+                                            v-for="sector in sectors"
+                                            :value="sector.id">{{ sector.name }}
+                                        </option>
+                                    </select>
+
+                                    <span class="invalid-feedback d-block" role="alert" v-if="errors.firstByRule('sector_id', 'required')">
+                                        <strong>{{ t('validation.required', {attribute: 'sector'}) }}</strong>
+                                    </span>
+                                </div>
+
                                 <div class="col-sm-6 col-md-4 form-group" v-for="(customerEmail, i) in form.customer_emails">
                                     <label :for="'email' + i">
                                         {{ t('validation.attributes.email') }}
@@ -233,6 +255,11 @@
             editData: {
                 type: Object,
                 required: false
+            },
+
+            sectors: {
+                type: Array,
+                required: true
             }
         },
 
@@ -263,7 +290,8 @@
                         {email: null}
                     ],
                     seller_id: null,
-                    seller: null
+                    seller: null,
+                    sector_id: null
                 },
                 loading: false,
                 courier: null
