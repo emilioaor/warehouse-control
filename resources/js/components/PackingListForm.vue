@@ -271,10 +271,15 @@
                                     <img src="/img/logo.jpeg" class="logo">
                                 </div>
 
-                                <div class="col-12 print-only">
+                                <div class="col-7 print-only">
                                     <h5>
-                                        1701 NW 87 Av suite 300 Doral FL 33122 /
-                                        <strong>{{ t('form.phone') }}:</strong> 305 614 4478
+                                        {{ courier ? courier.address : '' }}
+                                    </h5>
+                                </div>
+
+                                <div class="col-5 text-right print-only">
+                                    <h5>
+                                        <strong>{{ t('form.phone') }}:</strong> {{ courier ? courier.phone : '' }}
                                     </h5>
                                 </div>
 
