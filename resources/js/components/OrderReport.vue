@@ -94,6 +94,11 @@
                                     <label> {{ t('validation.attributes.salesOrder') }}</label>
                                     <input type="text" class="form-control" v-model="form.invoice_number">
                                 </div>
+
+                                <div class="col-sm-6 col-md-4 form-group" v-if="authUser().role === 'admin'">
+                                    <label> {{ t('validation.attributes.seeDeletedOrders') }}</label>
+                                    <input type="checkbox" v-model="form.see_deleted">
+                                </div>
                             </div>
 
                             <div>
@@ -128,18 +133,25 @@
                                             <td>{{ result.invoice_number }}</td>
                                             <td>{{ result.price }}</td>
                                             <td class="text-center">
-                                                <span
+                                                <template v-if="result.deleted_at">
+                                                    <span class="d-inline-block p-1 rounded status bg-danger text-white">
+                                                        {{ t('form.deleted') }}
+                                                    </span>
+                                                </template>
+                                                <template v-else>
+                                                    <span
                                                         class="d-inline-block p-1 rounded status"
                                                         :class="result.status === 'pending_send' ? 'bg-info text-white' : 'bg-success text-white'"
-                                                >
-                                                    {{ t('status.' + result.status) }}
-                                                </span>
+                                                    >
+                                                        {{ t('status.' + result.status) }}
+                                                    </span>
+                                                </template>
                                             </td>
                                             <td>
                                                 <a
                                                     class="btn btn-warning"
                                                     target="_blank"
-                                                    v-if="authUser()"
+                                                    v-if="authUser() && ! result.deleted_at"
                                                     :href="authUser().role === 'seller' ? '/seller/order/' + result.uuid + '/edit' : '/warehouse/order/' + result.uuid + '/edit'">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
@@ -178,7 +190,8 @@
                     customer_id: null,
                     courier_id: null,
                     status: 0,
-                    invoice_number: null
+                    invoice_number: null,
+                    see_deleted: false
                 },
                 customer: null,
                 courier: null,

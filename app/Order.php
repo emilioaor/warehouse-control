@@ -219,6 +219,7 @@ class Order extends Model implements IuuidGenerator
         $customerId = $params['customer_id'];
         $courierId = $params['courier_id'];
         $invoiceNumber = $params['invoice_number'];
+        $seeDeleted = $params['see_deleted'];
 
         $query
             ->selectRaw('orders.*, SUM(price) as price')
@@ -246,6 +247,9 @@ class Order extends Model implements IuuidGenerator
             $query->where('invoice_number', $invoiceNumber);
         }
 
+        if ($seeDeleted) {
+            $query->withTrashed();
+        }
 
         return $query;
     }

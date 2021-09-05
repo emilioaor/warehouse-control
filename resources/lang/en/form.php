@@ -31,6 +31,7 @@ return [
     'formatSize' => 'Format: width*length*height',
     'specialRates' => 'Special rates',
     'addRate' => 'Add new rate',
-    'duplicated' => 'Duplicated'
+    'duplicated' => 'Duplicated',
+    'deleted' => 'Deleted'
 
 ];
