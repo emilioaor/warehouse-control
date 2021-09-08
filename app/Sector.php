@@ -30,4 +30,14 @@ class Sector extends Model
     {
         return $this->hasMany(CourierRate::class);
     }
+
+    /**
+     * Orders
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

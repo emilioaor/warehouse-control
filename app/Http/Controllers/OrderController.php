@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Courier;
+use App\Customer;
 use App\Mail\OrderCreated;
 use App\Order;
 use App\OrderDetail;
@@ -62,13 +64,18 @@ class OrderController extends Controller
 
         DB::beginTransaction();
 
+        $customer = Customer::query()->find($request->customer_id);
+        $courier = Courier::query()->find($request->courier_id);
+        $way = $request->way;
+
+        $rate = OrderDetail::getRate($customer, $courier, $way);
+
         $order = new Order($request->all());
+        $order->rate = $rate;
+        $order->sector_id = $customer->sector_id;
         $order->save();
 
         foreach ($request->order_details as $detail) {
-
-            $rate = OrderDetail::getRate($order->customer, $order->courier, $order->way);
-
             $detail = new OrderDetail($detail);
             $detail->order_id = $order->id;
             $detail->price = $detail->volumetricWeight() * $detail->qty * $rate;

@@ -120,6 +120,10 @@
                                             <th>{{ t('validation.attributes.customer') }}</th>
                                             <th>{{ t('validation.attributes.courier') }}</th>
                                             <th>{{ t('validation.attributes.salesOrder') }}</th>
+                                            <th>{{ t('validation.attributes.sector') }}</th>
+                                            <th>{{ t('validation.attributes.rate') }}</th>
+                                            <th>{{ t('validation.attributes.weight') }}</th>
+                                            <th>VW</th>
                                             <th>{{ t('validation.attributes.price') }}</th>
                                             <th width="1%" class="text-center">{{ t('validation.attributes.status') }}</th>
                                             <th width="1%" class="text-center"></th>
@@ -131,6 +135,10 @@
                                             <td>{{ result.customer.description }}</td>
                                             <td>{{ result.courier.name }}</td>
                                             <td>{{ result.invoice_number }}</td>
+                                            <td>{{ result.sector ? result.sector.name : '' }}</td>
+                                            <td>{{ result.rate }}</td>
+                                            <td>{{ result.weight * result.qty }}</td>
+                                            <td>{{ volumetricWeightSum(result.order_details, result.way) }}</td>
                                             <td>{{ result.price }}</td>
                                             <td class="text-center">
                                                 <template v-if="result.deleted_at">
@@ -249,6 +257,37 @@
 
                 return date;
             },
+
+            volumetricWeight(detail, way) {
+                const split = detail.size ? detail.size.split('*') : [];
+                let volumetricWeight = 0;
+
+                const width = split[0];
+                const length = split[1];
+                const height = split[2];
+
+                if (width && length && height) {
+
+                    if (way === 'airway') {
+
+                        volumetricWeight = (width * length * height) / 166;
+
+                    } else if (way === 'seaway') {
+                        volumetricWeight = (width * length * height) / 1728;
+                    }
+
+                    return (Math.ceil(volumetricWeight * 100) / 100) * detail.qty;
+                }
+
+                return 0;
+            },
+
+            volumetricWeightSum(details, way) {
+                let sum = 0;
+                details.forEach((detail) => sum += this.volumetricWeight(detail, way));
+
+                return sum
+            }
         }
     }
 </script>

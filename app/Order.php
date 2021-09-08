@@ -111,6 +111,15 @@ class Order extends Model implements IuuidGenerator
     }
 
     /**
+     * Sector
+     * @return BelongsTo
+     */
+    public function sector()
+    {
+        return $this->belongsTo(Sector::class)->withTrashed();
+    }
+
+    /**
      * Status string
      */
     public function status()
@@ -222,10 +231,15 @@ class Order extends Model implements IuuidGenerator
         $seeDeleted = $params['see_deleted'];
 
         $query
-            ->selectRaw('orders.*, SUM(price) as price')
+            ->selectRaw('
+                orders.*,
+                SUM(price) as price,
+                SUM(weight) as weight,
+                SUM(qty) as qty
+            ')
             ->my()
             ->whereBetween('date', [$start, $end])
-            ->with(['customer', 'courier'])
+            ->with(['customer', 'courier', 'sector', 'orderDetails'])
             ->join('order_details', 'order_details.order_id', '=', 'orders.id')
             ->groupBy('orders.id')
             ->orderBy('date', 'DESC')
