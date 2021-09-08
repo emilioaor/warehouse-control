@@ -165,6 +165,10 @@
                                                 <th>{{ t('validation.attributes.weight') }}</th>
                                                 <th width="1%">{{ t('validation.attributes.qty') }}</th>
                                                 <th width="10%">
+                                                    {{ t('validation.attributes.weight') }} x
+                                                    {{ t('validation.attributes.qty') }}
+                                                </th>
+                                                <th width="10%">
                                                     <template v-if="form.way === 'airway'">
                                                         {{ t('validation.attributes.volumetricWeight') }}
                                                     </template>
@@ -268,6 +272,14 @@
                                                         type="text"
                                                         class="form-control"
                                                         readonly
+                                                        :value="detail.weight && detail.qty ? detail.weight * detail.qty : ''"
+                                                    >
+                                                </td>
+                                                <td>
+                                                    <input
+                                                        type="text"
+                                                        class="form-control"
+                                                        readonly
                                                         :value="volumetricWeight(detail, i) ? volumetricWeight(detail, i) : '?'"
                                                     >
                                                 </td>
@@ -293,12 +305,13 @@
                                         <tfoot v-if="editData">
                                             <tr>
                                                 <th colspan="2">{{ t('form.totals') }}</th>
+                                                <th></th>
                                                 <th>
                                                     <input
                                                         type="text"
                                                         class="form-control"
                                                         readonly="readonly"
-                                                        :value="weightSum"
+                                                        :value="qtySum"
                                                     >
                                                 </th>
                                                 <th>
@@ -306,7 +319,7 @@
                                                         type="text"
                                                         class="form-control"
                                                         readonly="readonly"
-                                                        :value="qtySum"
+                                                        :value="weightSum"
                                                     >
                                                 </th>
                                                 <th>
@@ -615,13 +628,13 @@
                         if (this.form.way === 'airway') {
 
                             volumetricWeight = (width * length * height) / 166;
-                            volumetricWeight = volumetricWeight > weight ? volumetricWeight : weight;
+                            // volumetricWeight = volumetricWeight > weight ? volumetricWeight : weight;
 
                         } else if (this.form.way === 'seaway') {
                             volumetricWeight = (width * length * height) / 1728;
                         }
 
-                        return Math.ceil(volumetricWeight * 100) / 100;
+                        return (Math.ceil(volumetricWeight * 100) / 100) * detail.qty;
                     }
                 }
 

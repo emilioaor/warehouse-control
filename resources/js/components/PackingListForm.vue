@@ -309,13 +309,17 @@
                                                 <th class="text-center" width="1%">{{ t('validation.attributes.boxes') }}</th>
                                                 <th class="text-center">{{ t('validation.attributes.size') }}</th>
                                                 <th class="text-center">{{ t('validation.attributes.weight') }}</th>
+                                                <th class="text-center">
+                                                    {{ t('validation.attributes.weight') }} x
+                                                    {{ t('validation.attributes.qty') }}
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <template v-for="(result, i) in results">
                                                 <template v-for="(detail, ii) in result.order_details">
                                                     <tr v-if="ii === 0 && ! editData" class="not-print">
-                                                        <td colspan="7" class="order-head">
+                                                        <td colspan="8" class="order-head">
                                                             {{ result.courier.name }}
                                                             ({{ result.date | date }})
                                                             {{ result.order_details.length }}
@@ -342,6 +346,7 @@
                                                         <td class="text-center">{{ detail.qty }}</td>
                                                         <td class="text-center">{{ detail.size }}</td>
                                                         <td class="text-center">{{ detail.weight }}</td>
+                                                        <td class="text-center">{{ detail.weight * detail.qty }}</td>
                                                     </tr>
                                                 </template>
                                             </template>
@@ -350,6 +355,7 @@
                                                 <td></td>
                                                 <td></td>
                                                 <td class="text-center">{{ qtySum }}</td>
+                                                <td></td>
                                                 <td></td>
                                                 <td class="text-center">{{ weightSum }}</td>
                                             </tr>
@@ -569,6 +575,31 @@
 
             removeImage(index) {
                 this.form.packing_list_images.splice(index, 1);
+            },
+
+            volumetricWeight(detail) {
+                const weight = detail.weight;
+                const split = detail.size ? detail.size.split('*') : [];
+                let volumetricWeight = 0;
+                const width = split[0];
+                const length = split[1];
+                const height = split[2];
+
+                if (width && length && height) {
+
+                    if (this.form.way === 'airway') {
+
+                        volumetricWeight = (width * length * height) / 166;
+                        // volumetricWeight = volumetricWeight > weight ? volumetricWeight : weight;
+
+                    } else if (this.form.way === 'seaway') {
+                        volumetricWeight = (width * length * height) / 1728;
+                    }
+
+                    return (Math.ceil(volumetricWeight * 100) / 100) * detail.qty;
+                }
+
+                return null;
             }
         },
 
