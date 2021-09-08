@@ -36,6 +36,7 @@ Vue.component('packing-list-report', require('./components/PackingListReport.vue
 Vue.component('packing-list-email', require('./components/PackingListEmail.vue').default);
 Vue.component('button-confirmation', require('./components/ButtonConfirmation.vue').default);
 Vue.component('signature', require('./components/Signature.vue').default);
+Vue.component('transport-form', require('./components/TransportForm.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

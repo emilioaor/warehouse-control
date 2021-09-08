@@ -40,6 +40,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('courier', 'CourierController');
         Route::resource('customer', 'CustomerController');
         Route::resource('box', 'BoxController');
+        Route::resource('transport', 'TransportController');
 
         Route::get('packing-list/report', 'PackingListController@report')->name('packing-list.report');
         Route::post('packing-list/report', 'PackingListController@reportProcess');

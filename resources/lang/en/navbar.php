@@ -12,6 +12,7 @@ return [
     'config' => 'Configuration',
     'security' => 'Security',
     'logout' => 'Logout',
-    'packingList' => 'Packing list'
+    'packingList' => 'Packing list',
+    'transports' => 'Transports'
 
 ];

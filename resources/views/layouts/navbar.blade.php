@@ -123,5 +123,20 @@
                 ]
             ]
         ])
+
+        @include('layouts.dropdown-menu', [
+            'show' => ! Auth::user()->isSeller(),
+            'title' => __('navbar.transports'),
+            'links' => [
+                [
+                    'label' => __('navbar.addNew'),
+                    'route' => route('transport.create')
+                ],
+                [
+                    'label' => __('navbar.list'),
+                    'route' => route('transport.index')
+                ]
+            ]
+        ])
     @endauth
 </ul>

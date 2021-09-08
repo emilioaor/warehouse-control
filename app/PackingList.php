@@ -57,6 +57,16 @@ class PackingList extends Model
     }
 
     /**
+     * Transport
+     *
+     * @return BelongsTo
+     */
+    public function transport()
+    {
+        return $this->belongsTo(Transport::class)->withTrashed();
+    }
+
+    /**
      * Received at local accessor
      *
      * @return Carbon|null
