@@ -32,6 +32,7 @@ return [
     'specialRates' => 'Special rates',
     'addRate' => 'Add new rate',
     'duplicated' => 'Duplicated',
-    'deleted' => 'Deleted'
+    'deleted' => 'Deleted',
+    'sameCourier' => 'Same courier'
 
 ];

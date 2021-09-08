@@ -7,6 +7,7 @@ use App\Order;
 use App\PackingList;
 use App\PackingListImage;
 use App\Service\AlertService;
+use App\Transport;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -86,6 +87,7 @@ class PackingListController extends Controller
      */
     public function edit($id)
     {
+        $transports = Transport::all();
         $packingList = PackingList::query()
             ->uuid($id)
             ->with([
@@ -97,7 +99,7 @@ class PackingListController extends Controller
             ->firstOrFail()
         ;
 
-        return view('packing-list.form', compact('packingList'));
+        return view('packing-list.form', compact('packingList', 'transports'));
     }
 
     /**
@@ -114,6 +116,7 @@ class PackingListController extends Controller
         $packingList = PackingList::query()->uuid($id)->firstOrFail();
         $packingList->status = PackingList::STATUS_SENT;
         $packingList->received_at = new Carbon();
+        $packingList->transport_id = $request->transport_id;
         $packingList->sign = $packingList->attachDocument($request->sign, 'sign');
 
         if (! $packingList->sign) {

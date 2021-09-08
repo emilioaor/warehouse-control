@@ -189,7 +189,8 @@ return [
         'sector' => 'Sector',
         'rate' => 'Rate',
         'price' => 'Price',
-        'seeDeletedOrders' => 'See deleted orders?'
+        'seeDeletedOrders' => 'See deleted orders?',
+        'transport' => 'Transport'
     ],
 
 ];

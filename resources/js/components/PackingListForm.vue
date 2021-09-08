@@ -76,6 +76,27 @@
                                     </span>
                                 </div>
 
+                                <div class="col-sm-6 col-md-4 form-group" v-if="editData">
+                                    <label for="courier_id">{{ t('validation.attributes.transport') }}</label>
+                                    <select
+                                        name="transport"
+                                        id="transport"
+                                        class="form-control"
+                                        v-model="form.transport_id"
+                                        :disabled="editData.status === 'sent'"
+                                    >
+                                        <option :value="null">
+                                            {{ t('form.sameCourier') }}
+                                            ({{ form.courier ? form.courier.name : '' }})
+                                        </option>
+                                        <option
+                                            v-for="transport in transports"
+                                            :key="transport.id"
+                                            :value="transport.id"
+                                        >{{ transport.name }}</option>
+                                    </select>
+                                </div>
+
                                 <div class="col-sm-6 col-md-4 form-group" v-if="!editData">
                                     <label for="invoice_number"> {{ t('validation.attributes.salesOrder') }}</label>
 
@@ -105,18 +126,6 @@
                                             {{ t('status.' + form.status) }}
                                         </span>
                                     </div>
-                                </div>
-
-                                <div class="col-sm-6 col-md-4 form-group text-right">
-                                    <button
-                                            type="button"
-                                            class="btn btn-info text-white"
-                                            v-if="!loading && results.length && editData"
-                                            @click="print()"
-                                    >
-                                        <i class="fa fa-print"></i>
-                                        {{ t('form.print') }}
-                                    </button>
                                 </div>
                             </div>
 
@@ -192,6 +201,16 @@
                                     <i class="fa fa-download"></i>
                                     {{ t('form.downloadExcel') }}
                                 </a>
+
+                                <button
+                                    type="button"
+                                    class="btn btn-info text-white"
+                                    v-if="!loading && results.length && editData"
+                                    @click="print()"
+                                >
+                                    <i class="fa fa-print"></i>
+                                    {{ t('form.print') }}
+                                </button>
 
                                 <span class="invalid-feedback d-block" role="alert" v-if="results.length && ! oneCourierOnly">
                                     <strong>{{ t('validation.oneCourier') }}</strong>
@@ -400,6 +419,11 @@
             editData: {
                 type: Object,
                 required: false
+            },
+
+            transports: {
+                type: Array,
+                required: true
             }
         },
 
@@ -408,6 +432,7 @@
                 form: {
                     courier_id: null,
                     customer_id: null,
+                    transport_id: null,
                     invoice_number: null,
                     sign: null,
                     packing_list_images: [],
