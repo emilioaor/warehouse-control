@@ -289,23 +289,10 @@
                                                     </button>
                                                 </td>
                                             </tr>
-                                            <tr v-if="! editData">
-                                                <td colspan="6">
-                                                    <button
-                                                            type="button"
-                                                            class="btn btn-success"
-                                                            @click="addDetail()"
-                                                    >
-                                                        <i class="fa fa-box"></i>
-                                                        {{ t('form.add') }} {{ t('navbar.boxes') }}
-                                                    </button>
-                                                </td>
-                                            </tr>
                                         </tbody>
-                                        <tfoot v-if="editData">
+                                        <tfoot>
                                             <tr>
-                                                <th colspan="2">{{ t('form.totals') }}</th>
-                                                <th></th>
+                                                <th :colspan="editData ? '3' : '4'">{{ t('form.totals') }}</th>
                                                 <th>
                                                     <input
                                                         type="text"
@@ -330,6 +317,19 @@
                                                         :value="volumetricWeightSum"
                                                     >
                                                 </th>
+                                                <th v-if="! editData"></th>
+                                            </tr>
+                                            <tr v-if="! editData">
+                                                <td colspan="8">
+                                                    <button
+                                                            type="button"
+                                                            class="btn btn-success"
+                                                            @click="addDetail()"
+                                                    >
+                                                        <i class="fa fa-box"></i>
+                                                        {{ t('form.add') }} {{ t('navbar.boxes') }}
+                                                    </button>
+                                                </td>
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -652,7 +652,10 @@
 
             qtySum() {
                 let sum = 0;
-                this.form.order_details.forEach(detail => sum += detail.qty);
+                this.form.order_details.forEach(detail => {
+
+                    return sum = sum + (! isNaN(parseFloat(detail.qty)) ? parseFloat(detail.qty) : 0);
+                });
 
                 return sum
             },
